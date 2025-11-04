@@ -1,0 +1,1233 @@
+/* === ESTILOS GLOBALES === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* === HEADER === */
+header {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem 2rem;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+nav h1 {
+    color: #2563eb;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.navbar-logo img {
+    height: 50px;
+    width: auto;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #2563eb;
+}
+
+.navbar-actions .btn-primary {
+    background-color: #0876BE;
+    color: white;
+    padding: 0.7em 1.5em;
+    border-radius: 0.7em;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+}
+
+.btn-primary:hover {
+      background: #075588;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+    color: #ffffff;
+}
+
+/* === HOME.PHP === */
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 4rem 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.search-box {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 0.8em;
+    border: 2px solid #7CC8F9;
+    border-radius: 0.7em;
+    font-size: 1rem;
+}
+
+.btn-search {
+    padding: 0.8em 2em;
+    background-color: #0876BE;
+    color: white;
+    border: none;
+    border-radius: 0.7em;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+}
+
+.btn-search:hover {
+    background: #075588;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+    color: #ffffff;
+}
+
+/* === OFERTAS DESTACADAS === */
+.ofertas-destacadas {
+    padding: 60px 20px;
+    text-align: center;
+    background: #E7F7F8;
+}
+
+.ofertas-destacadas h2 {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: #1e293b;
+}
+
+.ofertas-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto 40px;
+}
+
+.oferta-card {
+    background: #0876BE;
+    color: white;
+    padding: 30px;
+    border-radius: 2em;
+    text-align: left;
+    flex: 1 1 300px;
+    max-width: 350px;
+    box-shadow: 0em 0.625em 0em 0 #075588;
+}
+
+.oferta-logo {
+    width: 60px;
+    height: 60px;
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.oferta-logo img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.oferta-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.oferta-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    margin-bottom: 15px;
+}
+
+.oferta-card p {
+    margin-bottom: 20px;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+.btn-ver-oferta {
+    display: inline-block;
+    background: #E7F6F8;
+    color: #0876BE;
+    padding: 10px 20px;
+    border-radius: 0.7em;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0em 0.35em 0em 0 #7CC7F9;
+}
+
+.btn-ver-oferta:hover {
+    background: #075588;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+    color: #ffffff;
+}
+    
+
+.btn:focus {
+    background: #075588;
+    box-shadow: none;
+    color: #ffffff;
+}
+
+.ofertas-footer {
+    text-align: center;
+}
+
+.btn-ver-todos {
+    display: inline-block;
+    background: #0876BE;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 0.7em;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+}
+
+.btn-ver-todos:hover{
+    background: #075588;
+    color: #ffffff;
+}
+
+/* === COLABORADORES === */
+.colaboradores {
+    padding: 60px 20px;
+    background: white;
+}
+
+.colaboradores h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+
+.colaboradores-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.colaborador-card {
+    background: #1e293b;
+    padding: 40px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    flex: 1 1 250px;
+    max-width: 300px;
+}
+
+.colaborador-card img {
+    max-width: 150px;
+    filter: brightness(0.9);
+}
+
+/* === FOOTER CTA === */
+.footer-cta {
+    padding: 60px 20px;
+    background: #E7F7F8;
+}
+
+.footer-cta-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-cta-card {
+    background: #0876BE;
+    color: white;
+    padding: 40px;
+    border-radius: 2em;
+    flex: 1 1 300px;
+    box-shadow: 0em 0.625em 0em 0 #075588;
+}
+
+.footer-cta-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.footer-cta-card p {
+    margin-bottom: 25px;
+    line-height: 1.6;
+    opacity: 0.95;
+}
+
+.btn-footer {
+    display: inline-block;
+    background: #E7F6F8;
+    color: #0876BE;
+    padding: 12px 25px;
+    border-radius: 0.7em;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0em 0.35em 0em 0 #7CC7F9;
+}
+
+.btn-footer:hover {
+    background: #075588;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+    color: #ffffff;
+}
+
+/* === FOOTER === */
+footer {
+    background-color: #1e293b;
+    color: #fff;
+    text-align: center;
+    padding: 2rem;
+}
+
+footer p {
+    margin: 10px 0;
+    opacity: 0.8;
+}
+
+.footer-social {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.footer-social a {
+    color: white;
+    text-decoration: none;
+}
+
+/* === LOGIN.PHP === */
+.divMarco {
+    display: flex;
+    background-color: #E7F7F8;
+    border-radius: 2em;
+    box-shadow: 0em 0.625em 0em 0 #7cc8f9;
+    width: 50%;
+    max-width: 900px;
+    margin: 6em auto;
+}
+
+.divContent {
+    display: flex;
+    padding: 2em;
+    background-color: #0876BE;
+    border-radius: 2em;
+    box-shadow: 0em 0.625em 0em 0 #075588;
+    width: 100%;
+    margin: 3em;
+    justify-content: space-between;
+    gap: 3em;
+}
+
+#divIniciar-sesion {
+    flex: 1;
+    max-width: 400px;
+}
+
+.fontDivContent {
+    color: white;
+}
+
+.campos-login {
+    display: block;
+    padding-top: 1.5em;
+}
+
+#password, #email {
+    display: block;
+    border-radius: 0.7em;
+    border-width: 0.2em;
+    border-color: #7CC8F9;
+    border-style: solid;
+    box-shadow: none;
+    height: 2.5em;
+    padding: 0.5em;
+    width: 100%;
+    max-width: 350px;
+}
+
+#botonIniciarSesion {
+    display: inline-block;
+    border-radius: 0.7em;
+    padding: 0.7em 2em;
+    border: none;
+    background-color: #E7F6F8;
+    box-shadow: 0em 0.35em 0em 0 #7CC7F9;
+    color: #0876BE;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#botonIniciarSesion:hover {
+    background: #075588;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+    color: #ffffff;
+}
+
+#forgotten-pass {
+    text-decoration: none;
+    font-size: 0.9em;
+    color: #7CC7F9;
+    padding-left: 0.4em;
+}
+
+#forgotten-pass:hover {
+    text-decoration: underline;
+}
+
+#spanRecuerdame {
+    display: flex;
+    align-items: center;
+}
+
+#spanRecuerdame label {
+    display: flex;
+    padding-left: 0.4em;
+}
+
+.campos-registrarse {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    max-width: 300px;
+}
+
+.campos-registrarse > p {
+    padding-top: 1em;
+    line-height: 1.5;
+}
+
+#botonRegistrarse {
+    margin-top: 2em;
+    display: inline-block;
+    border-radius: 0.7em;
+    padding: 0.7em 2em;
+    border: none;
+    background-color: #E7F6F8;
+    box-shadow: 0em 0.35em 0em 0 #7CC7F9;
+    color: #0876BE;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#botonRegistrarse:hover {
+    background: #075588;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+    color: #ffffff;
+}
+
+#botonRegistrarseForm:hover {
+    background: #075588;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+    color: #ffffff;
+}
+
+
+/* === REGISTER.PHP === */
+.divMarcoRegistro {
+    display: flex;
+    background-color: #E7F7F8;
+    border-radius: 2em;
+    box-shadow: 0em 0.625em 0em 0 #7cc8f9;
+    width: 75%;
+    margin: 4em auto;
+}
+
+.divContentRegistro {
+    display: flex;
+    padding: 2em;
+    background-color: #0876BE;
+    border-radius: 2em;
+    box-shadow: 0em 0.625em 0em 0 #075588;
+    width: 100%;
+    margin: 3em;
+    flex-direction: column;
+}
+
+#divFormRegistro {
+    width: 100%;
+}
+
+.columnas-registro {
+    display: flex;
+    gap: 3em;
+    margin-top: 2em;
+}
+
+.columna-izq, .columna-der {
+    flex: 1;
+}
+
+.campos-registro {
+    display: block;
+    padding-top: 1.5em;
+}
+
+.campos-registro.centro {
+    text-align: center;
+    padding-top: 2em;
+}
+
+#nombre, #apellidos, #emailRegistro, #contrasenaRegistro,
+#pais, #provincia, #telefono, #localidad, #ultimoCiclo,
+#fechaInicio, #fechaFinalizacion {
+    display: inline;
+    border-radius: 0.7em;
+    border-width: 0.2em;
+    border-color: #7CC8F9;
+    border-style: solid;
+    box-shadow: none;
+    height: 2em;
+    width: 100%;
+    padding: 0.5em;
+}
+
+#codigoPostal {
+    display: inline;
+    border-radius: 0.7em;
+    border-width: 0.2em;
+    border-color: #7CC8F9;
+    border-style: solid;
+    box-shadow: none;
+    height: 2em;
+    width: 50%;
+    padding: 0.5em;
+}
+
+#direccion {
+    display: inline;
+    border-radius: 0.7em;
+    border-width: 0.2em;
+    border-color: #7CC8F9;
+    border-style: solid;
+    box-shadow: none;
+    height: 2em;
+    width: 100%;
+    padding: 0.5em;
+}
+
+#subirCV {
+    color: #000000;
+}
+
+.nota-pequena {
+    font-size: 0.75em;
+    color: #E7F6F8;
+    display: block;
+    margin-top: 0.3em;
+}
+
+#botonRegistrarseForm {
+    display: inline;
+    border-radius: 0.7em;
+    padding: 0.7em 3em;
+    border: none;
+    background-color: #E7F6F8;
+    box-shadow: 0em 0.35em 0em 0 #7CC7F9;
+    color: #0876BE;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#link-login {
+    color: #7CC7F9;
+    text-decoration: underline;
+}
+
+/* === REGISTER.PHP (Selección) === */
+.divContentSeleccion {
+    display: flex;
+    padding: 3em;
+    background-color: #0876BE;
+    border-radius: 2em;
+    box-shadow: 0em 0.625em 0em 0 #075588;
+    width: 100%;
+    margin: 5em;
+    flex-direction: column;
+    align-items: center;
+}
+
+.titulo-seleccion {
+    font-size: 1.8rem;
+    margin-bottom: 2em;
+    text-align: center;
+}
+
+.opciones-registro {
+    display: flex;
+    gap: 3em;
+    margin-bottom: 2em;
+}
+
+.opcion-card {
+    background-color: #E7F6F8;
+    padding: 2em;
+    border-radius: 1.5em;
+    box-shadow: 0em 0.5em 0em 0 #7CC7F9;
+    text-align: center;
+    min-width: 250px;
+}
+
+.opcion-card h3 {
+    color: #0876BE;
+    margin-bottom: 1em;
+}
+
+.opcion-card p {
+    color: #0876BE;
+    margin-bottom: 1.5em;
+    font-size: 0.9em;
+}
+
+.boton-seleccion {
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 0.7em;
+    padding: 0.7em 2em;
+    border: none;
+    background-color: #0876BE;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+    color: #E7F6F8;
+    font-weight: 600;
+}
+
+.boton-seleccion:hover {
+    background: #075588;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+    color: #ffffff;
+}
+
+
+#link-login-sel {
+    color: #7CC7F9;
+    text-decoration: underline;
+}
+
+/* === FORMULARIOS NUEVOS (EMPRESA) === */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: #f5f5f5;
+}
+
+.auth-card {
+    background: #0876BE;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    max-width: 600px;
+    width: 100%;
+    padding: 40px;
+    box-shadow: 0em 0.625em 0em 0 #075588;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-logo {
+    width: 120px;
+    margin-bottom: 20px;
+}
+
+.auth-header h1 {
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.auth-header p {
+    color: #ffffff;
+}
+
+.auth-form {
+    margin-top: 30px;
+}
+
+.form-section {
+    margin-bottom: 30px;
+}
+
+.form-section h3 {
+    color: #0876BE;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    border-bottom: 2px solid #E7F6F8;
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 5px;
+    border: 2px solid #7CC8F9;
+    border-radius: 0.7em;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #0876BE;
+    
+}
+
+#nombre:focus,
+#apellidos:focus,
+#emailRegistro:focus,
+#contrasenaRegistro:focus,
+#pais:focus,
+#provincia:focus,
+#telefono:focus,
+#localidad:focus,
+#pais:focus,
+#provincia:focus,
+#ultimoCiclo:focus,
+#fechaInicio:focus,
+#direccion:focus,
+#password:focus,
+#email:focus,
+#fechaFinalizacion:focus{
+    outline: none;
+    border-color: #0876BE;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    background: #E7F6F8;
+    color: #0876BE;
+    border: none;
+    border-radius: 0.7em;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0em 0.35em 0em 0 #7CC7F9;
+}
+
+.btn-submit:hover {
+    background: #075588;
+    box-shadow: none;
+    color: #ffffff;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #ffffff;
+}
+
+.auth-footer a {
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+/* ========== MODAL - FONDO OSCURO ========== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* ========== CONTENIDO DEL MODAL ========== */
+.modal-content {
+    background-color: #fefefe;
+    margin: 3% auto;
+    padding: 0;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 1000px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* ========== HEADER DEL MODAL ========== */
+.modal-header {
+    padding: 20px 30px;
+    background-color: #2563eb;
+    color: white;
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.modal-close {
+    color: white;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.modal-close:hover {
+    color: #dbeafe;
+}
+
+/* ========== BODY DEL MODAL ========== */
+.modal-body {
+    padding: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+/* ========== COLUMNAS DEL FORMULARIO ========== */
+.form-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ========== GRUPOS DE FORMULARIO ========== */
+/* NOTA: Este .form-group está duplicado y podría causar problemas si se aplica */
+/* en el modal y también en el formulario de empresa. Lo mantengo como estaba. */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 14px;
+}
+
+.form-group input {
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ========== ESTADOS DE VALIDACIÓN ========== */
+.form-group input.valid {
+    border-color: #4caf50;
+    background-color: #f1f8f4;
+}
+
+.form-group input.invalid {
+    border-color: #f44336;
+    background-color: #fff5f5;
+}
+
+/* ========== MENSAJES DE ERROR ========== */
+.error-message {
+    color: #f44336;
+    font-size: 12px;
+    margin-top: 5px;
+    min-height: 18px;
+    display: block;
+}
+
+/* ========== FOOTER DEL MODAL ========== */
+.modal-footer {
+    padding: 20px 30px;
+    background-color: #f8f9fa;
+    border-radius: 0 0 12px 12px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.modal-footer button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* ========== BOTÓN CANCELAR ========== */
+.btn-cancelar {
+    box-shadow: 0em 0.35em 0em 0 #7CC7F9;
+    color: #0876BE;
+    background: #E7F6F8;
+}
+
+.btn-cancelar:hover {
+    background: #075588;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+    color: #ffffff;
+}
+
+/* ========== BOTÓN REGISTRARSE ========== */
+.btn-registrar {
+    background-color: #2563eb;
+    color: white;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+}
+
+.btn-registrar:hover {
+    background: #075588;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+    color: #ffffff;
+}
+
+/* ========== BOTÓN PARA ABRIR MODAL ========== */
+.btn-registro-alumno {
+    padding: 15px 30px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-registro-alumno:hover {
+    background-color: #1d4ed8;
+}
+
+
+/* === MENSAJES DE ERROR === */
+.msgError {
+    color: #d8000c;
+    background-color: #ffe6e6;
+    padding: 0.625em;
+    border-radius: 0.3em;
+    margin-top: 0.625em;
+    border: 0.1em solid #d8000c;
+    font-size: 0.9em;
+    width: 80%;
+}
+
+/* === HOVER GENERAL === */
+button:hover {
+    cursor: pointer;
+}
+
+
+/* === PARA EL NAV ALTERNATIVO === */
+.navbar-logo h1 {
+    color: #0876BE;
+    margin: 0;
+}
+
+.user-email {
+    margin-right: 15px;
+    color: #0876BE;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.user-email:hover {
+    text-decoration: underline;
+}
+
+.btn-logout-header {
+    background-color: #f44336;
+    color: white;
+    padding: 0.7em 1.5em;
+    border-radius: 0.7em;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0em 0.35em 0em 0 #d32f2f;
+}
+
+.btn-logout-header:hover {
+    background: #d32f2f;
+    box-shadow: 0em 0.35em 0em 0 #b71c1c;
+}
+
+
+/* === DASHBOARDS === */
+.dashboard-container {
+    padding: 40px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.dashboard-header {
+    display: block;
+    background: #0876BE;
+    color: white;
+    padding: 40px;
+    border-radius: 2em;
+    margin-bottom: 40px;
+    box-shadow: 0em 0.625em 0em 0 #075588;
+}
+
+.dashboard-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 2.5rem;
+}
+
+.dashboard-header p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 1.1rem;
+}
+
+/* 2. CONTENEDOR DE LA TABLA - Estilos visuales */
+.table-container {
+    /* **CORRECCIÓN 2: Ocupa el espacio restante** */
+    flex-grow: 1; 
+    
+    background: white;
+    padding: 40px;
+    border-radius: 2em;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    /* width: auto; <--- ELIMINADO para que Flexbox controle el ancho */
+}
+
+.table-container h2 {
+    color: #0876BE;
+    margin: 0 0 20px 0;
+}
+
+.table-container p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #0876BE;
+    color: white;
+}
+
+th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+tbody tr:hover {
+    background: #E7F7F8;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.user-email {
+    margin-right: 15px;
+    color: #0876BE;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.user-email:hover {
+    text-decoration: underline;
+}
+
+.btn-logout-header {
+    background-color: #f44336;
+    color: white;
+    padding: 0.7em 1.5em;
+    border-radius: 0.7em;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0em 0.35em 0em 0 #d32f2f;
+}
+
+.btn-logout-header:hover {
+    background: #d32f2f;
+    box-shadow: 0em 0.35em 0em 0 #b71c1c;
+}
+
+
+/* === MODAL EDITAR OFERTA === */
+
+#modalEditarOferta {
+    display: none;
+}
+
+
+/* === Menu lateral dashboard === */
+
+.divCentral {
+    display: flex; 
+    gap: 30px; 
+    align-items: flex-start;
+}
+
+#menu-izq{
+    width: 20%; 
+    flex-shrink: 0;
+    font-size: 0.88em;
+    padding-left: 2em;
+    padding-top: 1em;
+    background: white;
+    border-radius: 2em;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.optLateral {
+   margin-bottom: 0.8em;
+}
+
+.optLateral:hover {
+    cursor: pointer;
+    color: #0876BE;
+}
+
+#menu-izq h3{
+    padding-bottom: 1em;
+    color: #0876BE;
+}
+
+
+
+
+
+/* === MI MODAL === */
+
+.trasfondoModal{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #00000080;
+    z-index: 1000;
+}
+
+.modalContainer{
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 600px;
+    height: auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px #0000001a;
+    z-index: 1001;
+}
