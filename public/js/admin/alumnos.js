@@ -27,12 +27,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let trasfondoModal = document.querySelector(".trasfondoModal");
     let modalContainer = document.querySelector(".modalContainer");
+    let botonCancelar = document.getElementById("btnCancelarModal");
+    let botonEquis = document.querySelector(".modal-close");
 
 
     /**
-     * Mostrar tabla de alumnos
+     * Mostrar tabla de alumnos y modal de editar
      */
     function mostrarTablaAlumnos(alumnos) {
+
         const contenedor = document.getElementById('tablaAlumnos');
         contenedor.innerHTML = "";
 
@@ -45,22 +48,38 @@ document.addEventListener('DOMContentLoaded', function() {
         let headerName = document.createElement("th");
         headerName.innerHTML = "Nombre";
         cabecera.append(headerName);
+        let huecoSortName = document.createElement("span");
+        huecoSortName.textContent = " ▼";
+        headerName.append(huecoSortName);
+        
 
         let headerApellidos = document.createElement("th");
         headerApellidos.innerHTML = "Apellidos";
         cabecera.append(headerApellidos);
+        let huecoSortApellidos = document.createElement("span");
+        huecoSortApellidos.textContent = " ▼";
+        headerApellidos.append(huecoSortApellidos);
 
         let headerEmail = document.createElement("th");
         headerEmail.innerHTML = "Email";
         cabecera.append(headerEmail);
+        let huecoSortEmail = document.createElement("span");
+        huecoSortEmail.textContent = " ▼";
+        headerEmail.append(huecoSortEmail);
 
         let headerTelefono = document.createElement("th");
         headerTelefono.innerHTML = "Teléfono";
         cabecera.append(headerTelefono);
+        let huecoSortTelefono = document.createElement("span");
+        huecoSortTelefono.textContent = " ▼";
+        headerTelefono.append(huecoSortTelefono);
 
         let headerCiudad = document.createElement("th");
         headerCiudad.innerHTML = "Ciudad";
         cabecera.append(headerCiudad);
+        let huecoSortCiudad = document.createElement("span");
+        huecoSortCiudad.textContent = " ▼";
+        headerCiudad.append(huecoSortCiudad);
 
         let headerActions = document.createElement("th");
         headerActions.innerHTML = "Acciones";
@@ -94,7 +113,9 @@ document.addEventListener('DOMContentLoaded', function() {
             botonEditar.style.marginRight = "0.7em";
             let botonBorrar = document.createElement("button");
             botonEditar.innerText="Editar";
+            botonEditar.classList.add("botonesAccion");
             botonBorrar.innerText="Borrar";
+            botonBorrar.classList.add("botonesAccion");
             celda6.append(botonEditar);
             celda6.append(botonBorrar);
             fila.append(celda6);
@@ -119,6 +140,16 @@ document.addEventListener('DOMContentLoaded', function() {
         modalContainer.style.display = "none";
         trasfondoModal.style.display = "none";
     }
+    })
+
+    botonCancelar.addEventListener("click", function(){
+        modalContainer.style.display = "none";
+        trasfondoModal.style.display = "none";
+    })
+
+    botonEquis.addEventListener("click", function(){
+        modalContainer.style.display = "none";
+        trasfondoModal.style.display = "none";
     })
 
 

@@ -730,7 +730,8 @@ footer p {
 
 .form-group input,
 .form-group select,
-.form-group textarea {
+.form-group textarea,
+.form-group #fechaNacimiento {
     width: 100%;
     padding: 5px;
     border: 2px solid #7CC8F9;
@@ -741,7 +742,8 @@ footer p {
 
 .form-group input:focus,
 .form-group select:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group #fechaNacimiento:focus {
     outline: none;
     border-color: #0876BE;
     
@@ -1091,7 +1093,14 @@ button:hover {
     /* width: auto; <--- ELIMINADO para que Flexbox controle el ancho */
 }
 
+#headerTableContainer{
+    display: flex;
+    justify-content: space-between;
+}
+
+
 .table-container h2 {
+    display: inline;
     color: #0876BE;
     margin: 0 0 20px 0;
 }
@@ -1115,6 +1124,11 @@ th {
     padding: 15px;
     text-align: left;
     font-weight: 600;
+}
+
+th:nth-child(-n+5):hover {
+    color: #7CC7F9;
+    cursor: pointer;
 }
 
 td {
@@ -1157,6 +1171,40 @@ tbody tr:hover {
     background: #d32f2f;
     box-shadow: 0em 0.35em 0em 0 #b71c1c;
 }
+
+.botonesAccion {
+    background-color: #0876BE;
+    color: white ;
+    border: none;
+    padding: 0.3em 0.6em 0.3em;
+    border-radius: 0.8em;
+}
+
+.botonesAccion:hover {
+    background-color: #1d4ed8;
+}
+
+
+.botonesAñadirCargar {
+    background-color: #0876BE;
+    color: white ;
+    border: none;
+    padding: 1em 0.6em 1em;
+    border-radius: 0.8em;
+}
+
+.botonesAñadirCargar:hover {
+    background-color: #1d4ed8;
+    color: white ;
+    border: none;
+    padding: 1em 0.6em 1em;
+    border-radius: 0.8em;
+}
+
+
+
+
+
 
 
 /* === MODAL EDITAR OFERTA === */
