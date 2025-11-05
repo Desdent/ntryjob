@@ -93,6 +93,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         alumnos.forEach(alumno => {
 
+            let id = alumno.id;
+
             let fila = document.createElement("tr");
             cuerpo.append(fila);
             
@@ -120,10 +122,17 @@ document.addEventListener('DOMContentLoaded', function() {
             botonEditar.classList.add("botonesAccion");
             botonBorrar.innerText="Borrar";
             botonBorrar.classList.add("botonesAccion");
+            botonBorrar.classList.add("btnBorrar");
             celda6.append(botonEditar);
             celda6.append(botonBorrar);
             fila.append(celda6);
 
+
+            botonBorrar.onclick = function(e){
+
+                eliminarAlumno(id);
+
+            }
 
 
 
@@ -202,6 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 editarAlumno(campos);
             }
+
 
             })
 
@@ -318,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function crearAlumno(datosAlumno) {
         console.log(datosAlumno);
-        fetch('/api/admin/alumnosController.php', {
+        fetch('/api/admin/AlumnosController.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -330,6 +340,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success) {
                 console.log(data.id);
                 alert('Alumno creado con ID: ' + data.id);
+                modalAdd.style.display = "none";
+                trasfondoModal.style.display = "none";
                 listarAlumnos();
             } else {
                 alert(data.error || 'Error al crear alumno');
@@ -393,6 +405,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     }
 
+
+
+
     /**
      * Eliminar alumno
      */
@@ -401,7 +416,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        fetch('/api/admin/alumnos.php', {
+        fetch('/api/admin/AlumnosController.php', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

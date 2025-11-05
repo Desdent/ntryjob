@@ -10,12 +10,12 @@ class User {
         $db = Database::getInstance()->getConnection();
         $stmt = $db->prepare("
             SELECT u.*, 
-                   CASE 
-                       WHEN a.id IS NOT NULL THEN 'alumno'
-                       WHEN e.id IS NOT NULL THEN 'empresario'
-                       WHEN ad.id IS NOT NULL THEN 'admin'
-                   END as role,
-                   COALESCE(e.aprobada, 1) as aprobada
+                CASE 
+                    WHEN a.id IS NOT NULL THEN 'alumno'
+                    WHEN e.id IS NOT NULL THEN 'empresario'
+                    WHEN ad.id IS NOT NULL THEN 'admin'
+                END as role,
+                COALESCE(e.aprobada, 1) as aprobada
             FROM usuarios u
             LEFT JOIN alumnos a ON u.id = a.usuario_id
             LEFT JOIN empresas e ON u.id = e.usuario_id

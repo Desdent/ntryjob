@@ -1,4 +1,5 @@
 <?php
+
 header('Content-Type: application/json');
 require_once __DIR__ . '/../../controllers/admin/AlumnosController.php';
 require_once __DIR__ . '/../../middleware/AuthMiddleware.php';
