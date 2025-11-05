@@ -528,7 +528,7 @@ footer p {
 }
 
 #nombre, #apellidos, #emailRegistro, #contrasenaRegistro,
-#pais, #provincia, #telefono, #localidad, #ultimoCiclo,
+#pais, #provincia, #telefono, #localidad,
 #fechaInicio, #fechaFinalizacion {
     display: inline;
     border-radius: 0.7em;
@@ -539,6 +539,19 @@ footer p {
     height: 2em;
     width: 100%;
     padding: 0.5em;
+}
+
+
+#ultimoCiclo {
+    display: inline;
+    border-radius: 0.7em;
+    border-width: 0.2em;
+    border-color: #7CC8F9;
+    border-style: solid;
+    box-shadow: none;
+    height: 2em;
+    width: 100%;
+    padding: 0em 0.5em 0em;
 }
 
 #codigoPostal {

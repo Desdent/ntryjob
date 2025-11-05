@@ -55,19 +55,7 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
                             <span class="error-message"></span>
                         </div> 
 
-                        <div class="form-group">
-                            <label for="subirCV">Subir CV (PDF/DOCX) *</label>
-                            <input type="file" id="subirCV" name="subirCV" accept=".pdf,.docx" required>
-                            <span class="error-message"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Foto de perfil *</label>
-                            <button type="button" id="btnAbrirCamaraAlumno">Hacerse foto</button>
-                            <img id="fotoPreview" src="" alt="Preview" style="display:none;max-width:100px;margin-top:8px;">
-                            <input type="hidden" id="fotoAlumnoBase64" name="fotoAlumnoBase64">
-                            <span class="error-message"></span>
-                        </div>
+                        
                     </div>
 
                     <!-- Columna Derecha -->
@@ -78,11 +66,6 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
                             <span class="error-message"></span>
                         </div>
 
-                        <div class="form-group">
-                            <label for="password">Contraseña *</label>
-                            <input type="password" id="password" name="password" required>
-                            <span class="error-message"></span>
-                        </div>
 
                         <div class="form-group">
                             <label for="fechaNacimiento">Fecha de nacimiento *</label>
@@ -160,9 +143,6 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
         
     </div>
 </div>
-
-<script src="/public/js/auth/alumnos.js"></script>
-   <script src="/public/js/admin/main.js"></script>
 
 
     

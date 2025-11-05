@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // cargarEstadisticas();
     listarAlumnos();
+    cargarCiclos();
     
     // Botón logout
     const btnLogout = document.getElementById('btnLogout');
@@ -127,13 +128,54 @@ document.addEventListener('DOMContentLoaded', function() {
             botonEditar.addEventListener("click", function(){
             trasfondoModal.style.display = "block";
             modalContainer.style.display = "block";
-        })
+
+            let nombreEdit = document.getElementById("nombre");
+            nombreEdit.value = alumno.nombre;
+
+            let apellidosEdit = document.getElementById("apellidos");
+            apellidosEdit.value = alumno.apellidos;
+
+            let emailEdit = document.getElementById("email");
+            emailEdit.value = alumno.email;
+
+            let fechaNacimientoEdit = document.getElementById("fechaNacimiento");
+            fechaNacimientoEdit.value = alumno.fecha_nacimiento;
+
+            let paisEdit = document.getElementById("pais");
+            paisEdit.value = alumno.pais;
+
+            let provinciaEdit = document.getElementById("provincia");
+            provinciaEdit.value = alumno.provincia;
+
+            let telefonoEdit = document.getElementById("telefono");
+            telefonoEdit.value = alumno.telefono;
+
+            let localidadEdit = document.getElementById("localidad");
+            localidadEdit.value = alumno.ciudad;
+
+            let codigoPostalEdit = document.getElementById("codigoPostal");
+            codigoPostalEdit.value = alumno.codigo_postal;
+
+            let direccionEdit = document.getElementById("direccion");
+            direccionEdit.value = alumno.direccion;
+
+            let cicloIdEdit = document.getElementById("ultimoCiclo");
+            cicloIdEdit.value = alumno.ciclo_id;
+
+            let fechaInicioEdit = document.getElementById("fechaInicio");
+            fechaInicioEdit.value = alumno.fecha_inicio;
+
+            let fetchaFinalizacionEdit = document.getElementById("fechaFinalizacion");
+            fetchaFinalizacionEdit.value = alumno.fecha_fin;
+
+            
+            })
 
         
-    })
+        })
 
     contenedor.append(cuerpo);
-}
+    }
 
     trasfondoModal.addEventListener("click", function(e){
         if(e.target === trasfondoModal){
@@ -151,6 +193,29 @@ document.addEventListener('DOMContentLoaded', function() {
         modalContainer.style.display = "none";
         trasfondoModal.style.display = "none";
     })
+
+    function cargarCiclos() {
+    fetch('/api/ciclos.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const select = document.getElementById('ultimoCiclo');
+                select.innerHTML = '<option value="">Selecciona un ciclo</option>';
+                
+                data.data.forEach(ciclo => {
+                    const option = document.createElement('option');
+                    option.value = ciclo.id;
+                    option.textContent = `${ciclo.nombre} (${ciclo.codigo})`;
+                    select.appendChild(option);
+                });
+            } else {
+                console.error('Error al cargar ciclos:', data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
 
 
 
@@ -299,5 +364,34 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Error de conexión');
         });
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    let opts = document.querySelectorAll(".optLateral");
+
+    opts[0].innerHTML = "Panel de Alumnos";
+    opts[1].innerHTML = "Panel de Empresas";
+    opts[2].innerHTML = "Panel de Ofertas";
+
+
+    opts[0].addEventListener("click", function(){
+        window.location.href ='index.php?page=dashboard-admin-alumnos'
+    })
+    opts[1].addEventListener("click", function(){
+        window.location.href ='index.php?page=dashboard-admin-ofertas'
+    })
+    opts[2].addEventListener("click", function(){
+        window.location.href ='index.php?page=dashboard-admin-empresas'
+    })
 
 });

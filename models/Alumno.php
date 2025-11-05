@@ -8,6 +8,7 @@ class Alumno {
      * Crear alumno
      */
     public static function create($data) {
+    
         $db = Database::getInstance()->getConnection();
         $db->beginTransaction();
         
@@ -57,16 +58,8 @@ class Alumno {
     public static function getAll() {
         $db = Database::getInstance()->getConnection();
         $stmt = $db->query("
-            SELECT a.id, a.usuario_id, a.nombre, a.apellidos, a.fecha_nacimiento, 
-                   a.telefono, a.pais, a.provincia, a.ciudad, a.direccion, 
-                   a.codigo_postal, a.ciclo_id, a.fecha_inicio, a.fecha_fin,
-                   a.created_at,
-                   u.email, c.nombre as ciclo_nombre,
-                   CASE WHEN a.cv IS NOT NULL THEN 1 ELSE 0 END as tiene_cv,
-                   CASE WHEN a.foto IS NOT NULL THEN 1 ELSE 0 END as tiene_foto
-            FROM alumnos a
-            JOIN usuarios u ON a.usuario_id = u.id
-            LEFT JOIN ciclos c ON a.ciclo_id = c.id
+            SELECT *
+            FROM alumnos
             ORDER BY a.apellidos, a.nombre
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
