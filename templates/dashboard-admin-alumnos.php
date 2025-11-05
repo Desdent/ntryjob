@@ -55,7 +55,7 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
                             <span class="error-message"></span>
                         </div> 
 
-                        
+
                     </div>
 
                     <!-- Columna Derecha -->
@@ -111,6 +111,14 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
                 </div>
         </div>
     </div>
+
+
+
+
+
+
+
+    
 </div>
 
 
@@ -133,8 +141,8 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
             <div id="headerTableContainer">
                 <h2>Listado de Alumnos</h2>
                 <div>
-                    <button class="botonesAñadirCargar">Añadir Alumno</button>
-                    <button class="botonesAñadirCargar">Carga Masiva</button>
+                    <button class="botonesAñadirCargar" id="createUser">Añadir Alumno</button>
+                    <button class="botonesAñadirCargar" id="massiveAdd">Carga Masiva</button>
                 </div>
             </div>
             <table id="tablaAlumnos"></table>

@@ -1095,7 +1095,7 @@ button:hover {
 
 /* 2. CONTENEDOR DE LA TABLA - Estilos visuales */
 .table-container {
-    /* **CORRECCIÓN 2: Ocupa el espacio restante** */
+    /*  Esto hace que ecupe el espacio restante */
     flex-grow: 1; 
     
     background: white;
@@ -1103,7 +1103,6 @@ button:hover {
     border-radius: 2em;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     margin-bottom: 30px;
-    /* width: auto; <--- ELIMINADO para que Flexbox controle el ancho */
 }
 
 #headerTableContainer{
@@ -1189,7 +1188,7 @@ tbody tr:hover {
     background-color: #0876BE;
     color: white ;
     border: none;
-    padding: 0.3em 0.6em 0.3em;
+    padding: 0.2em 0.6em 0.2em;
     border-radius: 0.8em;
 }
 
@@ -1291,4 +1290,12 @@ tbody tr:hover {
     border-radius: 8px;
     box-shadow: 0 4px 6px #0000001a;
     z-index: 1001;
+}
+
+
+
+/* === BOTONES === */
+
+button {
+    font-family: 'Poppins';
 }

@@ -102,6 +102,7 @@ class Alumno {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
+
     /**
      * Actualizar alumno
      */
@@ -109,18 +110,36 @@ class Alumno {
         $db = Database::getInstance()->getConnection();
         $stmt = $db->prepare("
             UPDATE alumnos 
-            SET nombre = ?, apellidos = ?, telefono = ?, ciclo_id = ?, ciudad = ?, provincia = ?
+            SET nombre = ?, apellidos = ?, fecha_nacimiento = ?, pais = ?, provincia = ?,
+            ciudad = ?, codigo_postal = ?, direccion = ?, telefono = ?,
+            ciclo_id = ?, fecha_inicio = ?, fecha_fin = ?
             WHERE id = ?
         ");
+
+        $id = $data['id'];
+        $email = $data['email'];
+        if(!User::emailExists($email))
+        {
+            User::editEmail($id, $email);
+        }
+
         return $stmt->execute([
             $data['nombre'],
             $data['apellidos'],
-            $data['telefono'] ?? null,
+            $data['fecha_nacimiento'],
+            $data['pais'],
+            $data['provincia'],
+            $data['ciudad'],
+            $data['codigo_postal'],
+            $data['direccion'],
+            $data['telefono'],
             $data['ciclo_id'],
-            $data['ciudad'] ?? null,
-            $data['provincia'] ?? null,
-            $id
+            $data['fecha_inicio'],
+            $data['fecha_fin'],
+            $data['id']
         ]);
+
+
     }
     
     /**

@@ -30,12 +30,15 @@ document.addEventListener('DOMContentLoaded', function() {
     let modalContainer = document.querySelector(".modalContainer");
     let botonCancelar = document.getElementById("btnCancelarModal");
     let botonEquis = document.querySelector(".modal-close");
+    let botonActualizar = document.querySelector(".btn-actualizar");
 
 
     /**
      * Mostrar tabla de alumnos y modal de editar
      */
     function mostrarTablaAlumnos(alumnos) {
+
+        
 
         const contenedor = document.getElementById('tablaAlumnos');
         contenedor.innerHTML = "";
@@ -168,7 +171,38 @@ document.addEventListener('DOMContentLoaded', function() {
             let fetchaFinalizacionEdit = document.getElementById("fechaFinalizacion");
             fetchaFinalizacionEdit.value = alumno.fecha_fin;
 
+
+            let alumnoId = alumno.id;
+
+            console.log(alumno.nombre);
+
+            botonActualizar.onclick = function(e) {
+                e.preventDefault();
+
+                let campos = {
+
+                    id: alumnoId,
+                    nombre: document.getElementById("nombre").value,
+                    apellidos: document.getElementById("apellidos").value,
+                    email: document.getElementById("email").value,
+                    fecha_nacimiento: document.getElementById("fechaNacimiento").value,
+                    pais: document.getElementById("pais").value,
+                    provincia: document.getElementById("provincia").value,
+                    telefono: document.getElementById("telefono").value,
+                    ciudad: document.getElementById("localidad").value, // Nota: usas "localidad" para ciudad
+                    codigo_postal: document.getElementById("codigoPostal").value,
+                    direccion: document.getElementById("direccion").value,
+                    ciclo_id: document.getElementById("ultimoCiclo").value,
+                    fecha_inicio: document.getElementById("fechaInicio").value,
+                    fecha_fin: document.getElementById("fechaFinalizacion").value
             
+
+                }
+
+
+                editarAlumno(campos);
+            }
+
             })
 
         
@@ -219,10 +253,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
+
+
     
-
-
-
+    
 
 
 
@@ -255,35 +290,50 @@ document.addEventListener('DOMContentLoaded', function() {
     /**
      * Editar alumno
      */
-    function editarAlumno(id) {
+    function editarAlumno(datos) {
         const datosActualizados = {
-            id: id,
-            nombre: 'Juan Actualizado',
-            apellidos: 'García',
-            email: 'juan@mail.com',
-            ciclo_id: 1
+            id: datos.id,
+            nombre: datos.nombre,
+            apellidos: datos.apellidos,
+            email: datos.email,
+            telefono: datos.telefono,
+            fecha_nacimiento: datos.fecha_nacimiento,
+            pais: datos.pais,
+            provincia: datos.provincia,
+            ciudad: datos.ciudad,
+            direccion: datos.direccion,
+            codigo_postal: datos.codigo_postal,
+            ciclo_id: datos.ciclo_id,
+            fecha_inicio: datos.fecha_inicio,
+            fecha_fin: datos.fecha_fin
         };
-        
-        fetch('/api/admin/alumnos.php', {
+
+        console.log(datosActualizados);
+
+            fetch('/api/admin/AlumnosController.php', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(datosActualizados)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Alumno actualizado');
-                listarAlumnos();
-            } else {
-                alert(data.error || 'Error al actualizar alumno');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error de conexión');
-        });
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Alumno actualizado');
+                    listarAlumnos();
+                    modalContainer.style.display = "none";
+                    trasfondoModal.style.display = "none";
+                } else {
+                    alert(data.error || 'Error al actualizar alumno');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error de conexión');
+            });
+
+
     }
 
     /**

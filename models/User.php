@@ -25,6 +25,7 @@ class User {
         $stmt->execute([$email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
     
     /**
      * Verificar si email existe
@@ -48,6 +49,26 @@ class User {
         
         return $db->lastInsertId();
     }
+
+
+    /**
+     * Editar email
+     */
+    public static function editEmail($id, $email){
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("
+            UPDATE usuarios 
+            SET email = ?
+            WHERE id = ?
+        ");
+
+        return $stmt->execute([
+            $email,
+            $id
+        ]);
+    }
+
+
     
     /**
      * Verificar contraseña
