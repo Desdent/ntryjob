@@ -2,8 +2,6 @@
 
 session_start();
 
-file_put_contents('/tmp/debug_session.txt', print_r($_SESSION, true) . "\n", FILE_APPEND);
-
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config/Database.php';

@@ -27,7 +27,7 @@ class AlumnosController {
 
 
             // Validaciones básicas
-            if (empty($data['nombre']) || empty($data['email']) || empty($data['password'])) {
+            if (empty($data['nombre']) || empty($data['email'])) {
                 http_response_code(400);
                 echo json_encode(['success' => false, 'error' => 'Campos requeridos faltantes']);
                 return;

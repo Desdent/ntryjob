@@ -1,4 +1,5 @@
 -- Borrar todas las tablas
+DROP TABLE IF EXISTS tokens;
 DROP TABLE IF EXISTS postulaciones;
 DROP TABLE IF EXISTS alumno_ciclos;
 DROP TABLE IF EXISTS ofertas;
@@ -16,6 +17,14 @@ CREATE TABLE IF NOT EXISTS usuarios (
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabla tokens (relación 0,1 con usuarios)
+CREATE TABLE IF NOT EXISTS tokens (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL UNIQUE,
+    token VARCHAR(255) NOT NULL UNIQUE,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
 -- Tabla admin
@@ -58,8 +67,8 @@ CREATE TABLE IF NOT EXISTS alumnos (
     usuario_id INT NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL,
     apellidos VARCHAR(100) NOT NULL,
+    telefono VARCHAR(20) NOT NULL,
     fecha_nacimiento DATE,
-    telefono VARCHAR(20),
     pais VARCHAR(50),
     provincia VARCHAR(50),
     ciudad VARCHAR(50),
@@ -118,7 +127,6 @@ CREATE TABLE IF NOT EXISTS postulaciones (
 -- INSERTS DE DATOS
 -- ============================================
 
-
 -- Contraseñas: admin123
 
 -- Ciclos
@@ -155,20 +163,20 @@ INSERT INTO usuarios (email, password) VALUES
 ('ana.martinez@alumno.com', '$2a$12$AyNg2a/ABhbjYLGC7Veive4gKDfcPHhvu1qq7HSNK.1qmEM4sfYWi'),
 ('pedro.sanchez@alumno.com', '$2a$12$AyNg2a/ABhbjYLGC7Veive4gKDfcPHhvu1qq7HSNK.1qmEM4sfYWi');
 
--- Alumnos (ciclo principal al registrarse)
-INSERT INTO alumnos (usuario_id, nombre, apellidos, fecha_nacimiento, telefono, pais, provincia, ciudad, direccion, codigo_postal, ciclo_id, fecha_inicio, fecha_fin) VALUES 
-(6, 'Juan', 'Pérez García', '2002-03-15', '611222333', 'España', 'Madrid', 'Madrid', 'Calle Alcalá 100', '28009', 1, '2024-09-01', '2026-06-30'),
-(7, 'María', 'García López', '2001-07-22', '622333444', 'España', 'Barcelona', 'Barcelona', 'Paseo de Gracia 50', '08007', 1, '2024-09-01', '2026-06-30'),
-(8, 'Carlos', 'López Martínez', '2003-01-10', '633444555', 'España', 'Madrid', 'Alcalá de Henares', 'Calle Mayor 25', '28801', 2, '2024-09-01', '2026-06-30'),
-(9, 'Ana', 'Martínez Rodríguez', '2002-11-05', '644555666', 'España', 'Valencia', 'Valencia', 'Calle Colón 8', '46004', 3, '2023-09-01', '2025-06-30'),
-(10, 'Pedro', 'Sánchez Fernández', '2001-09-18', '655666777', 'España', 'Sevilla', 'Sevilla', 'Avenida de la Constitución 15', '41001', 2, '2023-09-01', '2025-06-30');
+-- Alumnos
+INSERT INTO alumnos (usuario_id, nombre, apellidos, telefono, fecha_nacimiento, pais, provincia, ciudad, direccion, codigo_postal, ciclo_id, fecha_inicio, fecha_fin) VALUES 
+(6, 'Juan', 'Pérez García', '611222333', '2002-03-15', 'España', 'Madrid', 'Madrid', 'Calle Alcalá 100', '28009', 1, '2024-09-01', '2026-06-30'),
+(7, 'María', 'García López', '622333444', '2001-07-22', 'España', 'Barcelona', 'Barcelona', 'Paseo de Gracia 50', '08007', 1, '2024-09-01', '2026-06-30'),
+(8, 'Carlos', 'López Martínez', '633444555', '2003-01-10', 'España', 'Madrid', 'Alcalá de Henares', 'Calle Mayor 25', '28801', 2, '2024-09-01', '2026-06-30'),
+(9, 'Ana', 'Martínez Rodríguez', '644555666', '2002-11-05', 'España', 'Valencia', 'Valencia', 'Calle Colón 8', '46004', 3, '2023-09-01', '2025-06-30'),
+(10, 'Pedro', 'Sánchez Fernández', '655666777', '2001-09-18', 'España', 'Sevilla', 'Sevilla', 'Avenida de la Constitución 15', '41001', 2, '2023-09-01', '2025-06-30');
 
--- Ciclos adicionales (algunos alumnos tienen más de un ciclo)
+-- Ciclos adicionales
 INSERT INTO alumno_ciclos (alumno_id, ciclo_id) VALUES 
-(1, 2),  -- Juan también estudia DAM
-(2, 3),  -- María también estudia ASIR
-(3, 1),  -- Carlos también estudia DAW
-(3, 3);  -- Carlos también estudia ASIR
+(1, 2),
+(2, 3),
+(3, 1),
+(3, 3);
 
 -- Ofertas
 INSERT INTO ofertas (empresa_id, titulo, descripcion, requisitos, ciclo_id, fecha_inicio, fecha_cierre, modalidad, salario) VALUES 

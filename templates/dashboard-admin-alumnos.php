@@ -13,7 +13,7 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
             </div>
 
         <div class="modalBody">
-             <form id="formRegistroAlumno" enctype="multipart/form-data">
+            <form id="formRegistroAlumno" enctype="multipart/form-data">
                 <div class="modal-body">
                     <!-- Columna Izquierda -->
                     <div class="form-column">
@@ -109,6 +109,7 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
                     <button type="button" class="btn-cancelar" id="btnCancelarModal">Cancelar</button>
                     <button type="submit" class="btn-actualizar">Actualizar</button>
                 </div>
+            </form>
         </div>
     </div>
 
@@ -116,6 +117,58 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
 
 
 
+
+
+    <div class="modalContainerAdd">
+        <div class="modal-headerAdd">
+                <h2>Crear Alumno (temporal)</h2>
+                <span class="modal-closeAdd">&times;</span>
+            </div>
+
+        <div class="modalBodyAdd">
+            <form id="formAddAlumno" enctype="multipart/form-data">
+                <div class="modal-bodyAdd">
+                    <!-- Columna Izquierda -->
+                    <div class="form-columnAdd">
+                        <div class="form-groupAdd">
+                            <label for="nombreAdd">Nombre *</label>
+                            <input type="text" id="nombreAdd" name="nombreAdd" required>
+                            <span class="error-message"></span>
+                        </div>
+
+                        <div class="form-groupAdd">
+                            <label for="emailAdd">Email *</label>
+                            <input type="email" id="emailAdd" name="emailAdd" required>
+                            <span class="error-message"></span>
+                        </div>
+
+
+                    </div>
+
+                    <!-- Columna Derecha -->
+                    <div class="form-columnAdd">
+                        <div class="form-groupAdd">
+                            <label for="apellidosAdd">Apellidos *</label>
+                            <input type="text" id="apellidosAdd" name="apellidosAdd" required>
+                            <span class="error-message"></span>
+                        </div>
+
+                        <div class="form-groupAdd">
+                            <label for="telefonoAdd">Teléfono *</label>
+                            <input type="tel" id="telefonoAdd" name="telefonoAdd" required>
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footerAdd">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalAdd">Cancelar</button>
+                    <button type="submit" class="btn-actualizar" id="btnAdd">Añadir</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 
     
@@ -162,7 +215,7 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
             <p id="total-empresas">0</p>
             <br>
 
-             <h4>Empresas pendientes de aprobación</h4>
+            <h4>Empresas pendientes de aprobación</h4>
             <table id ="tablaEmpresas">
                 <thead>
                     <tr>
@@ -209,7 +262,7 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
     Modal edicion oferta
     <div id="modalEditarOferta">
         <div id="modalContent">
-             <div class="modal-header">
+            <div class="modal-header">
                 <h2>Edición de oferta</h2>
                 <span class="modal-close">&times;</span>
             </div>

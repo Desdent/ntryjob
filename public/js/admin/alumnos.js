@@ -93,6 +93,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         alumnos.forEach(alumno => {
 
+            let id = alumno.id;
+
             let fila = document.createElement("tr");
             cuerpo.append(fila);
             
@@ -120,10 +122,17 @@ document.addEventListener('DOMContentLoaded', function() {
             botonEditar.classList.add("botonesAccion");
             botonBorrar.innerText="Borrar";
             botonBorrar.classList.add("botonesAccion");
+            botonBorrar.classList.add("btnBorrar");
             celda6.append(botonEditar);
             celda6.append(botonBorrar);
             fila.append(celda6);
 
+
+            botonBorrar.onclick = function(e){
+
+                eliminarAlumno(id);
+
+            }
 
 
 
@@ -182,19 +191,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 let campos = {
 
                     id: alumnoId,
-                    nombre: document.getElementById("nombre").value,
-                    apellidos: document.getElementById("apellidos").value,
-                    email: document.getElementById("email").value,
-                    fecha_nacimiento: document.getElementById("fechaNacimiento").value,
-                    pais: document.getElementById("pais").value,
-                    provincia: document.getElementById("provincia").value,
-                    telefono: document.getElementById("telefono").value,
-                    ciudad: document.getElementById("localidad").value, // Nota: usas "localidad" para ciudad
-                    codigo_postal: document.getElementById("codigoPostal").value,
-                    direccion: document.getElementById("direccion").value,
-                    ciclo_id: document.getElementById("ultimoCiclo").value,
-                    fecha_inicio: document.getElementById("fechaInicio").value,
-                    fecha_fin: document.getElementById("fechaFinalizacion").value
+                    nombre: nombreEdit.value,
+                    apellidos: apellidosEdit.value,
+                    email: emailEdit.value,
+                    fecha_nacimiento: fechaNacimientoEdit.value,
+                    pais: paisEdit.value,
+                    provincia: provinciaEdit.value,
+                    telefono: telefonoEdit.value,
+                    ciudad: localidadEdit.value,
+                    codigo_postal: codigoPostalEdit.value,
+                    direccion: direccionEdit.value,
+                    ciclo_id: cicloIdEdit.value,
+                    fecha_inicio: fechaInicioEdit.value,
+                    fecha_fin: fetchaFinalizacionEdit.value
             
 
                 }
@@ -202,6 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 editarAlumno(campos);
             }
+
 
             })
 
@@ -215,10 +225,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if(e.target === trasfondoModal){
         modalContainer.style.display = "none";
         trasfondoModal.style.display = "none";
+        modalAdd.style.display = "none";
     }
     })
 
-    botonCancelar.addEventListener("click", function(){
+    botonCancelar.addEventListener("click", function(e){
+        e.preventDefault();
         modalContainer.style.display = "none";
         trasfondoModal.style.display = "none";
     })
@@ -255,9 +267,59 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+    let btnAddAlumno = document.getElementById("createUser");
+    let modalAdd = document.querySelector(".modalContainerAdd");
+    let botonCancelarAdd = document.getElementById("btnCancelarModalAdd");
+    let botonEquisAdd = document.querySelector(".modal-closeAdd");
+    let botonAdd = document.getElementById("btnAdd");
 
-    
-    
+
+
+
+
+    botonCancelarAdd.onclick = function(){
+        trasfondoModal.style.display = "none";
+        modalAdd.style.display = "none";
+    }
+
+    botonEquisAdd.onclick = function(){
+        trasfondoModal.style.display = "none";
+        modalAdd.style.display = "none";
+    }
+
+    /**
+     * Añadir alumno
+     */
+    btnAddAlumno.onclick = function(e){
+        e.preventDefault()
+
+        let campoNombreAdd = document.getElementById("nombreAdd");
+        let campoApellidosAdd = document.getElementById("apellidosAdd");
+        let campoEmailAdd = document.getElementById("emailAdd");
+        let campoTelefonoAdd = document.getElementById("telefonoAdd");
+
+
+        e.preventDefault();
+        trasfondoModal.style.display = "block";
+        modalAdd.style.display = "block";
+
+        botonAdd.onclick = function(ev){
+            ev.preventDefault()
+
+            let camposAdd = {
+                nombre: campoNombreAdd.value,
+                apellidos: campoApellidosAdd.value,
+                email: campoEmailAdd.value,
+                telefono: campoTelefonoAdd.value
+            }
+
+            crearAlumno(camposAdd);
+
+        }
+        
+
+    }
+
 
 
 
@@ -265,7 +327,8 @@ document.addEventListener('DOMContentLoaded', function() {
      * Crear alumno
      */
     function crearAlumno(datosAlumno) {
-        fetch('/api/admin/alumnos.php', {
+        console.log(datosAlumno);
+        fetch('/api/admin/AlumnosController.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -275,7 +338,10 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                console.log(data.id);
                 alert('Alumno creado con ID: ' + data.id);
+                modalAdd.style.display = "none";
+                trasfondoModal.style.display = "none";
                 listarAlumnos();
             } else {
                 alert(data.error || 'Error al crear alumno');
@@ -286,6 +352,9 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Error de conexión');
         });
     }
+
+
+
 
     /**
      * Editar alumno
@@ -336,6 +405,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     }
 
+
+
+
     /**
      * Eliminar alumno
      */
@@ -344,7 +416,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        fetch('/api/admin/alumnos.php', {
+        fetch('/api/admin/AlumnosController.php', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

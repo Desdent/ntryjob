@@ -13,38 +13,54 @@ class Alumno {
         $db->beginTransaction();
         
         try {
-            // Crear usuario
-            $usuarioId = User::create($data['email'], $data['password']);
-            
-            // Crear alumno
-            $stmt = $db->prepare("
-                INSERT INTO alumnos (
-                    usuario_id, nombre, apellidos, fecha_nacimiento, telefono, 
-                    pais, provincia, ciudad, direccion, codigo_postal, 
-                    ciclo_id, fecha_inicio, fecha_fin, cv, foto
-                ) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ");
-            $stmt->execute([
-                $usuarioId,
-                $data['nombre'],
-                $data['apellidos'],
-                $data['fecha_nacimiento'] ?? null,
-                $data['telefono'] ?? null,
-                $data['pais'] ?? null,
-                $data['provincia'] ?? null,
-                $data['ciudad'] ?? null,
-                $data['direccion'] ?? null,
-                $data['codigo_postal'] ?? null,
-                (int)$data['ciclo_id'],
-                $data['fecha_inicio'] ?? null,
-                $data['fecha_fin'] ?? null,
-                $data['cv'] ?? null,
-                $data['foto'] ?? null
-            ]);
-            
-            $db->commit();
-            return $db->lastInsertId();
+
+            // Esto es si devuelve que no existe el email
+            if(!User::emailExists($data['email'])){
+
+                if(empty($data['password'])){
+                // Crear usuario temporal
+                $usuarioId = User::create($data['email'], 'admin123');
+                }
+                else
+                {
+                    // Crear usuario
+                    $usuarioId = User::create($data['email'], $data['password']);
+                }
+
+                // Crear alumno
+                $stmt = $db->prepare("
+                    INSERT INTO alumnos (
+                        usuario_id, nombre, apellidos, fecha_nacimiento, telefono, 
+                        pais, provincia, ciudad, direccion, codigo_postal, 
+                        ciclo_id, fecha_inicio, fecha_fin, cv, foto
+                    ) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                $stmt->execute([
+                    $usuarioId,
+                    $data['nombre'],
+                    $data['apellidos'],
+                    $data['fecha_nacimiento'] ?? null,
+                    $data['telefono'] ?? null,
+                    $data['pais'] ?? null,
+                    $data['provincia'] ?? null,
+                    $data['ciudad'] ?? null,
+                    $data['direccion'] ?? null,
+                    $data['codigo_postal'] ?? null,
+                    (isset($data['ciclo_id']) && $data['ciclo_id'] !== '') ? (int)$data['ciclo_id'] : null, 
+                    $data['fecha_inicio'] ?? null,
+                    $data['fecha_fin'] ?? null,
+                    $data['cv'] ?? null,
+                    $data['foto'] ?? null
+                ]);
+                
+                $db->commit();
+                return $db->lastInsertId();
+            }
+            else
+            {
+                throw new Exception('El email ya está registrado en el sistema');
+            }
             
         } catch (Exception $e) {
             $db->rollBack();
@@ -60,7 +76,7 @@ class Alumno {
         $stmt = $db->query("
             SELECT *
             FROM alumnos
-            ORDER BY a.apellidos, a.nombre
+            ORDER BY apellidos, nombre
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

@@ -834,7 +834,7 @@ footer p {
 
 
 /* ========== MODAL - FONDO OSCURO ========== */
-.modal {
+.modal, .modalContainer, .modalContainerAdd {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -847,7 +847,7 @@ footer p {
 }
 
 /* ========== CONTENIDO DEL MODAL ========== */
-.modal-content {
+.modal-content, .modalContainer, .modalContainerAdd {
     background-color: #fefefe;
     margin: 3% auto;
     padding: 0;
@@ -858,7 +858,7 @@ footer p {
 }
 
 /* ========== HEADER DEL MODAL ========== */
-.modal-header {
+.modal-header, .modal-headerAdd {
     padding: 20px 30px;
     background-color: #2563eb;
     color: white;
@@ -868,12 +868,12 @@ footer p {
     align-items: center;
 }
 
-.modal-header h2 {
+.modal-header h2, .modal-headerAdd h2 {
     margin: 0;
     font-size: 24px;
 }
 
-.modal-close {
+.modal-close, .modal-closeAdd {
     color: white;
     font-size: 35px;
     font-weight: bold;
@@ -881,12 +881,12 @@ footer p {
     transition: color 0.3s;
 }
 
-.modal-close:hover {
+.modal-close:hover, .modal-closeAdd:hover {
     color: #dbeafe;
 }
 
 /* ========== BODY DEL MODAL ========== */
-.modal-body {
+.modal-body, .modal-bodyAdd {
     padding: 30px;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -896,7 +896,7 @@ footer p {
 }
 
 /* ========== COLUMNAS DEL FORMULARIO ========== */
-.form-column {
+.form-column, .form-columnAdd {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -905,19 +905,19 @@ footer p {
 /* ========== GRUPOS DE FORMULARIO ========== */
 /* NOTA: Este .form-group está duplicado y podría causar problemas si se aplica */
 /* en el modal y también en el formulario de empresa. Lo mantengo como estaba. */
-.form-group {
+.form-group, .form-groupAdd {
     display: flex;
     flex-direction: column;
 }
 
-.form-group label {
+.form-group label, .form-groupAdd label {
     font-weight: 600;
     margin-bottom: 8px;
     color: #333;
     font-size: 14px;
 }
 
-.form-group input {
+.form-group input, .form-groupAdd input {
     padding: 12px 15px;
     border: 2px solid #ddd;
     border-radius: 8px;
@@ -925,19 +925,19 @@ footer p {
     transition: all 0.3s;
 }
 
-.form-group input:focus {
+.form-group input:focus, .form-groupAdd input:focus {
     outline: none;
     border-color: #2563eb;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 /* ========== ESTADOS DE VALIDACIÓN ========== */
-.form-group input.valid {
+.form-group input.valid, .form-groupAdd input.valid {
     border-color: #4caf50;
     background-color: #f1f8f4;
 }
 
-.form-group input.invalid {
+.form-group input.invalid, .form-groupAdd input.invalid {
     border-color: #f44336;
     background-color: #fff5f5;
 }
@@ -952,7 +952,7 @@ footer p {
 }
 
 /* ========== FOOTER DEL MODAL ========== */
-.modal-footer {
+.modal-footer, .modal-footerAdd {
     padding: 20px 30px;
     background-color: #f8f9fa;
     border-radius: 0 0 12px 12px;
@@ -961,7 +961,7 @@ footer p {
     gap: 15px;
 }
 
-.modal-footer button {
+.modal-footer button, .modal-footerAdd button {
     padding: 12px 30px;
     border: none;
     border-radius: 8px;
@@ -1009,7 +1009,23 @@ footer p {
     transition: all 0.3s;
 }
 
+.btn-actualizar {
+    padding: 15px 30px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
 .btn-registro-alumno:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-actualizar:hover {
     background-color: #1d4ed8;
 }
 
@@ -1247,7 +1263,7 @@ tbody tr:hover {
 }
 
 .optLateral {
-   margin-bottom: 0.8em;
+    margin-bottom: 0.8em;
 }
 
 .optLateral:hover {
@@ -1292,10 +1308,23 @@ tbody tr:hover {
     z-index: 1001;
 }
 
+.modalContainerAdd{
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 600px;
+    height: auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px #0000001a;
+    z-index: 1002;
+}
+
+
 
 
 /* === BOTONES === */
 
-button {
-    font-family: 'Poppins';
-}
