@@ -13,8 +13,20 @@ class Alumno {
         $db->beginTransaction();
         
         try {
-            // Crear usuario
-            $usuarioId = User::create($data['email'], $data['password']);
+
+            if(!User::emailExists($data['email'])){
+
+                if($data['password']){
+                // Crear usuario temporal
+                $usuarioId = User::create($data['email'], 'admin123');
+                }
+                else
+                {
+                    // Crear usuario
+                    $usuarioId = User::create($data['email'], $data['password']);
+                }
+            }
+            
             
             // Crear alumno
             $stmt = $db->prepare("
@@ -60,7 +72,7 @@ class Alumno {
         $stmt = $db->query("
             SELECT *
             FROM alumnos
-            ORDER BY a.apellidos, a.nombre
+            ORDER BY apellidos, nombre
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
