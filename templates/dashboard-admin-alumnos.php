@@ -169,6 +169,59 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
             </form>
         </div>
     </div>
+    
+    
+
+    <div class="modalContainerMassive">
+        <!-- <div class="modal-headerMassive">
+            <h2>Carga Masiva de Alumnos</h2>
+            <span class="modal-closeMassive">&times;</span>
+        </div>
+
+        <div class="modalBodyMassive">
+            <form id="formMassiveAlumno" enctype="multipart/form-data">
+                <div class="modal-bodyMassive">
+                    <div class="form-columnMassive">
+                        <div class="form-groupMassive">
+                            <label for="nombreMassive">Nombre *</label>
+                            <input type="text" id="nombreMassive" name="nombreMassive" required>
+                            <span class="error-message"></span>
+                        </div>
+
+                        <div class="form-groupMassive">
+                            <label for="emailMassive">Email *</label>
+                            <input type="email" id="emailMassive" name="emailMassive" required>
+                            <span class="error-message"></span>
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-columnMassive">
+                        <div class="form-groupMassive">
+                            <label for="apellidosMassive">Apellidos *</label>
+                            <input type="text" id="apellidosMassive" name="apellidosMassive" required>
+                            <span class="error-message"></span>
+                        </div>
+
+                        <div class="form-groupMassive">
+                            <label for="telefonoMassive">Teléfono *</label>
+                            <input type="tel" id="telefonoMassive" name="telefonoMassive" required>
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footerMassive">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalMassive">Cancelar</button>
+                    <button type="submit" class="btn-actualizar" id="btnMassive">Añadir</button>
+                </div>
+            </form>
+        </div> -->
+    </div>
+
+    
 
 
     

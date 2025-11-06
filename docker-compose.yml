@@ -1,32 +1,28 @@
-version: '3.8'
+version: '3.8'  # Define la versión del formato Compose
 services:
   php:
-    image: php:8.2-apache
-    container_name: ntryjob_php
+    build: .  # Construye la imagen a partir del Dockerfile en la raíz
+    container_name: ntryjob_php  # Nombre del contenedor principal (puedes cambiarlo)
     ports:
-      - "8080:80"
+      - "8080:80"  # Expone el puerto 80 del contenedor como 8080 en tu PC; así accedes con 'localhost:8080'
     volumes:
-      - ./:/var/www/html
-    working_dir: /var/www/html
+      - ./:/var/www/html  # Sincroniza tu proyecto local con el contenedor para desarrollo en tiempo real
+    working_dir: /var/www/html  # Define carpeta de trabajo
     depends_on:
-      - db
-    command: >
-      bash -c "docker-php-ext-install pdo pdo_mysql && 
-               apache2-foreground"
-  
+      - db  # Asegura que la base de datos arranque antes que PHP
   db:
-    image: mysql:8.0
-    container_name: ntryjob_db
+    image: mysql:8.0  # Usa la imagen oficial de MySQL 8.0
+    container_name: ntryjob_db  # Nombre del contenedor para la base de datos
     environment:
-      MYSQL_ROOT_PASSWORD: 7394
-      MYSQL_DATABASE: ntryjob
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: admin123
+      MYSQL_ROOT_PASSWORD: 7394  # Contraseña root para MySQL
+      MYSQL_DATABASE: ntryjob    # Crea la base de datos con ese nombre
+      MYSQL_USER: admin          # Usuario administrador personalizable
+      MYSQL_PASSWORD: admin123   # Contraseña del usuario admin
     ports:
-      - "3307:3306"
+      - "3307:3306"  # Asocia el puerto externo 3307 con el interno 3306 de MySQL
     volumes:
-      - ./database:/docker-entrypoint-initdb.d
-      - db_data:/var/lib/mysql
-
+      - ./database:/docker-entrypoint-initdb.d  # Inicialización automática: puedes poner scripts de creación aquí
+      - db_data:/var/lib/mysql  # Guarda datos en un volumen persistente para que no se pierda la base de datos
 volumes:
-  db_data:
+  db_data:  # Declara el volumen persistente de la base de datos
+
