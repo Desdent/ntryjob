@@ -834,7 +834,7 @@ footer p {
 
 
 /* ========== MODAL - FONDO OSCURO ========== */
-.modal, .modalContainer, .modalContainerAdd {
+.modal {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -857,8 +857,18 @@ footer p {
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
 }
 
+.modalContainerMassive {
+    background-color: #fefefe;
+    margin: 3% auto;
+    padding: 0;
+    border-radius: 12px;
+    width: 100%;
+    
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+}
+
 /* ========== HEADER DEL MODAL ========== */
-.modal-header, .modal-headerAdd {
+.modal-header, .modal-headerAdd, .modal-headerMassive {
     padding: 20px 30px;
     background-color: #2563eb;
     color: white;
@@ -868,12 +878,12 @@ footer p {
     align-items: center;
 }
 
-.modal-header h2, .modal-headerAdd h2 {
+.modal-header h2, .modal-headerAdd h2, .modal-headerMassive h2 {
     margin: 0;
     font-size: 24px;
 }
 
-.modal-close, .modal-closeAdd {
+.modal-close, .modal-closeAdd, .modal-closeMassive {
     color: white;
     font-size: 35px;
     font-weight: bold;
@@ -886,7 +896,7 @@ footer p {
 }
 
 /* ========== BODY DEL MODAL ========== */
-.modal-body, .modal-bodyAdd {
+.modal-body, .modal-bodyAdd, .modalBodyMassive {
     padding: 30px;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -895,8 +905,9 @@ footer p {
     overflow-y: auto;
 }
 
+
 /* ========== COLUMNAS DEL FORMULARIO ========== */
-.form-column, .form-columnAdd {
+.form-column, .form-columnAdd, .form-columnMassive{
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -905,19 +916,19 @@ footer p {
 /* ========== GRUPOS DE FORMULARIO ========== */
 /* NOTA: Este .form-group está duplicado y podría causar problemas si se aplica */
 /* en el modal y también en el formulario de empresa. Lo mantengo como estaba. */
-.form-group, .form-groupAdd {
+.form-group, .form-groupAdd, .form-groupMassive{
     display: flex;
     flex-direction: column;
 }
 
-.form-group label, .form-groupAdd label {
+.form-group label, .form-groupAdd label, .form-groupMassive label {
     font-weight: 600;
     margin-bottom: 8px;
     color: #333;
     font-size: 14px;
 }
 
-.form-group input, .form-groupAdd input {
+.form-group input, .form-groupAdd input, .form-groupMassive input {
     padding: 12px 15px;
     border: 2px solid #ddd;
     border-radius: 8px;
@@ -925,19 +936,19 @@ footer p {
     transition: all 0.3s;
 }
 
-.form-group input:focus, .form-groupAdd input:focus {
+.form-group input:focus, .form-groupAdd input:focus, .form-groupMassive input:focus {
     outline: none;
     border-color: #2563eb;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 /* ========== ESTADOS DE VALIDACIÓN ========== */
-.form-group input.valid, .form-groupAdd input.valid {
+.form-group input.valid, .form-groupAdd input.valid, .form-groupMassive input.valid {
     border-color: #4caf50;
     background-color: #f1f8f4;
 }
 
-.form-group input.invalid, .form-groupAdd input.invalid {
+.form-group input.invalid, .form-groupAdd input.invalid, .form-groupMassive input.invalid {
     border-color: #f44336;
     background-color: #fff5f5;
 }
@@ -952,7 +963,7 @@ footer p {
 }
 
 /* ========== FOOTER DEL MODAL ========== */
-.modal-footer, .modal-footerAdd {
+.modal-footer, .modal-footerAdd, .modal-footerMassive {
     padding: 20px 30px;
     background-color: #f8f9fa;
     border-radius: 0 0 12px 12px;
@@ -961,7 +972,7 @@ footer p {
     gap: 15px;
 }
 
-.modal-footer button, .modal-footerAdd button {
+.modal-footer button, .modal-footerAdd button, .modal-footerMassive button {
     padding: 12px 30px;
     border: none;
     border-radius: 8px;
@@ -1324,7 +1335,100 @@ tbody tr:hover {
 }
 
 
+.modalContainerMassive {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 200em;
+    height: auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px #0000001a;
+    z-index: 1002;
+}
+
+.containerCampos {
+    display: flex;
+    align-items: center;
+    
+}
+
+.containerSuperior {
+    display: flex; 
+    
+    justify-content: space-between; 
+    
+    align-items: center; 
+    
+    width: 100%; 
+}
+
+.camposCSV {
+    margin-top: 0.6em;
+    border: 0.2em solid blue;
+    border-radius: 0.6em;
+    padding: 0.4em;
+}
 
 
-/* === BOTONES === */
 
+
+
+
+
+.hide {
+    display: none;
+}
+
+.show {
+    margin-top: 1em;
+    padding: 1em;
+    display: block;
+    background-color: #E7F6F8;
+    border-radius: 0.7em;
+}
+
+
+#botonEjemplo {
+    border-radius: 0.7em;
+    padding: 0.7em 2em;
+    border: none;
+    background-color: #E7F6F8;
+    box-shadow: 0em 0.35em 0em 0 #7CC7F9;
+    color: #0876BE;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#botonEjemplo:hover {
+    background: #075588;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+    color: #ffffff;
+}
+
+#inputFamilia {
+    outline: none;
+    border-radius: 0.7em;
+    padding: 0.7em 2em;
+    border: none;
+    background-color: #E7F6F8;
+    box-shadow: 0em 0.35em 0em 0 #7CC7F9;
+    color: #0876BE;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+
+#inputFile {
+    border-radius: 0.7em;
+    padding: 0.7em 2em;
+    border: none;
+    background-color: #E7F6F8;
+    box-shadow: 0em 0.35em 0em 0 #7CC7F9;
+    color: #0876BE;
+    font-weight: 600;
+    cursor: pointer;
+}
