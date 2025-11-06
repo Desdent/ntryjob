@@ -226,6 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
         modalContainer.style.display = "none";
         trasfondoModal.style.display = "none";
         modalAdd.style.display = "none";
+        modalContainerMassive.style.display = "none";
     }
     })
 
@@ -245,14 +246,18 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                const select = document.getElementById('ultimoCiclo');
+                const select = document.getElementById('ultimoCiclo'); // Parte del form
                 select.innerHTML = '<option value="">Selecciona un ciclo</option>';
+
+                const selectMassive = document.querySelector(".selectMassive"); // Parte del select familia
+                selectMassive.innerHTML = '<option value="">Selecciona un ciclo</option>';
                 
                 data.data.forEach(ciclo => {
                     const option = document.createElement('option');
                     option.value = ciclo.id;
                     option.textContent = `${ciclo.nombre} (${ciclo.codigo})`;
                     select.appendChild(option);
+                    selectMassive.appendChild(option);
                 });
             } else {
                 console.error('Error al cargar ciclos:', data.error);
@@ -489,7 +494,118 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+        // Carga masiva
+    // Contenedor general
+    let modalContainerMassive = document.querySelector(".modalContainerMassive");
 
+    // 1. Contenedor del header
+    let modalHeaderMassive = document.createElement("div");
+    modalHeaderMassive.classList.add("modal-headerMassive");
+    if (modalContainerMassive) {
+        modalContainerMassive.append(modalHeaderMassive);
+    }
+
+    // El h2
+    let h2HeaderMassive = document.createElement("h2");
+    h2HeaderMassive.innerText = "Carga Masiva de Alumnos";
+    modalHeaderMassive.append(h2HeaderMassive);
+
+    // La equis
+    let modalCloseMassive = document.createElement("span");
+    modalCloseMassive.classList.add("modal-closeMassive");
+    modalCloseMassive.innerHTML = "&times;";
+    modalHeaderMassive.append(modalCloseMassive);
+
+    // 2. El cuerpo (Es el contenedor Grid: 1fr 1fr)
+    let modalBodyMassive = document.createElement("div");
+    modalBodyMassive.classList.add("modalBodyMassive");
+    if (modalContainerMassive) {
+        modalContainerMassive.append(modalBodyMassive);
+    }
+
+
+    // --- Cargar CSV 
+    let containerCargarCSV = document.createElement("div");
+    modalBodyMassive.append(containerCargarCSV); 
+
+    let h3CSV = document.createElement("h3");
+    h3CSV.innerHTML = "Cargar CSV";
+    containerCargarCSV.append(h3CSV);
+
+    let inputCSV = document.createElement("input");
+    inputCSV.type = "file";
+    inputCSV.id = "inputFile";
+    inputCSV.classList.add("camposCSV");
+    containerCargarCSV.append(inputCSV);
+
+
+    // --- Ejemplo
+    let containerEjemplo = document.createElement("div");
+    modalBodyMassive.append(containerEjemplo);
+
+    let h3Ejemplo = document.createElement("h3");
+    h3Ejemplo.innerHTML = "Ejemplo de formato CSV";
+    containerEjemplo.append(h3Ejemplo);
+
+    let divBotonEjemplo = document.createElement("div");
+    containerEjemplo.append(divBotonEjemplo);
+    botonEjemplo = document.createElement("button");
+    botonEjemplo.innerHTML = "Mostrar";
+    botonEjemplo.classList.add("camposCSV");
+    botonEjemplo.id = "botonEjemplo";
+
+
+    let divTextoEjemplo = document.createElement("div");
+    divTextoEjemplo.innerHTML = "Juan;García;juan@alumno.com;654123789;Jaén" +
+                            "<br>" +"Maria;Soleras Viñas;maria@alumno.com;654197789;Jaén" +
+                            "<br>" +"Carlos;Solera Viñas;Carlos@alumno.com;664197789;Torredelcampo";
+    divTextoEjemplo.classList.add("hide");
+    containerEjemplo.append(divTextoEjemplo);
+
+
+    divBotonEjemplo.append(botonEjemplo);
+    botonEjemplo.onclick = function(){
+        if(divTextoEjemplo.classList.contains("hide"))
+        {
+            divTextoEjemplo.classList.remove("hide");
+            divTextoEjemplo.classList.add("show");
+            botonEjemplo.innerHTML = "Ocultar";
+        }
+        else{
+                divTextoEjemplo.classList.remove("show");
+                divTextoEjemplo.classList.add("hide");
+                botonEjemplo.innerHTML = "Mostrar";
+        }
+    }
+
+
+
+
+
+    // --- Familia
+    let containerCargarFamilia = document.createElement("div");
+    modalBodyMassive.append(containerCargarFamilia);
+
+    let h3Familia = document.createElement("h3");
+    h3Familia.innerHTML = "Ciclo Profesional";
+    containerCargarFamilia.append(h3Familia);
+
+    let inputFamilia = document.createElement("select");
+    inputFamilia.classList.add("selectMassive");
+    inputFamilia.classList.add("camposCSV");
+    inputFamilia.id = "inputFamilia";
+    cargarCiclos() 
+    containerCargarFamilia.append(inputFamilia);
+
+
+    let btnMassiveAdd = document.getElementById("massiveAdd");
+
+    btnMassiveAdd.onclick = function(e){
+        e.preventDefault();
+
+        trasfondoModal.style.display = "block";
+        modalContainerMassive.style.display = "block";
+    }
 
 
 

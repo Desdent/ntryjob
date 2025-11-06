@@ -133,9 +133,9 @@ CREATE TABLE IF NOT EXISTS postulaciones (
 
 -- Ciclos
 INSERT INTO ciclos (nombre, codigo) VALUES 
-('Desarrollo de Aplicaciones Web', 'DAW'),
-('Desarrollo de Aplicaciones Multiplataforma', 'DAM'),
-('Administración de Sistemas Informáticos en Red', 'ASIR');
+('2º Desarrollo de Aplicaciones Web', 'DAW'),
+('1º Desarrollo de Aplicaciones Multiplataforma', 'DAM'),
+('2º Administración de Sistemas Informáticos en Red', 'ASIR');
 
 -- Usuario admin: admin@ntryjob.com / admin123
 INSERT INTO usuarios (email, password) VALUES 
