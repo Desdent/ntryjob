@@ -498,7 +498,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Contenedor general
     let modalContainerMassive = document.querySelector(".modalContainerMassive");
 
-    // 1. Contenedor del header
+    // Contenedor del header
     let modalHeaderMassive = document.createElement("div");
     modalHeaderMassive.classList.add("modal-headerMassive");
     if (modalContainerMassive) {
@@ -537,6 +537,46 @@ document.addEventListener('DOMContentLoaded', function() {
     inputCSV.id = "inputFile";
     inputCSV.classList.add("camposCSV");
     containerCargarCSV.append(inputCSV);
+
+    // --- Familia
+    let containerCargarFamilia = document.createElement("div");
+    modalBodyMassive.append(containerCargarFamilia);
+
+    let h3Familia = document.createElement("h3");
+    h3Familia.innerHTML = "Ciclo Profesional";
+    containerCargarFamilia.append(h3Familia);
+    containerCargarFamilia.classList.add("containerCargarFamilia");
+
+    let inputFamilia = document.createElement("select");
+    inputFamilia.classList.add("selectMassive");
+    inputFamilia.classList.add("camposCSV");
+    inputFamilia.id = "inputFamilia";
+    cargarCiclos() 
+    containerCargarFamilia.append(inputFamilia);
+
+
+    modalCloseMassive.onclick = function(){
+        trasfondoModal.style.display = "none";
+        modalBodyMassive.style.displa = "none";
+        btnEnviar.classList.remove("show");
+        btnEnviar.classList.add("hide");
+        tableContainerAdd.innerHTML = "";
+        inputCSV.value = '';
+
+
+    }
+
+
+    let btnMassiveAdd = document.getElementById("massiveAdd");
+
+    btnMassiveAdd.onclick = function(e){
+        e.preventDefault();
+
+        trasfondoModal.style.display = "block";
+        modalContainerMassive.style.display = "block";
+    }
+
+
 
 
     // --- Ejemplo
@@ -579,33 +619,156 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
+    //Boton de cargar alumnos
+    let btnEnviarContainer = document.createElement("div");
+    modalBodyMassive.append(btnEnviarContainer);
+
+    let btnEnviar = document.createElement("button");
+    btnEnviar.innerHTML = "Cargar Alumnos";
+    btnEnviar.id = "btnEnviarMasivo";
+    btnEnviar.classList.add("hide");
+    btnEnviarContainer.append(btnEnviar);
+
+
+    //Carga del csv
+
+    let divParaLaTabla = document.createElement("div");
+    modalContainerMassive.append(divParaLaTabla);
 
 
 
-    // --- Familia
-    let containerCargarFamilia = document.createElement("div");
-    modalBodyMassive.append(containerCargarFamilia);
+    let divContainerListadoAdd = document.createElement("div");
+    divParaLaTabla.append(divContainerListadoAdd);
 
-    let h3Familia = document.createElement("h3");
-    h3Familia.innerHTML = "Ciclo Profesional";
-    containerCargarFamilia.append(h3Familia);
+    let tableContainerAdd =  document.createElement("table");
+    divContainerListadoAdd.append(tableContainerAdd);
+    tableContainerAdd.id = "tableContainerAdd";
+    divContainerListadoAdd.id ="divContainerListadoAdd";
 
-    let inputFamilia = document.createElement("select");
-    inputFamilia.classList.add("selectMassive");
-    inputFamilia.classList.add("camposCSV");
-    inputFamilia.id = "inputFamilia";
-    cargarCiclos() 
-    containerCargarFamilia.append(inputFamilia);
+    
 
 
-    let btnMassiveAdd = document.getElementById("massiveAdd");
+    inputCSV.addEventListener("change", function(e){
+        const file = e.target.files[0] // Con esto se coge el primer archivo seleccionado, e.target se encarga de mirar guardar que elemento ha disparado el evento (e).
+                                                                                            //Y files son los archivos que se seleccionan en el evento
 
-    btnMassiveAdd.onclick = function(e){
-        e.preventDefault();
+        if(file) {
+            leerArchivoCSV(file);
+        }
+    })
 
-        trasfondoModal.style.display = "block";
-        modalContainerMassive.style.display = "block";
+
+    function leerArchivoCSV(file) {
+
+        const reader = new FileReader()// Se abre un objeto lector, como cuando se habria en java
+
+        // El onload es para cuando el archivo que se ha metido en el reader se ha leido por completo
+        reader.onload = function(e){
+            const fileContenido = e.target.result; //Esto coge el elemento que ha disaparado el evento y su contenido lo pasa a texto plano, en este caso su archivo
+            const alumnosArray = parsearCSV(fileContenido, tableContainerAdd); // Hay que pasarle el elemento global para que lo pueda usar
+
+            btnEnviar.classList.remove("hide");
+            btnEnviar.classList.add("show");
+
+            //Se crea el boton de enviar
+
+            console.log("Datos del CSV cogidos:", alumnosArray);
+
+            alumnosArray.forEach(alumno => {
+
+            })
+        };
+
+        reader.readAsText(file, "UTF-8"); // Esto lee el texto del archivo en formato utf8
+
     }
+
+
+function parsearCSV(fileContent, tableContainerAdd) {
+    
+    let data = [];
+    const DELIMITADOR = ','; 
+    
+    let rows = fileContent.trim().split("\n"); 
+
+    if(rows.length === 0 || rows[0].trim() === "")
+    {
+        return data; 
+    }
+    
+    // ===============================================
+    // HEAD
+    let headers = rows[0].split(DELIMITADOR).map(h => h.trim()); 
+    
+    let tableMassiveHeaderContainer = document.createElement("thead");
+    tableContainerAdd.append(tableMassiveHeaderContainer);
+    let cabecera = document.createElement("tr");
+    tableMassiveHeaderContainer.append(cabecera);
+
+    // Casilla inicial 
+    let celdaInicio = document.createElement("th");
+    celdaInicio.innerHTML = "Selección";
+    cabecera.append(celdaInicio);
+
+    // Celdas de header 
+    headers.forEach(header => {
+        let celda = document.createElement("th");
+        celda.innerHTML = header;
+        cabecera.append(celda);
+    });
+
+    // 3. Casilla final
+    let celdaFinal = document.createElement("th");
+    celdaFinal.innerHTML = "Válido";
+    cabecera.append(celdaFinal);
+    
+
+    // ===============================================
+    // CUERPO
+    let tableMassiveBodyContainer = document.createElement("tbody");
+    tableContainerAdd.append(tableMassiveBodyContainer);
+
+    for(let i = 1; i < rows.length; i++){
+        let values = rows[i].split(DELIMITADOR);
+
+        let alumno = {};
+        let fila = document.createElement("tr");
+        tableMassiveBodyContainer.append(fila);
+
+        for(let j = 0; j < headers.length + 2; j++){
+
+            let celda = document.createElement("td");
+            
+            if(j == 0 || j == headers.length + 1)
+            {
+                let checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                
+                if (j == headers.length + 1) {
+                    checkbox.checked = true; 
+                    // Además, podrías añadir aquí la lógica para determinar si es 'Válido'
+                    // por ejemplo, comprobando si el email tiene formato correcto.
+                }
+
+                celda.append(checkbox);
+            }
+            else 
+            {
+                let clave = headers[j-1].trim();
+                let valor = values[j-1].trim();
+
+                alumno[clave] = valor;
+                celda.innerHTML = alumno[clave];
+            }
+            
+            fila.append(celda);
+        }
+        data.push(alumno); 
+    }
+
+    return data;
+}
+
 
 
 
