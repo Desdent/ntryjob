@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS empresas (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
--- Tabla alumnos
+-- Tabla alumnos (versión actualizada con campo verificado)
 CREATE TABLE IF NOT EXISTS alumnos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL UNIQUE,
@@ -79,6 +79,7 @@ CREATE TABLE IF NOT EXISTS alumnos (
     ciclo_id INT,
     fecha_inicio DATE,
     fecha_fin DATE,
+    verificado TINYINT(1) NOT NULL DEFAULT 0
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
     FOREIGN KEY (ciclo_id) REFERENCES ciclos(id) ON DELETE SET NULL
