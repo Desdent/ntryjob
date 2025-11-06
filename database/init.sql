@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS empresas (
     direccion VARCHAR(200),
     logo LONGBLOB,
     aprobada TINYINT(1) DEFAULT 0,
+    verificado TINYINT(1) NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
@@ -79,7 +80,7 @@ CREATE TABLE IF NOT EXISTS alumnos (
     ciclo_id INT,
     fecha_inicio DATE,
     fecha_fin DATE,
-    verificado TINYINT(1) NOT NULL DEFAULT 0
+    verificado TINYINT(1) NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
     FOREIGN KEY (ciclo_id) REFERENCES ciclos(id) ON DELETE SET NULL
@@ -150,11 +151,11 @@ INSERT INTO usuarios (email, password) VALUES
 ('empleo@webstudio.es', '$2a$12$AyNg2a/ABhbjYLGC7Veive4gKDfcPHhvu1qq7HSNK.1qmEM4sfYWi');
 
 -- Empresas
-INSERT INTO empresas (usuario_id, nombre, cif, telefono, sector, descripcion, pais, provincia, ciudad, direccion, aprobada) VALUES 
-(2, 'TechSolutions SL', 'B12345678', '912345678', 'Tecnología', 'Empresa líder en desarrollo de software empresarial', 'España', 'Madrid', 'Madrid', 'Calle Gran Vía 45', 1),
-(3, 'InnovaSoft', 'B87654321', '934567890', 'Desarrollo Web', 'Especialistas en aplicaciones web y mobile', 'España', 'Barcelona', 'Barcelona', 'Avenida Diagonal 123', 1),
-(4, 'DataSystems Corp', 'B11223344', '955123456', 'Big Data', 'Soluciones de análisis de datos y cloud computing', 'España', 'Sevilla', 'Sevilla', 'Calle Sierpes 78', 1),
-(5, 'WebStudio Creativo', 'B99887766', '963987654', 'Diseño y Desarrollo', 'Agencia digital full-stack', 'España', 'Valencia', 'Valencia', 'Plaza del Ayuntamiento 10', 0);
+INSERT INTO empresas (usuario_id, nombre, cif, telefono, sector, descripcion, pais, provincia, ciudad, direccion, aprobada, verificado) VALUES 
+(2, 'TechSolutions SL', 'B12345678', '912345678', 'Tecnología', 'Empresa líder en desarrollo de software empresarial', 'España', 'Madrid', 'Madrid', 'Calle Gran Vía 45', 1, 1),
+(3, 'InnovaSoft', 'B87654321', '934567890', 'Desarrollo Web', 'Especialistas en aplicaciones web y mobile', 'España', 'Barcelona', 'Barcelona', 'Avenida Diagonal 123', 1, 1),
+(4, 'DataSystems Corp', 'B11223344', '955123456', 'Big Data', 'Soluciones de análisis de datos y cloud computing', 'España', 'Sevilla', 'Sevilla', 'Calle Sierpes 78', 1, 1),
+(5, 'WebStudio Creativo', 'B99887766', '963987654', 'Diseño y Desarrollo', 'Agencia digital full-stack', 'España', 'Valencia', 'Valencia', 'Plaza del Ayuntamiento 10', 0, 1);
 
 -- Usuarios alumnos
 INSERT INTO usuarios (email, password) VALUES 
@@ -165,12 +166,12 @@ INSERT INTO usuarios (email, password) VALUES
 ('pedro.sanchez@alumno.com', '$2a$12$AyNg2a/ABhbjYLGC7Veive4gKDfcPHhvu1qq7HSNK.1qmEM4sfYWi');
 
 -- Alumnos
-INSERT INTO alumnos (usuario_id, nombre, apellidos, telefono, fecha_nacimiento, pais, provincia, ciudad, direccion, codigo_postal, ciclo_id, fecha_inicio, fecha_fin) VALUES 
-(6, 'Juan', 'Pérez García', '611222333', '2002-03-15', 'España', 'Madrid', 'Madrid', 'Calle Alcalá 100', '28009', 1, '2024-09-01', '2026-06-30'),
-(7, 'María', 'García López', '622333444', '2001-07-22', 'España', 'Barcelona', 'Barcelona', 'Paseo de Gracia 50', '08007', 1, '2024-09-01', '2026-06-30'),
-(8, 'Carlos', 'López Martínez', '633444555', '2003-01-10', 'España', 'Madrid', 'Alcalá de Henares', 'Calle Mayor 25', '28801', 2, '2024-09-01', '2026-06-30'),
-(9, 'Ana', 'Martínez Rodríguez', '644555666', '2002-11-05', 'España', 'Valencia', 'Valencia', 'Calle Colón 8', '46004', 3, '2023-09-01', '2025-06-30'),
-(10, 'Pedro', 'Sánchez Fernández', '655666777', '2001-09-18', 'España', 'Sevilla', 'Sevilla', 'Avenida de la Constitución 15', '41001', 2, '2023-09-01', '2025-06-30');
+INSERT INTO alumnos (usuario_id, nombre, apellidos, telefono, fecha_nacimiento, pais, provincia, ciudad, direccion, codigo_postal, ciclo_id, fecha_inicio, fecha_fin, verificado) VALUES 
+(6, 'Juan', 'Pérez García', '611222333', '2002-03-15', 'España', 'Madrid', 'Madrid', 'Calle Alcalá 100', '28009', 1, '2024-09-01', '2026-06-30', 1),
+(7, 'María', 'García López', '622333444', '2001-07-22', 'España', 'Barcelona', 'Barcelona', 'Paseo de Gracia 50', '08007', 1, '2024-09-01', '2026-06-30', 1),
+(8, 'Carlos', 'López Martínez', '633444555', '2003-01-10', 'España', 'Madrid', 'Alcalá de Henares', 'Calle Mayor 25', '28801', 2, '2024-09-01', '2026-06-30', 1),
+(9, 'Ana', 'Martínez Rodríguez', '644555666', '2002-11-05', 'España', 'Valencia', 'Valencia', 'Calle Colón 8', '46004', 3, '2023-09-01', '2025-06-30', 1),
+(10, 'Pedro', 'Sánchez Fernández', '655666777', '2001-09-18', 'España', 'Sevilla', 'Sevilla', 'Avenida de la Constitución 15', '41001', 2, '2023-09-01', '2025-06-30', 1);
 
 -- Ciclos adicionales
 INSERT INTO alumno_ciclos (alumno_id, ciclo_id) VALUES 
