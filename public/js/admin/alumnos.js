@@ -298,6 +298,10 @@ document.addEventListener('DOMContentLoaded', function() {
     btnAddAlumno.onclick = function(e){
         e.preventDefault()
 
+        if (modalContainerMassive) {
+        modalContainerMassive.style.display = "none"; 
+        }
+
         let campoNombreAdd = document.getElementById("nombreAdd");
         let campoApellidosAdd = document.getElementById("apellidosAdd");
         let campoEmailAdd = document.getElementById("emailAdd");
@@ -557,7 +561,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     modalCloseMassive.onclick = function(){
         trasfondoModal.style.display = "none";
-        modalBodyMassive.style.displa = "none";
+        modalContainerMassive.style.display = "none";
         btnEnviar.classList.remove("show");
         btnEnviar.classList.add("hide");
         tableContainerAdd.innerHTML = "";
@@ -659,6 +663,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     function leerArchivoCSV(file) {
+
+        tableContainerAdd.innerHTML = ''
 
         const reader = new FileReader()// Se abre un objeto lector, como cuando se habria en java
 
