@@ -18,7 +18,10 @@ try {
                 echo json_encode($alumno ? $alumno->toArray() : null);
             } else {
                 $alumnos = $dao->getAll();
-                echo json_encode(['success' => true, 'data' => array_map(fn($a) => $a->toArray(), $alumnos)]);
+                echo json_encode([
+                    'success' => true, 
+                    'data' => array_map(fn($a) => $a->toArray(), $alumnos)
+                ]);
             }
             break;
         case 'POST':

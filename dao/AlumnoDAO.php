@@ -23,18 +23,27 @@ class AlumnoDAO implements DAOInterface {
         return $row ? new AlumnoEntity($row) : null;
     }
     
+
     public function getAll() {
         $stmt = $this->db->query("
-            SELECT a.*, u.email, c.nombre as ciclo_nombre,
+            SELECT 
+                a.id, a.usuario_id, a.nombre, a.apellidos, a.telefono, 
+                a.fecha_nacimiento, a.pais, a.provincia, a.ciudad, 
+                a.direccion, a.codigo_postal, a.ciclo_id, a.fecha_inicio, 
+                a.fecha_fin, a.verificado, a.created_at,
+                u.email,
                 CASE WHEN a.cv IS NOT NULL THEN 1 ELSE 0 END as tiene_cv,
                 CASE WHEN a.foto IS NOT NULL THEN 1 ELSE 0 END as tiene_foto
             FROM alumnos a
             JOIN usuarios u ON a.usuario_id = u.id
-            LEFT JOIN ciclos c ON a.ciclo_id = c.id
             ORDER BY a.apellidos, a.nombre
         ");
+        
         $result = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) $result[] = new AlumnoEntity($row);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new AlumnoEntity($row);
+        }
+        
         return $result;
     }
     
@@ -45,17 +54,27 @@ class AlumnoDAO implements DAOInterface {
             if ($userDAO->emailExists($alumno->email)) {
                 throw new Exception('El email ya está registrado');
             }
+
+            // Determinar si es un registro verificado o no
+            $verificado = 0; // Por defecto, no verificado (creado por admin)
+            $password = $alumno->password;
             
-            // Asegurar que la contraseña esté hasheada
-            $password = $alumno->password ?: 'admin123';
+            // Si no hay contraseña usar una temporal
+            if (empty($password)) {
+                $password = 'admin123'; // contraseña temporal
+            } else {
+                // Si el alumno proporciona contraseña, entonces es verificado
+                $verificado = 1;
+            }
+            
             $usuarioId = $userDAO->createUser($alumno->email, $password);
             
             $stmt = $this->db->prepare("
                 INSERT INTO alumnos (
                     usuario_id, nombre, apellidos, fecha_nacimiento, telefono, 
                     pais, provincia, ciudad, direccion, codigo_postal, 
-                    ciclo_id, fecha_inicio, fecha_fin, cv, foto
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    ciclo_id, fecha_inicio, fecha_fin, cv, foto, verificado
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
             $stmt->execute([
                 $usuarioId, $alumno->nombre, $alumno->apellidos, $alumno->fecha_nacimiento ?? null,
@@ -63,7 +82,8 @@ class AlumnoDAO implements DAOInterface {
                 $alumno->ciudad ?? null, $alumno->direccion ?? null, $alumno->codigo_postal ?? null,
                 (isset($alumno->ciclo_id) && $alumno->ciclo_id !== '') ? (int)$alumno->ciclo_id : null,
                 $alumno->fecha_inicio ?? null, $alumno->fecha_fin ?? null,
-                $alumno->cv ?? null, $alumno->foto ?? null
+                $alumno->cv ?? null, $alumno->foto ?? null,
+                $verificado  // 1 si es registro público, 0 si es creado por admin
             ]);
             
             $alumno->id = $this->db->lastInsertId();
@@ -74,7 +94,6 @@ class AlumnoDAO implements DAOInterface {
             throw $e; 
         }
     }
-    
     public function update($alumno) {
         $alumnoActual = $this->getById($alumno->id);
         if (!$alumnoActual) {
@@ -121,12 +140,9 @@ class AlumnoDAO implements DAOInterface {
     
     public function findByUsuarioId($usuarioId) {
         $stmt = $this->db->prepare("
-            SELECT a.*, u.email, c.nombre as ciclo_nombre,
-                CASE WHEN a.cv IS NOT NULL THEN 1 ELSE 0 END as tiene_cv,
-                CASE WHEN a.foto IS NOT NULL THEN 1 ELSE 0 END as tiene_foto
+            SELECT a.*, u.email
             FROM alumnos a
             JOIN usuarios u ON a.usuario_id = u.id
-            LEFT JOIN ciclos c ON a.ciclo_id = c.id
             WHERE a.usuario_id = ?
         ");
         $stmt->execute([$usuarioId]);

@@ -10,8 +10,15 @@ AuthMiddleware::requiereAuth(['admin']);
 try {
     $dao = new AlumnoDAO();
     $alumnos = $dao->getAll();
-    $alumnosArray = array_map(fn($a) => $a->toArray(), $alumnos);
+    
+    // Convertir a array para JSON
+    $alumnosArray = [];
+    foreach ($alumnos as $alumno) {
+        $alumnosArray[] = $alumno->toArray();
+    }
+    
     echo json_encode(['success' => true, 'alumnos' => $alumnosArray]);
 } catch (Exception $e) {
-    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    error_log("Error en alumnos.php: " . $e->getMessage());
+    echo json_encode(['success' => false, 'error' => 'Error al cargar alumnos: ' . $e->getMessage()]);
 }

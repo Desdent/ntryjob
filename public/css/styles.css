@@ -1029,16 +1029,12 @@ footer p {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s;
 }
 
 .btn-registro-alumno:hover {
     background-color: #1d4ed8;
 }
 
-.btn-actualizar:hover {
-    background-color: #1d4ed8;
-}
 
 
 /* === MENSAJES DE ERROR === */
@@ -1212,33 +1208,13 @@ tbody tr:hover {
 }
 
 .botonesAccion {
-    background-color: #0876BE;
-    color: white ;
-    border: none;
     padding: 0.2em 0.6em 0.2em;
-    border-radius: 0.8em;
-}
-
-.botonesAccion:hover {
-    background-color: #1d4ed8;
+    border-radius: 0.6em;
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
 }
 
 
-.botonesAñadirCargar {
-    background-color: #0876BE;
-    color: white ;
-    border: none;
-    padding: 1em 0.6em 1em;
-    border-radius: 0.8em;
-}
-
-.botonesAñadirCargar:hover {
-    background-color: #1d4ed8;
-    color: white ;
-    border: none;
-    padding: 1em 0.6em 1em;
-    border-radius: 0.8em;
-}
 
 
 
@@ -1469,3 +1445,19 @@ tbody tr:hover {
     color: #ffffff;
 }
 
+button {
+    border-radius: 0.7em;
+    padding: 0.7em 2em;
+    border: none;
+    background-color: #E7F6F8;
+    box-shadow: 0em 0.35em 0em 0 #7CC7F9;
+    color: #0876BE;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #075588;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+    color: #ffffff;
+}

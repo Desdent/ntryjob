@@ -9,8 +9,8 @@ class UserDAO {
     public function findByEmail($email) {
         $stmt = $this->db->prepare("SELECT * FROM usuarios WHERE email = ?");
         $stmt->execute([$email]);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, 'UserEntity');
-        return $stmt->fetch() ?: null;
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? new UserEntity($row) : null;
     }
 
 

@@ -105,6 +105,10 @@ class OfertaDAO implements DAOInterface {
             ORDER BY o.fecha_creacion DESC
         ");
         $stmt->execute($ciclosIds);
-        return $stmt->fetchAll(PDO::FETCH_CLASS, 'OfertaEntity');
+        $result = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new OfertaEntity($row);
+        }
+        return $result;
     }
 }

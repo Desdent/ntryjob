@@ -394,24 +394,48 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function listarAlumnos() {
-        fetch('/api/admin/alumnos.php', {
+        console.log('Cargando alumnos desde AlumnosController...');
+        
+        fetch('/api/admin/AlumnosController.php', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Status:', response.status, response.statusText);
+            console.log('Headers:', response.headers);
+            
+            // Leer la respuesta como texto primero para ver qué contiene
+            return response.text().then(text => {
+                console.log('Respuesta RAW:', text);
+                
+                // Intentar parsear como JSON solo si hay contenido
+                if (text.trim() === '') {
+                    throw new Error('Respuesta vacía del servidor');
+                }
+                
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('No es JSON válido:', text);
+                    throw new Error('El servidor no devolvió JSON válido: ' + text.substring(0, 100));
+                }
+            });
+        })
         .then(data => {
+            console.log('Datos parseados:', data);
+            
             if (data.success) {
-                console.log('Alumnos:', data.alumnos);
-                mostrarTablaAlumnos(data.alumnos);
+                console.log('Alumnos cargados:', data.data);
+                mostrarTablaAlumnos(data.data);
             } else {
                 alert(data.error || 'Error al cargar alumnos');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            alert('Error de conexión');
+            console.error('Error completo:', error);
+            alert('Error: ' + error.message);
         });
     }
 

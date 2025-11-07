@@ -11,14 +11,18 @@ class EmpresaDAO implements DAOInterface {
     public function getById($id) {
         $stmt = $this->db->prepare("SELECT * FROM empresas WHERE id = ?");
         $stmt->execute([$id]);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, 'EmpresaEntity');
-        return $stmt->fetch() ?: null;
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? new EmpresaEntity($row) : null;
     }
 
     
     public function getAll() {
         $stmt = $this->db->query("SELECT * FROM empresas ORDER BY nombre");
-        return $stmt->fetchAll(PDO::FETCH_CLASS, 'EmpresaEntity');
+        $result = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new EmpresaEntity($row);
+        }
+        return $result;
     }
 
     
@@ -69,8 +73,13 @@ class EmpresaDAO implements DAOInterface {
     
     public function getPendientes() {
         $stmt = $this->db->query("SELECT * FROM empresas WHERE aprobada = 0 ORDER BY created_at DESC");
-        return $stmt->fetchAll(PDO::FETCH_CLASS, 'EmpresaEntity');
+        $result = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new EmpresaEntity($row);
+        }
+        return $result;
     }
+
 
     
     public function aprobar($id) {
@@ -95,8 +104,8 @@ class EmpresaDAO implements DAOInterface {
     public function findByUsuarioId($usuarioId) {
         $stmt = $this->db->prepare("SELECT * FROM empresas WHERE usuario_id = ?");
         $stmt->execute([$usuarioId]);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, 'EmpresaEntity');
-        return $stmt->fetch() ?: null;
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? new EmpresaEntity($row) : null;
     }
 
 }

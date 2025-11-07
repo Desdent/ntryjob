@@ -37,7 +37,6 @@ class PostulacionDAO implements DAOInterface {
         return $result;
     }
 
-
     
     public function create($postulacion) {
         $stmt = $this->db->prepare("INSERT INTO postulaciones (alumno_id, oferta_id) VALUES (?, ?)");
