@@ -402,27 +402,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => {
-            console.log('Status:', response.status, response.statusText);
-            console.log('Headers:', response.headers);
-            
-            // Leer la respuesta como texto primero para ver qué contiene
-            return response.text().then(text => {
-                console.log('Respuesta RAW:', text);
-                
-                // Intentar parsear como JSON solo si hay contenido
-                if (text.trim() === '') {
-                    throw new Error('Respuesta vacía del servidor');
-                }
-                
-                try {
-                    return JSON.parse(text);
-                } catch (e) {
-                    console.error('No es JSON válido:', text);
-                    throw new Error('El servidor no devolvió JSON válido: ' + text.substring(0, 100));
-                }
-            });
-        })
+        .then(response => response.json())
         .then(data => {
             console.log('Datos parseados:', data);
             

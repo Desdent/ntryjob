@@ -50,7 +50,7 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
                         <div class="form-group">
                             <label for="ultimoCiclo">Último ciclo cursado *</label>
                             <select id="ultimoCiclo" name="ultimoCiclo" required>
-                                <option value="">Cargando ciclos...</option>
+                            
                             </select>
                             <span class="error-message"></span>
                         </div> 
