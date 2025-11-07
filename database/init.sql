@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS empresas (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
--- Tabla alumnos (versión actualizada con campo verificado)
+-- Tabla alumnos
 CREATE TABLE IF NOT EXISTS alumnos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL UNIQUE,
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS alumnos (
     FOREIGN KEY (ciclo_id) REFERENCES ciclos(id) ON DELETE SET NULL
 );
 
--- Tabla alumno_ciclos (ciclos adicionales)
+-- Tabla alumno_ciclos 
 CREATE TABLE IF NOT EXISTS alumno_ciclos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     alumno_id INT NOT NULL,
@@ -308,7 +308,7 @@ INSERT INTO usuarios (email, password) VALUES
 ('raul.cruz@alumno.com', '$2a$12$AyNg2a/ABhbjYLGC7Veive4gKDfcPHhvu1qq7HSNK.1qmEM4sfYWi'),
 ('beatriz.romero@alumno.com', '$2a$12$AyNg2a/ABhbjYLGC7Veive4gKDfcPHhvu1qq7HSNK.1qmEM4sfYWi');
 
--- Alumnos (actualizados con ciclo_id correcto según los nuevos IDs)
+-- Alumnos
 INSERT INTO alumnos (usuario_id, nombre, apellidos, telefono, fecha_nacimiento, pais, provincia, ciudad, direccion, codigo_postal, ciclo_id, fecha_inicio, fecha_fin, verificado) VALUES 
 -- Informática
 (6, 'Juan', 'Pérez García', '611222333', '2002-03-15', 'España', 'Madrid', 'Madrid', 'Calle Alcalá 100', '28009', 8, '2024-09-01', '2026-06-30', 1),
@@ -336,7 +336,7 @@ INSERT INTO alumnos (usuario_id, nombre, apellidos, telefono, fecha_nacimiento, 
 (24, 'Raúl', 'Cruz Núñez', '699000333', '2002-09-11', 'España', 'Pamplona', 'Pamplona', 'Avenida Carlos III 22', '31002', 60, '2024-09-01', '2026-06-30', 1),
 (25, 'Beatriz', 'Romero Soto', '600111444', '2001-12-19', 'España', 'Cádiz', 'Cádiz', 'Plaza San Juan de Dios 5', '11005', 68, '2023-09-01', '2025-06-30', 1);
 
--- Ciclos adicionales (actualizados con IDs correctos)
+-- Alumno_ciclos
 INSERT INTO alumno_ciclos (alumno_id, ciclo_id) VALUES 
 (1, 10),
 (2, 12),
