@@ -1,24 +1,23 @@
 <?php
-require_once __DIR__ . '/../../models/Empresa.php';
+require_once __DIR__ . '/../../dao/EmpresaDAO.php';
 
 class EmpresasController {
+    private $dao;
     
-    /**
-     * GET - Listar empresas pendientes
-     */
+    public function __construct() {
+        $this->dao = new EmpresaDAO();
+    }
+    
     public function index() {
         try {
-            $empresas = Empresa::getPendientes();
-            echo json_encode(['success' => true, 'empresas' => $empresas]);
+            $empresas = $this->dao->getPendientes();
+            echo json_encode(['success' => true, 'empresas' => array_map(fn($e) => $e->toArray(), $empresas)]);
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
     
-    /**
-     * PUT - Aprobar/Rechazar empresa
-     */
     public function aprobar() {
         try {
             $data = json_decode(file_get_contents('php://input'), true);
@@ -32,22 +31,16 @@ class EmpresasController {
             $action = $data['action'] ?? 'aprobar';
             
             if ($action === 'aprobar') {
-                $result = Empresa::aprobar($data["id"]);
+                $result = $this->dao->aprobar($data["id"]);
             } else {
-                $result = Empresa::rechazar($data["id"]);
-                $deleted = Empresa::borrar($data["id"]); //No se que hacer por ahora con las empresas rechazadas
+                $result = $this->dao->rechazar($data["id"]);
+                $deleted = $this->dao->delete($data["id"]);
             }
             
             echo json_encode(['success' => true, 'action' => $action]);
-            
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
-
-
-    /**
-     * DELETE
-     */
 }

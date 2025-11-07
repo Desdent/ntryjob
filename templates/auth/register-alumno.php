@@ -46,7 +46,7 @@
             </div>
         </div>
     </main>
-
+    <!-- Este es el register-alumno.php -->
     <!-- Modal Registro Alumno -->
     <div id="modalRegistroAlumno" class="modal">
         <div class="modal-content">

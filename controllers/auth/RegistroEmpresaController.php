@@ -1,12 +1,17 @@
 <?php
-require_once __DIR__ . '/../../models/Empresa.php';
-require_once __DIR__ . '/../../models/User.php';
+require_once __DIR__ . '/../../dao/EmpresaDAO.php';
+require_once __DIR__ . '/../../dao/UserDAO.php';
+require_once __DIR__ . '/../../models/entities/EmpresaEntity.php';
 
 class RegistroEmpresaController {
+    private $empresaDAO;
+    private $userDAO;
     
-    /**
-     * POST - Registrar empresa
-     */
+    public function __construct() {
+        $this->empresaDAO = new EmpresaDAO();
+        $this->userDAO = new UserDAO();
+    }
+    
     public function register() {
         try {
             $data = $_POST;
@@ -23,34 +28,30 @@ class RegistroEmpresaController {
                 return;
             }
             
-            if (User::emailExists($data['email'])) {
+            if ($this->userDAO->emailExists($data['email'])) {
                 http_response_code(409);
                 echo json_encode(['success' => false, 'error' => 'El email ya está registrado']);
                 return;
             }
             
-            // Procesar logo como BLOB
             if (isset($_FILES['logo']) && $_FILES['logo']['error'] === UPLOAD_ERR_OK) {
                 $data['logo'] = $this->procesarLogo($_FILES['logo']);
             }
             
-            $id = Empresa::create($data);
+            $empresa = new EmpresaEntity($data);
+            $nueva = $this->empresaDAO->create($empresa);
             
             echo json_encode([
                 'success' => true, 
-                'id' => $id, 
+                'id' => $nueva->id, 
                 'message' => 'Empresa registrada correctamente. Pendiente de aprobación por administrador.'
             ]);
-            
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
     
-    /**
-     * Procesar logo y devolver BLOB
-     */
     private function procesarLogo($archivo) {
         $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
         $permitidas = ['jpg', 'jpeg', 'png', 'gif'];

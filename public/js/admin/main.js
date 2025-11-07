@@ -7,12 +7,12 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
     opts[0].addEventListener("click", function(){
-        window.location.href ='index.php?page=dashboard-admin-alumnos'
+    window.location.href ='index.php?page=dashboard-admin-alumnos'
     })
     opts[1].addEventListener("click", function(){
-        window.location.href ='index.php?page=dashboard-admin-ofertas'
+        window.location.href ='index.php?page=dashboard-admin-empresas'
     })
     opts[2].addEventListener("click", function(){
-        window.location.href ='index.php?page=dashboard-admin-empresas'
+        window.location.href ='index.php?page=dashboard-admin-ofertas'
     })
 })

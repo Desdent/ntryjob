@@ -1,17 +1,18 @@
 <?php
 session_start();
-require_once __DIR__ . '/../../config/Database.php';
-require_once __DIR__ . '/../../models/Alumno.php';
+require_once __DIR__ . '/../../dao/AlumnoDAO.php';
 require_once __DIR__ . '/../../middleware/AuthMiddleware.php';
 
 AuthMiddleware::requiereAuth(['alumno', 'empresario', 'admin']);
 
 try {
+    $dao = new AlumnoDAO();
+    
     if ($_SESSION['role'] === 'alumno') {
-        $alumnoId = $_SESSION['alumno_id'];
+        $alumno = $dao->findByUsuarioId($_SESSION['user_id']);
+        $alumnoId = $alumno->id;
     } else {
         $alumnoId = $_GET['alumno_id'] ?? null;
-        
         if (!$alumnoId) {
             http_response_code(400);
             echo 'ID de alumno requerido';
@@ -19,7 +20,7 @@ try {
         }
     }
     
-    $cv = Alumno::getCV($alumnoId);
+    $cv = $dao->getCV($alumnoId);
     
     if (!$cv) {
         http_response_code(404);
@@ -32,7 +33,6 @@ try {
     header('Content-Length: ' . strlen($cv));
     
     echo $cv;
-    
 } catch (Exception $e) {
     http_response_code(500);
     echo 'Error al descargar CV: ' . $e->getMessage();

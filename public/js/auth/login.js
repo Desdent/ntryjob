@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    
     const formulario = document.getElementById('form-login');
     
     if (formulario) {
@@ -9,13 +8,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             
-            // Validación
             if (!email || !password) {
                 alert('Por favor completa todos los campos');
                 return;
             }
             
-            // Hacer petición a la nueva API
             fetch('/api/auth/login.php', {
                 method: 'POST',
                 headers: {
@@ -29,24 +26,21 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Login exitoso
                     const role = data.user.role;
                     
-                    // Redirigir segúl rol
                     if (role === 'admin') {
                         window.location.href = '/public/index.php?page=dashboard-admin';
                     } else if (role === 'empresario') {
-                        // Verificar si está aprobado
                         if (data.user.aprobada == 1) {
                             window.location.href = '/public/index.php?page=dashboard-empresario';
                         } else {
                             alert('Tu empresa está pendiente de aprobación');
+                            // Opcional: redirigir a página de espera
                         }
                     } else if (role === 'alumno') {
                         window.location.href = '/public/index.php?page=dashboard-alumno';
                     }
                 } else {
-                    // Mostrar error
                     alert(data.error || 'Error al iniciar sesión');
                 }
             })
@@ -56,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-
 
     const btnRegistrarse = document.getElementById('botonRegistrarse');
     if (btnRegistrarse) {

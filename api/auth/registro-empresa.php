@@ -1,13 +1,28 @@
 <?php
 header('Content-Type: application/json');
-require_once __DIR__ . '/../../controllers/auth/RegistroEmpresaController.php';
-
-$controller = new RegistroEmpresaController();
+require_once __DIR__ . '/../../dao/EmpresaDAO.php';
+require_once __DIR__ . '/../../models/entities/EmpresaEntity.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'POST') {
-    $controller->register();
+    try {
+        $data = json_decode(file_get_contents('php://input'), true) ?: $_POST;
+        
+        if ($data['password'] !== $data['password_confirm']) {
+            echo json_encode(['success' => false, 'error' => 'Las contraseñas no coinciden']);
+            exit;
+        }
+        
+        $dao = new EmpresaDAO();
+        $empresa = new EmpresaEntity($data);
+        $nueva = $dao->create($empresa);
+        
+        echo json_encode(['success' => true, 'message' => 'Registro exitoso. Espera aprobación del admin.']);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
 } else {
     http_response_code(405);
     echo json_encode(['error' => 'Método no permitido']);

@@ -2,9 +2,6 @@
 
 class LogoutController {
     
-    /**
-     * POST - Logout
-     */
     public function logout() {
         session_start();
         session_unset();

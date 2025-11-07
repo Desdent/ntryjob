@@ -1,10 +1,18 @@
 <?php
+require_once __DIR__ . '/../../dao/UserDAO.php';
+require_once __DIR__ . '/../../dao/AlumnoDAO.php';
+require_once __DIR__ . '/../../dao/EmpresaDAO.php';
+require_once __DIR__ . '/../../config/Database.php';
 
 class LoginController {
-    private $pdo;
+    private $userDAO;
+    private $alumnoDAO;
+    private $empresaDAO;
     
     public function __construct() {
-        $this->pdo = Database::getInstance()->getConnection();
+        $this->userDAO = new UserDAO();
+        $this->alumnoDAO = new AlumnoDAO();
+        $this->empresaDAO = new EmpresaDAO();
     }
     
     public function login() {
@@ -23,26 +31,25 @@ class LoginController {
         }
         
         try {
-            $stmt = $this->pdo->prepare("SELECT * FROM usuarios WHERE email = :email");
-            $stmt->execute(['email' => $email]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $user = $this->userDAO->findByEmail($email);
             
-            if (!$user || !password_verify($password, $user['password'])) {
+            if (!$user || !$this->userDAO->verifyPassword($password, $user->password)) {
                 echo json_encode(['success' => false, 'error' => 'Credenciales incorrectas']);
                 exit;
             }
             
-            $role = $this->detectRole($user['id']);
+            $role = $this->detectRole($user->id);
             
             if (!$role) {
                 echo json_encode(['success' => false, 'error' => 'Usuario sin rol']);
                 exit;
             }
             
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['email'] = $user['email'];
+            $_SESSION['user_id'] = $user->id;
+            $_SESSION['email'] = $user->email;
             $_SESSION['role'] = $role['type'];
-
+            $_SESSION['id'] = $user->id;
+            
             if (isset($role['alumno_id'])) {
                 $_SESSION['alumno_id'] = $role['alumno_id'];
             }
@@ -56,37 +63,30 @@ class LoginController {
             echo json_encode([
                 'success' => true,
                 'user' => [
-                    'id' => $user['id'],
-                    'email' => $user['email'],
+                    'id' => $user->id,
+                    'email' => $user->email,
                     'role' => $role['type'],
                     'aprobada' => $role['aprobada'] ?? null
                 ]
             ]);
-            
         } catch (Exception $e) {
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
     
     private function detectRole($userId) {
-       // Es alumno?
-        $stmt = $this->pdo->prepare("SELECT id FROM alumnos WHERE usuario_id = :id");
-        $stmt->execute(['id' => $userId]);
-        $alumno = $stmt->fetch();
-        if ($alumno) return ['type' => 'alumno', 'alumno_id' => $alumno['id']];
+        $alumno = $this->alumnoDAO->findByUsuarioId($userId);
+        if ($alumno) return ['type' => 'alumno', 'alumno_id' => $alumno->id];
         
-        // Es empresa?
-        $stmt = $this->pdo->prepare("SELECT id, aprobada FROM empresas WHERE usuario_id = :id");
-        $stmt->execute(['id' => $userId]);
-        $empresa = $stmt->fetch();
+        $empresa = $this->empresaDAO->findByUsuarioId($userId);
         if ($empresa) return [
             'type' => 'empresario', 
-            'empresa_id' => $empresa['id'],
-            'aprobada' => $empresa['aprobada']
+            'empresa_id' => $empresa->id,
+            'aprobada' => $empresa->aprobada
         ];
         
-        // Es admin?
-        $stmt = $this->pdo->prepare("SELECT id FROM admin WHERE usuario_id = :id");
+        $pdo = Database::getInstance()->getConnection();
+        $stmt = $pdo->prepare("SELECT id FROM admin WHERE usuario_id = :id");
         $stmt->execute(['id' => $userId]);
         if ($stmt->fetch()) return ['type' => 'admin'];
         

@@ -170,6 +170,7 @@
             </form>
         </div>
     </div>
+    <!-- Es el register.php -->
 
     <!-- Modal Cámara -->
     <div id="modalCamaraAlumno" class="modal">

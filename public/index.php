@@ -2,32 +2,16 @@
 
 session_start();
 
-
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config/Database.php';
-require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../dao/UserDAO.php';
 require_once __DIR__ . '/../middleware/AuthMiddleware.php';
 
 use League\Plates\Engine;
 
 $templates = new Engine(__DIR__ . '/../templates');
 
-// Obtener página 
 $page = $_GET['page'] ?? 'home';
-
-// Si es POST 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_POST['password'])) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    
-    // Conectar BD
-
-    $pdo = Database::getInstance()->getConnection();
-    
-    // Crear repositorio
-    $repoUser = new User($pdo);
-    
-}
 
 // Router
 switch($page) {
@@ -36,7 +20,6 @@ switch($page) {
         break;
     
     case 'login':
-        // Si ya está logeado, redirigir al dashboard
         if (isset($_SESSION['user_id'])) {
             $rol = $_SESSION['role'];
             switch($rol) {
@@ -75,7 +58,17 @@ switch($page) {
         AuthMiddleware::requiereAuth(["admin"]);
         echo $templates->render('dashboard-admin-alumnos');
         break;
-    
+
+    case 'dashboard-admin-empresas':
+        AuthMiddleware::requiereAuth(["admin"]);
+        echo $templates->render('dashboard-admin-empresas');
+        break;
+
+    case 'dashboard-admin-ofertas':
+        AuthMiddleware::requiereAuth(["admin"]);
+        echo $templates->render('dashboard-admin-ofertas');
+        break;
+        
     case 'dashboard-empresario':
         AuthMiddleware::requiereAuth(["empresario"]);
         echo $templates->render('dashboard-empresario');

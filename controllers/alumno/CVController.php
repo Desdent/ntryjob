@@ -1,11 +1,13 @@
 <?php
-require_once __DIR__ . '/../../models/Alumno.php';
+require_once __DIR__ . '/../../dao/AlumnoDAO.php';
 
 class CVController {
+    private $dao;
     
-    /**
-     * POST - Subir CV
-     */
+    public function __construct() {
+        $this->dao = new AlumnoDAO();
+    }
+    
     public function upload() {
         try {
             session_start();
@@ -25,7 +27,6 @@ class CVController {
             
             $archivo = $_FILES['cv'];
             
-            // Validar extensión PDF
             $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
             if ($extension !== 'pdf') {
                 http_response_code(400);
@@ -33,30 +34,22 @@ class CVController {
                 return;
             }
             
-            // Validar tamaño (5MB máximo)
             if ($archivo['size'] > 5 * 1024 * 1024) {
                 http_response_code(400);
                 echo json_encode(['success' => false, 'error' => 'El archivo no puede superar 5MB']);
                 return;
             }
             
-            // Leer archivo como blob
             $cvBlob = file_get_contents($archivo['tmp_name']);
-            
-            // Actualizar BD 
-            Alumno::updateCV($alumnoId, $cvBlob);
+            $this->dao->updateCV($alumnoId, $cvBlob);
             
             echo json_encode(['success' => true, 'message' => 'CV subido correctamente']);
-            
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
     
-    /**
-     * GET - Ver mi CV
-     */
     public function show() {
         try {
             session_start();
@@ -68,23 +61,19 @@ class CVController {
                 return;
             }
             
-            $cv = Alumno::getCV($alumnoId);
+            $cv = $this->dao->getCV($alumnoId);
             
             echo json_encode([
                 'success' => true,
                 'has_cv' => $cv !== null,
                 'download_url' => '/api/alumno/cv-download.php'
             ]);
-            
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
     
-    /**
-     * DELETE - Eliminar mi CV
-     */
     public function delete() {
         try {
             session_start();
@@ -96,10 +85,8 @@ class CVController {
                 return;
             }
             
-            Alumno::updateCV($alumnoId, null);
-            
+            $this->dao->updateCV($alumnoId, null);
             echo json_encode(['success' => true, 'message' => 'CV eliminado']);
-            
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);

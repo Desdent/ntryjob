@@ -1,12 +1,17 @@
 <?php
-require_once __DIR__ . '/../../models/Alumno.php';
-require_once __DIR__ . '/../../models/User.php';
+require_once __DIR__ . '/../../dao/AlumnoDAO.php';
+require_once __DIR__ . '/../../dao/UserDAO.php';
+require_once __DIR__ . '/../../models/entities/AlumnoEntity.php';
 
 class RegistroAlumnoController {
+    private $alumnoDAO;
+    private $userDAO;
     
-    /**
-     * POST - Registrar alumno
-     */
+    public function __construct() {
+        $this->alumnoDAO = new AlumnoDAO();
+        $this->userDAO = new UserDAO();
+    }
+    
     public function register() {
         try {
             $data = $_POST;
@@ -18,35 +23,30 @@ class RegistroAlumnoController {
                 return;
             }
             
-            if (User::emailExists($data['email'])) {
+            if ($this->userDAO->emailExists($data['email'])) {
                 http_response_code(409);
                 echo json_encode(['success' => false, 'error' => 'El email ya está registrado']);
                 return;
             }
             
-            // Procesar CV como BLOB
             if (isset($_FILES['cv']) && $_FILES['cv']['error'] === UPLOAD_ERR_OK) {
                 $data['cv'] = $this->procesarCV($_FILES['cv']);
             }
             
-            // Procesar foto desde Base64 como BLOB
             if (!empty($data['foto_base64'])) {
                 $data['foto'] = $this->procesarFotoBase64($data['foto_base64']);
             }
             
-            $id = Alumno::create($data);
+            $alumno = new AlumnoEntity($data);
+            $nuevo = $this->alumnoDAO->create($alumno);
             
-            echo json_encode(['success' => true, 'id' => $id, 'message' => 'Alumno registrado correctamente']);
-            
+            echo json_encode(['success' => true, 'id' => $nuevo->id, 'message' => 'Alumno registrado correctamente']);
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
-
-    /**
-     * Procesar CV y devolver BLOB
-     */
+    
     private function procesarCV($archivo) {
         $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
         $permitidas = ['pdf', 'docx'];
@@ -67,10 +67,7 @@ class RegistroAlumnoController {
         
         return $blob;
     }
-
-    /**
-     * Procesar foto desde Base64 y devolver BLOB
-     */
+    
     private function procesarFotoBase64($base64String) {
         if (preg_match('/^data:image\/(\w+);base64,/', $base64String, $type)) {
             $base64String = substr($base64String, strpos($base64String, ',') + 1);

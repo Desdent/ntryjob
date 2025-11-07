@@ -1,18 +1,13 @@
 document.addEventListener("DOMContentLoaded", function(){
 
-
     cargarOfertas();
 
-    /**
-     * Listar ofertas de 1 ciclo (CAMBIAR LUEGO PARA QUE FUNCIONE CON TODOS LOS CICLOS DEL USUARIO)
-     */
     async function cargarOfertas() {
         try {
-        
             let res1 = await fetch("/api/alumno/ofertas.php?action=findCiclos", {
                 method: "GET",
             });
-            let data = await res1.json(); // array de id's de los ciclos que tiene el alumno
+            let data = await res1.json();
 
             if (!data.success) {
                 alert(data.error || "Error al cargar las ofertas");
@@ -21,17 +16,18 @@ document.addEventListener("DOMContentLoaded", function(){
 
             let idsString = data.ciclos.join(',');
 
-            let res2 = await fetch(`/api/alumno/ofertas.php?action=byCiclos&ids=${idsString}`);
+            let res2 = await fetch(`/api/alumno/ofertas.php?ids=${idsString}`);
             let data2 = await res2.json();
 
-
-            if (!data2.success) {
-                alert(data2.error || "Error al cargar ofertas");
-                return;
+            console.log("Ofertas:", data2);
+            
+            if (Array.isArray(data2)) {
+                mostrarOfertas(data2);
+            } else if (data2.ofertas) {
+                mostrarOfertas(data2.ofertas);
+            } else {
+                console.error("Formato inesperado:", data2);
             }
-
-            console.log("Ofertas:", data2.ofertas);
-            mostrarOfertas(data2.ofertas);
             
         } catch(error) {
             console.error("Error: ", error);
@@ -39,8 +35,54 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     }
 
+    function mostrarOfertas(ofertas) {
+        const container = document.getElementById('ofertasContainer');
+        if (!container) return;
+        
+        container.innerHTML = '';
+        
+        ofertas.forEach(oferta => {
+            const card = document.createElement('div');
+            card.className = 'oferta-card';
+            card.innerHTML = `
+                <h3>${oferta.titulo}</h3>
+                <p><strong>Empresa:</strong> ${oferta.empresa_nombre}</p>
+                <p><strong>Ciclo:</strong> ${oferta.ciclo_nombre}</p>
+                <p><strong>Modalidad:</strong> ${oferta.modalidad}</p>
+                <p>${oferta.descripcion}</p>
+                <button onclick="postularse(${oferta.id})">Postularme</button>
+            `;
+            container.appendChild(card);
+        });
+    }
 
-    function mostrarOfertas(ofertas)
 
+
+
+    window.postularse = function(ofertaId) {
+    if (!confirm('¿Seguro que quieres postularte a esta oferta?')) {
+        return;
+    }
+    
+    fetch('/api/alumno/postulaciones.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ oferta_id: ofertaId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Postulación enviada correctamente');
+        } else {
+            alert(data.error || 'Error al postularse');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error de conexión');
+    });
+}
 
 })

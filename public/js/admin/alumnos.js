@@ -1,30 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    // cargarEstadisticas();
     listarAlumnos();
     cargarCiclos();
     
-    // Botón logout
     const btnLogout = document.getElementById('btnLogout');
-        if (btnLogout) {
-            btnLogout.addEventListener('click', cerrarSesion);
-        }
-
-    // function cargarEstadisticas() {
-    //     fetch('/api/admin/estadisticas.php')
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             if (data.success) {
-    //                 document.getElementById('total-empresas').textContent = data.empresas || 0;
-    //                 document.getElementById('total-ofertas').textContent = data.ofertas || 0;
-    //             } else {
-    //                 console.error('Error al cargar estadísticas:', data.error);
-    //             }
-    //         })
-    //         .catch(error => console.error('Error:', error));
-    // }
-
-
+    if (btnLogout) {
+        btnLogout.addEventListener('click', cerrarSesion);
+    }
 
     let trasfondoModal = document.querySelector(".trasfondoModal");
     let modalContainer = document.querySelector(".modalContainer");
@@ -32,14 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let botonEquis = document.querySelector(".modal-close");
     let botonActualizar = document.querySelector(".btn-actualizar");
 
-
-    /**
-     * Mostrar tabla de alumnos y modal de editar
-     */
     function mostrarTablaAlumnos(alumnos) {
-
-        
-
         const contenedor = document.getElementById('tablaAlumnos');
         contenedor.innerHTML = "";
 
@@ -55,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
         let huecoSortName = document.createElement("span");
         huecoSortName.textContent = " ▼";
         headerName.append(huecoSortName);
-        
 
         let headerApellidos = document.createElement("th");
         headerApellidos.innerHTML = "Apellidos";
@@ -92,12 +66,10 @@ document.addEventListener('DOMContentLoaded', function() {
         let cuerpo = document.createElement("tbody");
         
         alumnos.forEach(alumno => {
-
             let id = alumno.id;
 
             let fila = document.createElement("tr");
             cuerpo.append(fila);
-            
 
             let celda1 = document.createElement("td");
             celda1.innerHTML = alumno.nombre;
@@ -127,107 +99,92 @@ document.addEventListener('DOMContentLoaded', function() {
             celda6.append(botonBorrar);
             fila.append(celda6);
 
-
             botonBorrar.onclick = function(e){
-
                 eliminarAlumno(id);
-
             }
-
-
-
 
             botonEditar.addEventListener("click", function(){
-            trasfondoModal.style.display = "block";
-            modalContainer.style.display = "block";
+                trasfondoModal.style.display = "block";
+                modalContainer.style.display = "block";
 
-            let nombreEdit = document.getElementById("nombre");
-            nombreEdit.value = alumno.nombre;
+                let nombreEdit = document.getElementById("nombre");
+                nombreEdit.value = alumno.nombre;
 
-            let apellidosEdit = document.getElementById("apellidos");
-            apellidosEdit.value = alumno.apellidos;
+                let apellidosEdit = document.getElementById("apellidos");
+                apellidosEdit.value = alumno.apellidos;
 
-            let emailEdit = document.getElementById("email");
-            emailEdit.value = alumno.email;
+                let emailEdit = document.getElementById("email");
+                emailEdit.value = alumno.email;
 
-            let fechaNacimientoEdit = document.getElementById("fechaNacimiento");
-            fechaNacimientoEdit.value = alumno.fecha_nacimiento;
+                let fechaNacimientoEdit = document.getElementById("fechaNacimiento");
+                fechaNacimientoEdit.value = alumno.fecha_nacimiento;
 
-            let paisEdit = document.getElementById("pais");
-            paisEdit.value = alumno.pais;
+                let paisEdit = document.getElementById("pais");
+                paisEdit.value = alumno.pais;
 
-            let provinciaEdit = document.getElementById("provincia");
-            provinciaEdit.value = alumno.provincia;
+                let provinciaEdit = document.getElementById("provincia");
+                provinciaEdit.value = alumno.provincia;
 
-            let telefonoEdit = document.getElementById("telefono");
-            telefonoEdit.value = alumno.telefono;
+                let telefonoEdit = document.getElementById("telefono");
+                telefonoEdit.value = alumno.telefono;
 
-            let localidadEdit = document.getElementById("localidad");
-            localidadEdit.value = alumno.ciudad;
+                let localidadEdit = document.getElementById("localidad");
+                localidadEdit.value = alumno.ciudad;
 
-            let codigoPostalEdit = document.getElementById("codigoPostal");
-            codigoPostalEdit.value = alumno.codigo_postal;
+                let codigoPostalEdit = document.getElementById("codigoPostal");
+                codigoPostalEdit.value = alumno.codigo_postal;
 
-            let direccionEdit = document.getElementById("direccion");
-            direccionEdit.value = alumno.direccion;
+                let direccionEdit = document.getElementById("direccion");
+                direccionEdit.value = alumno.direccion;
 
-            let cicloIdEdit = document.getElementById("ultimoCiclo");
-            cicloIdEdit.value = alumno.ciclo_id;
+                let cicloIdEdit = document.getElementById("ultimoCiclo");
+                cicloIdEdit.value = alumno.ciclo_id;
 
-            let fechaInicioEdit = document.getElementById("fechaInicio");
-            fechaInicioEdit.value = alumno.fecha_inicio;
+                let fechaInicioEdit = document.getElementById("fechaInicio");
+                fechaInicioEdit.value = alumno.fecha_inicio;
 
-            let fetchaFinalizacionEdit = document.getElementById("fechaFinalizacion");
-            fetchaFinalizacionEdit.value = alumno.fecha_fin;
+                let fetchaFinalizacionEdit = document.getElementById("fechaFinalizacion");
+                fetchaFinalizacionEdit.value = alumno.fecha_fin;
 
+                let alumnoId = alumno.id;
 
-            let alumnoId = alumno.id;
+                console.log(alumno.nombre);
 
-            console.log(alumno.nombre);
+                botonActualizar.onclick = function(e) {
+                    e.preventDefault();
 
-            botonActualizar.onclick = function(e) {
-                e.preventDefault();
+                    let campos = {
+                        id: alumnoId,
+                        nombre: nombreEdit.value,
+                        apellidos: apellidosEdit.value,
+                        email: emailEdit.value,
+                        fecha_nacimiento: fechaNacimientoEdit.value,
+                        pais: paisEdit.value,
+                        provincia: provinciaEdit.value,
+                        telefono: telefonoEdit.value,
+                        ciudad: localidadEdit.value,
+                        codigo_postal: codigoPostalEdit.value,
+                        direccion: direccionEdit.value,
+                        ciclo_id: cicloIdEdit.value,
+                        fecha_inicio: fechaInicioEdit.value,
+                        fecha_fin: fetchaFinalizacionEdit.value
+                    }
 
-                let campos = {
-
-                    id: alumnoId,
-                    nombre: nombreEdit.value,
-                    apellidos: apellidosEdit.value,
-                    email: emailEdit.value,
-                    fecha_nacimiento: fechaNacimientoEdit.value,
-                    pais: paisEdit.value,
-                    provincia: provinciaEdit.value,
-                    telefono: telefonoEdit.value,
-                    ciudad: localidadEdit.value,
-                    codigo_postal: codigoPostalEdit.value,
-                    direccion: direccionEdit.value,
-                    ciclo_id: cicloIdEdit.value,
-                    fecha_inicio: fechaInicioEdit.value,
-                    fecha_fin: fetchaFinalizacionEdit.value
-            
-
+                    editarAlumno(campos);
                 }
-
-
-                editarAlumno(campos);
-            }
-
-
             })
-
-        
         })
 
-    contenedor.append(cuerpo);
+        contenedor.append(cuerpo);
     }
 
     trasfondoModal.addEventListener("click", function(e){
         if(e.target === trasfondoModal){
-        modalContainer.style.display = "none";
-        trasfondoModal.style.display = "none";
-        modalAdd.style.display = "none";
-        modalContainerMassive.style.display = "none";
-    }
+            modalContainer.style.display = "none";
+            trasfondoModal.style.display = "none";
+            modalAdd.style.display = "none";
+            modalContainerMassive.style.display = "none";
+        }
     })
 
     botonCancelar.addEventListener("click", function(e){
@@ -242,45 +199,37 @@ document.addEventListener('DOMContentLoaded', function() {
     })
 
     function cargarCiclos() {
-    fetch('/api/ciclos.php')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const select = document.getElementById('ultimoCiclo'); // Parte del form
-                select.innerHTML = '<option value="">Selecciona un ciclo</option>';
+        fetch('/api/ciclos.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const select = document.getElementById('ultimoCiclo');
+                    select.innerHTML = '<option value="">Selecciona un ciclo</option>';
 
-                const selectMassive = document.querySelector(".selectMassive"); // Parte del select familia
-                selectMassive.innerHTML = '<option value="">Selecciona un ciclo</option>';
-                
-                data.data.forEach(ciclo => {
-                    const option = document.createElement('option');
-                    option.value = ciclo.id;
-                    option.textContent = `${ciclo.nombre} (${ciclo.codigo})`;
-                    select.appendChild(option);
-                    selectMassive.appendChild(option);
-                });
-            } else {
-                console.error('Error al cargar ciclos:', data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+                    const selectMassive = document.querySelector(".selectMassive");
+                    selectMassive.innerHTML = '<option value="">Selecciona un ciclo</option>';
+                    
+                    data.data.forEach(ciclo => {
+                        const option = document.createElement('option');
+                        option.value = ciclo.id;
+                        option.textContent = `${ciclo.nombre} (${ciclo.codigo})`;
+                        select.appendChild(option);
+                        selectMassive.appendChild(option);
+                    });
+                } else {
+                    console.error('Error al cargar ciclos:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
-
-
-
-
 
     let btnAddAlumno = document.getElementById("createUser");
     let modalAdd = document.querySelector(".modalContainerAdd");
     let botonCancelarAdd = document.getElementById("btnCancelarModalAdd");
     let botonEquisAdd = document.querySelector(".modal-closeAdd");
     let botonAdd = document.getElementById("btnAdd");
-
-
-
-
 
     botonCancelarAdd.onclick = function(){
         trasfondoModal.style.display = "none";
@@ -292,21 +241,17 @@ document.addEventListener('DOMContentLoaded', function() {
         modalAdd.style.display = "none";
     }
 
-    /**
-     * Añadir alumno
-     */
     btnAddAlumno.onclick = function(e){
         e.preventDefault()
 
         if (modalContainerMassive) {
-        modalContainerMassive.style.display = "none"; 
+            modalContainerMassive.style.display = "none"; 
         }
 
         let campoNombreAdd = document.getElementById("nombreAdd");
         let campoApellidosAdd = document.getElementById("apellidosAdd");
         let campoEmailAdd = document.getElementById("emailAdd");
         let campoTelefonoAdd = document.getElementById("telefonoAdd");
-
 
         e.preventDefault();
         trasfondoModal.style.display = "block";
@@ -323,18 +268,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             crearAlumno(camposAdd);
-
         }
-        
-
     }
 
-
-
-
-    /**
-     * Crear alumno
-     */
     function crearAlumno(datosAlumno) {
         console.log(datosAlumno);
         fetch('/api/admin/AlumnosController.php', {
@@ -362,12 +298,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-
-
-
-    /**
-     * Editar alumno
-     */
     function editarAlumno(datos) {
         const datosActualizados = {
             id: datos.id,
@@ -388,38 +318,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log(datosActualizados);
 
-            fetch('/api/admin/AlumnosController.php', {
+        fetch('/api/admin/AlumnosController.php', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(datosActualizados)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Alumno actualizado');
-                    listarAlumnos();
-                    modalContainer.style.display = "none";
-                    trasfondoModal.style.display = "none";
-                } else {
-                    alert(data.error || 'Error al actualizar alumno');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error de conexión');
-            });
-
-
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Alumno actualizado');
+                listarAlumnos();
+                modalContainer.style.display = "none";
+                trasfondoModal.style.display = "none";
+            } else {
+                alert(data.error || 'Error al actualizar alumno');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error de conexión');
+        });
     }
 
-
-
-
-    /**
-     * Eliminar alumno
-     */
     function eliminarAlumno(id) {
         if (!confirm('¿Seguro que quieres eliminar este alumno?')) {
             return;
@@ -447,10 +369,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-
-    /**
-     * Cerrar sesión
-     */
     function cerrarSesion() {
         fetch('/api/auth/logout.php', {
             method: 'POST',
@@ -466,14 +384,10 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error:', error);
-            // Redirigir de todos modos
             window.location.href = 'public/index.php?page=login';
         });
     }
 
-    /**
-     * Listar alumnos
-     */
     function listarAlumnos() {
         fetch('/api/admin/alumnos.php', {
             method: 'GET',
@@ -496,39 +410,29 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-
-
-        // Carga masiva
-    // Contenedor general
     let modalContainerMassive = document.querySelector(".modalContainerMassive");
 
-    // Contenedor del header
     let modalHeaderMassive = document.createElement("div");
     modalHeaderMassive.classList.add("modal-headerMassive");
     if (modalContainerMassive) {
         modalContainerMassive.append(modalHeaderMassive);
     }
 
-    // El h2
     let h2HeaderMassive = document.createElement("h2");
     h2HeaderMassive.innerText = "Carga Masiva de Alumnos";
     modalHeaderMassive.append(h2HeaderMassive);
 
-    // La equis
     let modalCloseMassive = document.createElement("span");
     modalCloseMassive.classList.add("modal-closeMassive");
     modalCloseMassive.innerHTML = "&times;";
     modalHeaderMassive.append(modalCloseMassive);
 
-    // 2. El cuerpo (Es el contenedor Grid: 1fr 1fr)
     let modalBodyMassive = document.createElement("div");
     modalBodyMassive.classList.add("modalBodyMassive");
     if (modalContainerMassive) {
         modalContainerMassive.append(modalBodyMassive);
     }
 
-
-    // --- Cargar CSV 
     let containerCargarCSV = document.createElement("div");
     modalBodyMassive.append(containerCargarCSV); 
 
@@ -542,7 +446,6 @@ document.addEventListener('DOMContentLoaded', function() {
     inputCSV.classList.add("camposCSV");
     containerCargarCSV.append(inputCSV);
 
-    // --- Familia
     let containerCargarFamilia = document.createElement("div");
     modalBodyMassive.append(containerCargarFamilia);
 
@@ -558,7 +461,6 @@ document.addEventListener('DOMContentLoaded', function() {
     cargarCiclos() 
     containerCargarFamilia.append(inputFamilia);
 
-
     modalCloseMassive.onclick = function(){
         trasfondoModal.style.display = "none";
         modalContainerMassive.style.display = "none";
@@ -566,10 +468,7 @@ document.addEventListener('DOMContentLoaded', function() {
         btnEnviar.classList.add("hide");
         tableContainerAdd.innerHTML = "";
         inputCSV.value = '';
-
-
     }
-
 
     let btnMassiveAdd = document.getElementById("massiveAdd");
 
@@ -580,10 +479,6 @@ document.addEventListener('DOMContentLoaded', function() {
         modalContainerMassive.style.display = "block";
     }
 
-
-
-
-    // --- Ejemplo
     let containerEjemplo = document.createElement("div");
     modalBodyMassive.append(containerEjemplo);
 
@@ -598,14 +493,12 @@ document.addEventListener('DOMContentLoaded', function() {
     botonEjemplo.classList.add("camposCSV");
     botonEjemplo.id = "botonEjemplo";
 
-
     let divTextoEjemplo = document.createElement("div");
     divTextoEjemplo.innerHTML = "Juan;García;juan@alumno.com;654123789;Jaén" +
                             "<br>" +"Maria;Soleras Viñas;maria@alumno.com;654197789;Jaén" +
                             "<br>" +"Carlos;Solera Viñas;Carlos@alumno.com;664197789;Torredelcampo";
     divTextoEjemplo.classList.add("hide");
     containerEjemplo.append(divTextoEjemplo);
-
 
     divBotonEjemplo.append(botonEjemplo);
     botonEjemplo.onclick = function(){
@@ -616,14 +509,12 @@ document.addEventListener('DOMContentLoaded', function() {
             botonEjemplo.innerHTML = "Ocultar";
         }
         else{
-                divTextoEjemplo.classList.remove("show");
-                divTextoEjemplo.classList.add("hide");
-                botonEjemplo.innerHTML = "Mostrar";
+            divTextoEjemplo.classList.remove("show");
+            divTextoEjemplo.classList.add("hide");
+            botonEjemplo.innerHTML = "Mostrar";
         }
     }
 
-
-    //Boton de cargar alumnos
     let btnEnviarContainer = document.createElement("div");
     modalBodyMassive.append(btnEnviarContainer);
 
@@ -633,13 +524,8 @@ document.addEventListener('DOMContentLoaded', function() {
     btnEnviar.classList.add("hide");
     btnEnviarContainer.append(btnEnviar);
 
-
-    //Carga del csv
-
     let divParaLaTabla = document.createElement("div");
     modalContainerMassive.append(divParaLaTabla);
-
-
 
     let divContainerListadoAdd = document.createElement("div");
     divParaLaTabla.append(divContainerListadoAdd);
@@ -649,34 +535,25 @@ document.addEventListener('DOMContentLoaded', function() {
     tableContainerAdd.id = "tableContainerAdd";
     divContainerListadoAdd.id ="divContainerListadoAdd";
 
-    
-
-
     inputCSV.addEventListener("change", function(e){
-        const file = e.target.files[0] // Con esto se coge el primer archivo seleccionado, e.target se encarga de mirar guardar que elemento ha disparado el evento (e).
-                                                                                            //Y files son los archivos que se seleccionan en el evento
+        const file = e.target.files[0]
 
         if(file) {
             leerArchivoCSV(file);
         }
     })
 
-
     function leerArchivoCSV(file) {
-
         tableContainerAdd.innerHTML = ''
 
-        const reader = new FileReader()// Se abre un objeto lector, como cuando se habria en java
+        const reader = new FileReader()
 
-        // El onload es para cuando el archivo que se ha metido en el reader se ha leido por completo
         reader.onload = function(e){
-            const fileContenido = e.target.result; //Esto coge el elemento que ha disaparado el evento y su contenido lo pasa a texto plano, en este caso su archivo
-            const alumnosArray = parsearCSV(fileContenido, tableContainerAdd); // Hay que pasarle el elemento global para que lo pueda usar
+            const fileContenido = e.target.result;
+            const alumnosArray = parsearCSV(fileContenido, tableContainerAdd);
 
             btnEnviar.classList.remove("hide");
             btnEnviar.classList.add("show");
-
-            //Se crea el boton de enviar
 
             console.log("Datos del CSV cogidos:", alumnosArray);
 
@@ -685,111 +562,89 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         };
 
-        reader.readAsText(file, "UTF-8"); // Esto lee el texto del archivo en formato utf8
-
+        reader.readAsText(file, "UTF-8");
     }
 
+    function parsearCSV(fileContent, tableContainerAdd) {
+        
+        let data = [];
+        const DELIMITADOR = ','; 
+        
+        let rows = fileContent.trim().split("\n"); 
 
-function parsearCSV(fileContent, tableContainerAdd) {
-    
-    let data = [];
-    const DELIMITADOR = ','; 
-    
-    let rows = fileContent.trim().split("\n"); 
-
-    if(rows.length === 0 || rows[0].trim() === "")
-    {
-        return data; 
-    }
-    
-    // ===============================================
-    // HEAD
-    let headers = rows[0].split(DELIMITADOR).map(h => h.trim()); 
-    
-    let tableMassiveHeaderContainer = document.createElement("thead");
-    tableContainerAdd.append(tableMassiveHeaderContainer);
-    let cabecera = document.createElement("tr");
-    tableMassiveHeaderContainer.append(cabecera);
-
-    // Casilla inicial 
-    let celdaInicio = document.createElement("th");
-    celdaInicio.innerHTML = "Selección";
-    cabecera.append(celdaInicio);
-
-    // Celdas de header 
-    headers.forEach(header => {
-        let celda = document.createElement("th");
-        celda.innerHTML = header;
-        cabecera.append(celda);
-    });
-
-    // 3. Casilla final
-    let celdaFinal = document.createElement("th");
-    celdaFinal.innerHTML = "Válido";
-    cabecera.append(celdaFinal);
-    
-
-    // ===============================================
-    // CUERPO
-    let tableMassiveBodyContainer = document.createElement("tbody");
-    tableContainerAdd.append(tableMassiveBodyContainer);
-
-    for(let i = 1; i < rows.length; i++){
-        let values = rows[i].split(DELIMITADOR);
-
-        let alumno = {};
-        let fila = document.createElement("tr");
-        tableMassiveBodyContainer.append(fila);
-
-        for(let j = 0; j < headers.length + 2; j++){
-
-            let celda = document.createElement("td");
-            
-            if(j == 0 || j == headers.length + 1)
-            {
-                let checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                
-                if (j == headers.length + 1) {
-                    checkbox.checked = true; 
-                    // Además, podrías añadir aquí la lógica para determinar si es 'Válido'
-                    // por ejemplo, comprobando si el email tiene formato correcto.
-                }
-
-                celda.append(checkbox);
-            }
-            else 
-            {
-                let clave = headers[j-1].trim();
-                let valor = values[j-1].trim();
-
-                alumno[clave] = valor;
-                celda.innerHTML = alumno[clave];
-            }
-            
-            fila.append(celda);
+        if(rows.length === 0 || rows[0].trim() === "")
+        {
+            return data; 
         }
-        data.push(alumno); 
+        
+        let headers = rows[0].split(DELIMITADOR).map(h => h.trim()); 
+        
+        let tableMassiveHeaderContainer = document.createElement("thead");
+        tableContainerAdd.append(tableMassiveHeaderContainer);
+        let cabecera = document.createElement("tr");
+        tableMassiveHeaderContainer.append(cabecera);
+
+        let celdaInicio = document.createElement("th");
+        celdaInicio.innerHTML = "Selección";
+        cabecera.append(celdaInicio);
+
+        headers.forEach(header => {
+            let celda = document.createElement("th");
+            celda.innerHTML = header;
+            cabecera.append(celda);
+        });
+
+        let celdaFinal = document.createElement("th");
+        celdaFinal.innerHTML = "Válido";
+        cabecera.append(celdaFinal);
+
+        let tableMassiveBodyContainer = document.createElement("tbody");
+        tableContainerAdd.append(tableMassiveBodyContainer);
+
+        for(let i = 1; i < rows.length; i++){
+            let values = rows[i].split(DELIMITADOR);
+
+            let alumno = {};
+            let fila = document.createElement("tr");
+            tableMassiveBodyContainer.append(fila);
+
+            for(let j = 0; j < headers.length + 2; j++){
+
+                let celda = document.createElement("td");
+                
+                if(j == 0 || j == headers.length + 1)
+                {
+                    let checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    
+                    if (j == headers.length + 1) {
+                        checkbox.checked = true; 
+                    }
+
+                    celda.append(checkbox);
+                }
+                else 
+                {
+                    let clave = headers[j-1].trim();
+                    let valor = values[j-1].trim();
+
+                    alumno[clave] = valor;
+                    celda.innerHTML = alumno[clave];
+                }
+                
+                fila.append(celda);
+            }
+            data.push(alumno); 
+        }
+
+        return data;
     }
-
-    return data;
-}
-
-
-
-
-
-
-
-
-
 
     let opts = document.querySelectorAll(".optLateral");
 
     opts[0].innerHTML = "Panel de Alumnos";
     opts[1].innerHTML = "Panel de Empresas";
     opts[2].innerHTML = "Panel de Ofertas";
-
 
     opts[0].addEventListener("click", function(){
         window.location.href ='index.php?page=dashboard-admin-alumnos'
@@ -802,3 +657,4 @@ function parsearCSV(fileContent, tableContainerAdd) {
     })
 
 });
+

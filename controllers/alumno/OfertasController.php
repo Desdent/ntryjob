@@ -1,61 +1,43 @@
 <?php
-require_once __DIR__ . '/../../models/Oferta.php';
-require_once __DIR__ . '/../../models/Alumno.php';
+require_once __DIR__ . '/../../dao/OfertaDAO.php';
+require_once __DIR__ . '/../../dao/AlumnoDAO.php';
 
 class OfertasController {
+    private $ofertaDAO;
+    private $alumnoDAO;
     
-    /**
-     * GET - Listar empresas de X ciclo
-     */
+    public function __construct() {
+        $this->ofertaDAO = new OfertaDAO();
+        $this->alumnoDAO = new AlumnoDAO();
+    }
+    
     public function index($cicloId) {
         try {
-            $ofertas = Oferta::getAllByCiclo($cicloId);
-            echo json_encode(['success' => true, 'ofertas' => $ofertas]);
+            $ofertas = $this->ofertaDAO->getAllByCiclos($cicloId);
+            echo json_encode(['success' => true, 'ofertas' => array_map(fn($o) => $o->toArray(), $ofertas)]);
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
-
-
-    /**
-     * GET - Obtener ciclos del alumno
-     */
-
-
+    
     public function getCiclos($id) {
         try {
-            $ciclos = Alumno::getCiclosAlumno($id);
+            $ciclos = $this->alumnoDAO->getCiclosAlumno($id);
             echo json_encode(['success' => true, 'ciclos' => $ciclos]);
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
-
-
-    /**
-     * GET - Obtener ofertas por ciclos
-     */
-
-    public function getOfertas($ciclosArray)
-    {
+    
+    public function getOfertas($ciclosArray) {
         try {
-            $ofertas = Oferta::getAllByCiclos($ciclosArray);
-            echo json_encode(['success' => true, 'ofertas' => $ofertas]);
+            $ofertas = $this->ofertaDAO->getAllByCiclos($ciclosArray);
+            echo json_encode(['success' => true, 'ofertas' => array_map(fn($o) => $o->toArray(), $ofertas)]);
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
-    
-    /**
-     * PUT - Aprobar/Rechazar empresa
-     */
-
-
-    /**
-     * DELETE
-     */
-
 }

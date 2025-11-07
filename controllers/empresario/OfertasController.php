@@ -1,11 +1,14 @@
 <?php
-require_once __DIR__ . '/../../models/Oferta.php';
+require_once __DIR__ . '/../../dao/OfertaDAO.php';
+require_once __DIR__ . '/../../models/entities/OfertaEntity.php';
 
 class OfertasController {
+    private $dao;
     
-    /**
-     * GET - Listar mis ofertas
-     */
+    public function __construct() {
+        $this->dao = new OfertaDAO();
+    }
+    
     public function index() {
         try {
             session_start();
@@ -17,19 +20,14 @@ class OfertasController {
                 return;
             }
             
-            $ofertas = Oferta::getByEmpresa($empresaId);
-            echo json_encode(['success' => true, 'data' => $ofertas]);
-            
+            $ofertas = $this->dao->getByEmpresa($empresaId);
+            echo json_encode(['success' => true, 'data' => array_map(fn($o) => $o->toArray(), $ofertas)]);
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
-
     
-    /**
-     * POST - Crear oferta
-     */
     public function create() {
         try {
             session_start();
@@ -43,18 +41,15 @@ class OfertasController {
                 return;
             }
             
-            $id = Oferta::create($data);
-            echo json_encode(['success' => true, 'id' => $id]);
-            
+            $oferta = new OfertaEntity($data);
+            $nueva = $this->dao->create($oferta);
+            echo json_encode(['success' => true, 'id' => $nueva->id]);
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
     
-    /**
-     * PUT - Actualizar oferta
-     */
     public function update() {
         try {
             $data = json_decode(file_get_contents('php://input'), true);
@@ -65,18 +60,15 @@ class OfertasController {
                 return;
             }
             
-            $result = Oferta::update($data['id'], $data);
+            $oferta = new OfertaEntity($data);
+            $result = $this->dao->update($oferta);
             echo json_encode(['success' => true, 'updated' => $result]);
-            
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
     
-    /**
-     * DELETE - Eliminar oferta
-     */
     public function delete() {
         try {
             $data = json_decode(file_get_contents('php://input'), true);
@@ -87,12 +79,12 @@ class OfertasController {
                 return;
             }
             
-            $result = Oferta::delete($data['id']);
+            $result = $this->dao->delete($data['id']);
             echo json_encode(['success' => true, 'deleted' => $result]);
-            
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
 }
+

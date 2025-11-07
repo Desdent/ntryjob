@@ -26,6 +26,7 @@
                 </div>
             </div>
 
+            <!-- Es el register-empresa -->
             <!-- Datos de la Empresa -->
             <div class="form-section">
                 <h3>Datos de la Empresa</h3>

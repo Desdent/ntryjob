@@ -1,0 +1,97 @@
+<?php
+require_once __DIR__.'/DAOInterface.php';
+require_once __DIR__.'/../models/entities/OfertaEntity.php';
+require_once __DIR__.'/../config/Database.php';
+
+class OfertaDAO implements DAOInterface {
+    private $db;
+    public function __construct() { $this->db = Database::getInstance()->getConnection(); }
+    
+    public function getById($id) {
+        $stmt = $this->db->prepare("
+            SELECT o.*, e.nombre as empresa_nombre, c.nombre as ciclo_nombre
+            FROM ofertas o
+            JOIN empresas e ON o.empresa_id = e.id
+            LEFT JOIN ciclos c ON o.ciclo_id = c.id
+            WHERE o.id = ?
+        ");
+        $stmt->execute([$id]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, 'OfertaEntity');
+        return $stmt->fetch() ?: null;
+    }
+
+    
+    public function getAll() {
+        $stmt = $this->db->query("
+            SELECT o.*, e.nombre as empresa_nombre, c.nombre as ciclo_nombre
+            FROM ofertas o
+            JOIN empresas e ON o.empresa_id = e.id
+            LEFT JOIN ciclos c ON o.ciclo_id = c.id
+            ORDER BY o.fecha_creacion DESC
+        ");
+        return $stmt->fetchAll(PDO::FETCH_CLASS, 'OfertaEntity');
+    }
+
+
+    
+    public function create($oferta) {
+        $stmt = $this->db->prepare("
+            INSERT INTO ofertas (empresa_id, titulo, descripcion, requisitos, ciclo_id, fecha_inicio, fecha_cierre, modalidad, salario) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ");
+        $stmt->execute([
+            $oferta->empresa_id, $oferta->titulo, $oferta->descripcion, $oferta->requisitos ?? null,
+            $oferta->ciclo_id, $oferta->fecha_inicio, $oferta->fecha_cierre,
+            $oferta->modalidad ?? 'presencial', $oferta->salario ?? null
+        ]);
+        $oferta->id = $this->db->lastInsertId();
+        return $oferta;
+    }
+    
+    public function update($oferta) {
+        $stmt = $this->db->prepare("
+            UPDATE ofertas SET titulo=?, descripcion=?, requisitos=?, ciclo_id=?, 
+            fecha_cierre=?, modalidad=?, salario=? WHERE id=?
+        ");
+        return $stmt->execute([
+            $oferta->titulo, $oferta->descripcion, $oferta->requisitos ?? null, $oferta->ciclo_id,
+            $oferta->fecha_cierre, $oferta->modalidad ?? 'presencial', $oferta->salario ?? null, $oferta->id
+        ]);
+    }
+    
+    public function delete($id) {
+        $stmt = $this->db->prepare("DELETE FROM ofertas WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+    
+    public function getByEmpresa($empresaId) {
+        $stmt = $this->db->prepare("SELECT o.*, e.nombre as empresa_nombre FROM ofertas o JOIN empresas e ON o.empresa_id = e.id WHERE o.empresa_id = ?");
+        $stmt->execute([$empresaId]);
+        return $stmt->fetchAll(PDO::FETCH_CLASS, 'OfertaEntity');
+    }
+
+
+    
+    public function getAllByCiclos($ciclosIds) {
+        if (empty($ciclosIds)) {
+            return [];
+        }
+        
+        if (!is_array($ciclosIds)) {
+            $ciclosIds = explode(',', $ciclosIds);
+        }
+        
+        $ciclosIds = array_map('intval', $ciclosIds);
+        $placeholders = implode(',', array_fill(0, count($ciclosIds), '?'));
+        
+        $stmt = $this->db->prepare("
+            SELECT o.*, e.nombre as empresa_nombre, c.nombre as ciclo_nombre
+            FROM ofertas o
+            JOIN empresas e ON o.empresa_id = e.id
+            LEFT JOIN ciclos c ON o.ciclo_id = c.id
+            WHERE o.ciclo_id IN ($placeholders)
+            ORDER BY o.fecha_creacion DESC
+        ");
+        $stmt->execute($ciclosIds);
+    }
+}
