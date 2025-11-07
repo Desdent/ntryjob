@@ -26,7 +26,11 @@ class EmpresaDAO implements DAOInterface {
         $this->db->beginTransaction();
         try {
             $userDAO = new UserDAO();
-            $usuarioId = $userDAO->createUser($empresa->email, $empresa->password);
+            
+            // Asegurar que la contraseña esté hasheada
+            $password = $empresa->password ?: 'admin123';
+            $usuarioId = $userDAO->createUser($empresa->email, $password);
+            
             $stmt = $this->db->prepare("
                 INSERT INTO empresas (usuario_id, nombre, cif, telefono, sector, descripcion, 
                     pais, provincia, ciudad, direccion, logo, aprobada) 
@@ -41,7 +45,10 @@ class EmpresaDAO implements DAOInterface {
             $empresa->id = $this->db->lastInsertId();
             $this->db->commit();
             return $empresa;
-        } catch (Exception $e) { $this->db->rollBack(); throw $e; }
+        } catch (Exception $e) { 
+            $this->db->rollBack(); 
+            throw $e; 
+        }
     }
     
     public function update($empresa) {
@@ -79,8 +86,8 @@ class EmpresaDAO implements DAOInterface {
     public function getLogo($id) {
         $stmt = $this->db->prepare("SELECT logo FROM empresas WHERE id = ?");
         $stmt->execute([$id]);
-        $result = $stmt->fetch(PDO::FETCH_COLUMN);
-        return $result ?: null;
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['logo'] : null;
     }
 
 

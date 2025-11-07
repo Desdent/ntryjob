@@ -18,26 +18,49 @@ try {
                 echo json_encode($alumno ? $alumno->toArray() : null);
             } else {
                 $alumnos = $dao->getAll();
-                echo json_encode(array_map(fn($a) => $a->toArray(), $alumnos));
+                echo json_encode(['success' => true, 'data' => array_map(fn($a) => $a->toArray(), $alumnos)]);
             }
             break;
         case 'POST':
-            $data = json_decode(file_get_contents('php://input'), true) ?: $_POST;
+            $data = json_decode(file_get_contents('php://input'), true);
+            if (!$data) {
+                $data = $_POST;
+            }
+            
+            if (empty($data['nombre']) || empty($data['email'])) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Nombre y email requeridos']);
+                break;
+            }
+            
             $alumno = new AlumnoEntity($data);
             $nuevo = $dao->create($alumno);
             echo json_encode(['success' => true, 'id' => $nuevo->id, 'alumno' => $nuevo->toArray()]);
             break;
         case 'PUT':
             $data = json_decode(file_get_contents('php://input'), true);
+            if (empty($data['id'])) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'ID requerido']);
+                break;
+            }
             $alumno = new AlumnoEntity($data);
             $dao->update($alumno);
             echo json_encode(['success' => true]);
             break;
         case 'DELETE':
             $id = $_GET['id'] ?? null;
+            if (!$id) {
+                $data = json_decode(file_get_contents('php://input'), true);
+                $id = $data['id'] ?? null;
+            }
+            
             if ($id) {
                 $dao->delete($id);
                 echo json_encode(['success' => true]);
+            } else {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'ID requerido']);
             }
             break;
         default:
@@ -48,4 +71,3 @@ try {
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
 }
-

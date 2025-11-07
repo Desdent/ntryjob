@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // ========== VALIDACIONES EN TIEMPO REAL ==========
     
-    const campos = form.querySelectorAll('input[required]');
+    const campos = form.querySelectorAll('input[required], select[required]');
     
     campos.forEach(campo => {
         campo.addEventListener('blur', function() {
@@ -53,6 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function validarCampo(campo) {
         const valor = campo.value.trim();
         const nombre = campo.name;
+        const tipo = campo.type;
+        const tagName = campo.tagName.toLowerCase();
         const errorSpan = campo.nextElementSibling;
         
         // Limpiar estados previos
@@ -60,12 +62,18 @@ document.addEventListener('DOMContentLoaded', function() {
         errorSpan.textContent = '';
         
         // Validar si está vacío
-        if (valor === '') {
-            if (campo.required) {
-                campo.classList.add('invalid');
+        if (valor === '' && campo.required) {
+            campo.classList.add('invalid');
+            
+            if (tagName === 'select') {
+                errorSpan.textContent = 'Debe seleccionar una opción';
+            } else {
                 errorSpan.textContent = 'Este campo es obligatorio';
-                return false;
             }
+            return false;
+        }
+        
+        if (valor === '' && !campo.required) {
             return true;
         }
         
@@ -124,27 +132,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
                 
             case 'subirCV':
-                const archivo = campo.files[0];
-                if (archivo) {
-                    const extensiones = ['pdf', 'docx'];
-                    const ext = archivo.name.split('.').pop().toLowerCase();
-                    if (!extensiones.includes(ext)) {
-                        campo.classList.add('invalid');
-                        errorSpan.textContent = 'Solo PDF o DOCX';
-                        return false;
-                    }
-                    if (archivo.size > 5 * 1024 * 1024) { // 5MB
-                        campo.classList.add('invalid');
-                        errorSpan.textContent = 'Máximo 5MB';
-                        return false;
-                    }
+                // Esta validación se hace en el cambio de archivo, no en blur
+                break;
+                
+            case 'ultimoCiclo':
+                // Para selects, solo verificar que tenga valor seleccionado
+                if (valor !== '') {
                     campo.classList.add('valid');
                 }
                 break;
                 
             default:
-                // Validación genérica (no vacío y mínimo 2 caracteres)
-                if (valor.length < 2) {
+                // Para inputs de texto normales, validar longitud mínima
+                if (tagName === 'input' && tipo === 'text' && valor.length < 2) {
                     campo.classList.add('invalid');
                     errorSpan.textContent = 'Mínimo 2 caracteres';
                     return false;
@@ -182,24 +182,30 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Validar todos los campos
         let todosValidos = true;
-        campos.forEach(campo => {
+        const camposRequeridos = form.querySelectorAll('input[required], select[required]');
+        camposRequeridos.forEach(campo => {
             if (!validarCampo(campo)) {
                 todosValidos = false;
+                // Hacer scroll al primer campo con error
+                if (todosValidos === false) {
+                    campo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
             }
         });
-        
+
         if (!todosValidos) {
-            alert('Por favor, corrige los errores en el formulario');
+            alert('Por favor, corrige los errores en el formulario antes de enviar.');
             return;
         }
         
         const formData = new FormData();
         
-        // Añadir campos
+        // Añadir campos básicos
         formData.append('nombre', document.getElementById('nombre').value);
         formData.append('apellidos', document.getElementById('apellidos').value);
         formData.append('email', document.getElementById('email').value);
         formData.append('password', document.getElementById('password').value);
+        formData.append('password_confirm', document.getElementById('password').value); // Para validación
         formData.append('telefono', document.getElementById('telefono').value);
         formData.append('pais', document.getElementById('pais').value);
         formData.append('provincia', document.getElementById('provincia').value);
@@ -215,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('fecha_fin', fechaFin);
         }
         
-        // Añadir  CV
+        // Añadir CV
         const archivoCV = document.getElementById('subirCV').files[0];
         if (archivoCV) {
             formData.append('cv', archivoCV);
@@ -229,13 +235,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Deshabilitar botón de envío
         const btnSubmit = form.querySelector('button[type="submit"]');
+        const btnOriginalText = btnSubmit.textContent;
         btnSubmit.disabled = true;
         btnSubmit.textContent = 'Registrando...';
         
         // Enviar Formdata
         fetch('/api/auth/registro-alumno.php', {
             method: 'POST',
-            body: formData  // FormData maneja archivos el solo
+            body: formData
         })
         .then(response => response.json())
         .then(data => {
@@ -245,14 +252,14 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 alert(data.error || 'Error al registrarse');
                 btnSubmit.disabled = false;
-                btnSubmit.textContent = 'Registrarse';
+                btnSubmit.textContent = btnOriginalText;
             }
         })
         .catch(error => {
             console.error('Error:', error);
             alert('Error de conexión. Intenta de nuevo.');
             btnSubmit.disabled = false;
-            btnSubmit.textContent = 'Registrarse';
+            btnSubmit.textContent = btnOriginalText;
         });
     });
 

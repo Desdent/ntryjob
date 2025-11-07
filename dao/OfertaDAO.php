@@ -16,11 +16,10 @@ class OfertaDAO implements DAOInterface {
             WHERE o.id = ?
         ");
         $stmt->execute([$id]);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, 'OfertaEntity');
-        return $stmt->fetch() ?: null;
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? new OfertaEntity($row) : null;
     }
 
-    
     public function getAll() {
         $stmt = $this->db->query("
             SELECT o.*, e.nombre as empresa_nombre, c.nombre as ciclo_nombre
@@ -29,7 +28,11 @@ class OfertaDAO implements DAOInterface {
             LEFT JOIN ciclos c ON o.ciclo_id = c.id
             ORDER BY o.fecha_creacion DESC
         ");
-        return $stmt->fetchAll(PDO::FETCH_CLASS, 'OfertaEntity');
+        $result = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new OfertaEntity($row);
+        }
+        return $result;
     }
 
 
@@ -65,9 +68,18 @@ class OfertaDAO implements DAOInterface {
     }
     
     public function getByEmpresa($empresaId) {
-        $stmt = $this->db->prepare("SELECT o.*, e.nombre as empresa_nombre FROM ofertas o JOIN empresas e ON o.empresa_id = e.id WHERE o.empresa_id = ?");
+        $stmt = $this->db->prepare("
+            SELECT o.*, e.nombre as empresa_nombre 
+            FROM ofertas o 
+            JOIN empresas e ON o.empresa_id = e.id 
+            WHERE o.empresa_id = ?
+        ");
         $stmt->execute([$empresaId]);
-        return $stmt->fetchAll(PDO::FETCH_CLASS, 'OfertaEntity');
+        $result = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new OfertaEntity($row);
+        }
+        return $result;
     }
 
 
@@ -93,5 +105,6 @@ class OfertaDAO implements DAOInterface {
             ORDER BY o.fecha_creacion DESC
         ");
         $stmt->execute($ciclosIds);
+        return $stmt->fetchAll(PDO::FETCH_CLASS, 'OfertaEntity');
     }
 }

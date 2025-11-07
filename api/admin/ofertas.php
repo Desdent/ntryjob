@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json');
 require_once __DIR__ . '/../../dao/OfertaDAO.php';
+require_once __DIR__ . '/../../models/entities/OfertaEntity.php';
 require_once __DIR__ . '/../../middleware/AuthMiddleware.php';
 
 session_start();
@@ -14,30 +15,29 @@ try {
         case 'GET':
             if (isset($_GET['id'])) {
                 $oferta = $dao->getById($_GET['id']);
-                echo json_encode($oferta ? $oferta->toArray() : null);
+                echo json_encode(['success' => true, 'data' => $oferta ? $oferta->toArray() : null]);
             } else {
                 $ofertas = $dao->getAll();
-                echo json_encode(array_map(fn($o) => $o->toArray(), $ofertas));
-            }
-            break;
-        case 'POST':
-            if (isset($_POST['empresa_id'])) {
-                $ofertas = $dao->getByEmpresa($_POST['empresa_id']);
-                echo json_encode(array_map(fn($o) => $o->toArray(), $ofertas));
+                echo json_encode(['success' => true, 'data' => array_map(fn($o) => $o->toArray(), $ofertas)]);
             }
             break;
         case 'PUT':
             $data = json_decode(file_get_contents('php://input'), true);
+            if (empty($data['id'])) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'ID requerido']);
+                break;
+            }
             $oferta = new OfertaEntity($data);
-            $dao->update($oferta);
-            echo json_encode(['success' => true]);
+            $result = $dao->update($oferta);
+            echo json_encode(['success' => true, 'updated' => $result]);
             break;
         case 'DELETE':
             $data = json_decode(file_get_contents('php://input'), true);
             $id = $data['id'] ?? null;
             if ($id) {
-                $dao->delete($id);
-                echo json_encode(['success' => true]);
+                $result = $dao->delete($id);
+                echo json_encode(['success' => true, 'deleted' => $result]);
             } else {
                 http_response_code(400);
                 echo json_encode(['success' => false, 'error' => 'ID requerido']);

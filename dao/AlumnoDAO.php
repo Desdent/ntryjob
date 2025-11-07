@@ -46,7 +46,9 @@ class AlumnoDAO implements DAOInterface {
                 throw new Exception('El email ya está registrado');
             }
             
-            $usuarioId = $userDAO->createUser($alumno->email, $alumno->password ?: 'admin123');
+            // Asegurar que la contraseña esté hasheada
+            $password = $alumno->password ?: 'admin123';
+            $usuarioId = $userDAO->createUser($alumno->email, $password);
             
             $stmt = $this->db->prepare("
                 INSERT INTO alumnos (

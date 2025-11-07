@@ -15,6 +15,8 @@ class EmpresaEntity {
     public $aprobada;
     public $verificado;
     public $created_at;
+    public $email;
+    public $password;
     
     public function __construct($data=[]) {
         foreach ($data as $k => $v) if (property_exists($this, $k)) $this->$k = $v;

@@ -272,7 +272,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function crearAlumno(datosAlumno) {
-        console.log(datosAlumno);
+        // Validar campos requeridos
+        if (!datosAlumno.nombre || !datosAlumno.apellidos || !datosAlumno.email || !datosAlumno.telefono) {
+            alert('Por favor completa todos los campos requeridos');
+            return;
+        }
+
         fetch('/api/admin/AlumnosController.php', {
             method: 'POST',
             headers: {
@@ -283,11 +288,16 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                console.log(data.id);
                 alert('Alumno creado con ID: ' + data.id);
                 modalAdd.style.display = "none";
                 trasfondoModal.style.display = "none";
                 listarAlumnos();
+                
+                // Limpiar formulario
+                document.getElementById("nombreAdd").value = '';
+                document.getElementById("apellidosAdd").value = '';
+                document.getElementById("emailAdd").value = '';
+                document.getElementById("telefonoAdd").value = '';
             } else {
                 alert(data.error || 'Error al crear alumno');
             }
@@ -297,6 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Error de conexión');
         });
     }
+
 
     function editarAlumno(datos) {
         const datosActualizados = {
@@ -316,8 +327,6 @@ document.addEventListener('DOMContentLoaded', function() {
             fecha_fin: datos.fecha_fin
         };
 
-        console.log(datosActualizados);
-
         fetch('/api/admin/AlumnosController.php', {
             method: 'PUT',
             headers: {
@@ -328,7 +337,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Alumno actualizado');
+                alert('Alumno actualizado correctamente');
                 listarAlumnos();
                 modalContainer.style.display = "none";
                 trasfondoModal.style.display = "none";
@@ -347,17 +356,13 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        fetch('/api/admin/AlumnosController.php', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ id: id })
+        fetch('/api/admin/AlumnosController.php?id=' + id, {
+            method: 'DELETE'
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Alumno eliminado');
+                alert('Alumno eliminado correctamente');
                 listarAlumnos();
             } else {
                 alert(data.error || 'Error al eliminar alumno');

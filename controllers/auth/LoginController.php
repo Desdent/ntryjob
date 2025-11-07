@@ -38,35 +38,50 @@ class LoginController {
                 exit;
             }
             
-            $role = $this->detectRole($user->id);
-            
-            if (!$role) {
-                echo json_encode(['success' => false, 'error' => 'Usuario sin rol']);
+            // Detectar rol usando la misma lógica que el login.php corregido
+            $pdo = Database::getInstance()->getConnection();
+            $rol = null;
+            $aprobada = 1;
+
+            // Verificar si es alumno
+            $stmt = $pdo->prepare("SELECT id FROM alumnos WHERE usuario_id = ?");
+            $stmt->execute([$user->id]);
+            if ($stmt->fetch()) {
+                $rol = 'alumno';
+            } else {
+                // Verificar si es empresa
+                $stmt = $pdo->prepare("SELECT id, aprobada FROM empresas WHERE usuario_id = ?");
+                $stmt->execute([$user->id]);
+                if ($row = $stmt->fetch()) {
+                    $rol = 'empresario';
+                    $aprobada = $row['aprobada'];
+                } else {
+                    // Verificar si es admin
+                    $stmt = $pdo->prepare("SELECT id FROM admin WHERE usuario_id = ?");
+                    $stmt->execute([$user->id]);
+                    if ($stmt->fetch()) {
+                        $rol = 'admin';
+                    }
+                }
+            }
+
+            if (!$rol) {
+                echo json_encode(['success' => false, 'error' => 'Usuario sin rol asignado']);
                 exit;
             }
             
             $_SESSION['user_id'] = $user->id;
             $_SESSION['email'] = $user->email;
-            $_SESSION['role'] = $role['type'];
-            $_SESSION['id'] = $user->id;
-            
-            if (isset($role['alumno_id'])) {
-                $_SESSION['alumno_id'] = $role['alumno_id'];
-            }
-            if (isset($role['empresa_id'])) {
-                $_SESSION['empresa_id'] = $role['empresa_id'];
-            }
-            if (isset($role['aprobada'])) {
-                $_SESSION['aprobada'] = $role['aprobada'];
-            }
-            
+            $_SESSION['role'] = $rol;
+            $_SESSION['aprobada'] = $aprobada;
+
             echo json_encode([
                 'success' => true,
                 'user' => [
                     'id' => $user->id,
                     'email' => $user->email,
-                    'role' => $role['type'],
-                    'aprobada' => $role['aprobada'] ?? null
+                    'role' => $rol,
+                    'aprobada' => $aprobada
                 ]
             ]);
         } catch (Exception $e) {

@@ -23,12 +23,19 @@ class RegistroAlumnoController {
                 return;
             }
             
+            if ($data['password'] !== $data['password_confirm']) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Las contraseñas no coinciden']);
+                return;
+            }
+            
             if ($this->userDAO->emailExists($data['email'])) {
                 http_response_code(409);
                 echo json_encode(['success' => false, 'error' => 'El email ya está registrado']);
                 return;
             }
             
+            // Procesar archivos
             if (isset($_FILES['cv']) && $_FILES['cv']['error'] === UPLOAD_ERR_OK) {
                 $data['cv'] = $this->procesarCV($_FILES['cv']);
             }

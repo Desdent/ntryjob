@@ -27,15 +27,20 @@ switch($page) {
                     header('Location: index.php?page=dashboard-admin'); 
                     exit;
                 case "empresario": 
-                    header('Location: index.php?page=dashboard-empresario'); 
+                    if ($_SESSION['aprobada'] == 1) {
+                        header('Location: index.php?page=dashboard-empresario'); 
+                    } else {
+                        // Mostrar página de espera de aprobación
+                        echo $templates->render('auth/espera-aprobacion');
+                    }
                     exit;
                 case "alumno": 
                     header('Location: index.php?page=dashboard-alumno'); 
                     exit;
             }
         }
-        echo $templates->render('auth/login');
-        break;
+    echo $templates->render('auth/login');
+    break;
     
     case 'register':
         echo $templates->render('auth/register');

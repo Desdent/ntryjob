@@ -1,26 +1,31 @@
 <?php
 require_once __DIR__ . '/../../dao/OfertaDAO.php';
+require_once __DIR__ . '/../../dao/EmpresaDAO.php';
 require_once __DIR__ . '/../../models/entities/OfertaEntity.php';
+require_once __DIR__ . '/../../middleware/AuthMiddleware.php';
 
 class OfertasController {
     private $dao;
+    private $empresaDAO;
     
     public function __construct() {
         $this->dao = new OfertaDAO();
+        $this->empresaDAO = new EmpresaDAO();
     }
     
     public function index() {
         try {
             session_start();
-            $empresaId = $_SESSION['empresa_id'] ?? null;
+            AuthMiddleware::requiereAuth(['empresario']);
             
-            if (!$empresaId) {
+            $empresa = $this->empresaDAO->findByUsuarioId($_SESSION['user_id']);
+            if (!$empresa) {
                 http_response_code(403);
-                echo json_encode(['success' => false, 'error' => 'No autorizado']);
+                echo json_encode(['success' => false, 'error' => 'Empresa no encontrada']);
                 return;
             }
             
-            $ofertas = $this->dao->getByEmpresa($empresaId);
+            $ofertas = $this->dao->getByEmpresa($empresa->id);
             echo json_encode(['success' => true, 'data' => array_map(fn($o) => $o->toArray(), $ofertas)]);
         } catch (Exception $e) {
             http_response_code(500);
@@ -31,16 +36,23 @@ class OfertasController {
     public function create() {
         try {
             session_start();
-            $data = json_decode(file_get_contents('php://input'), true);
+            AuthMiddleware::requiereAuth(['empresario']);
             
-            $data['empresa_id'] = $_SESSION['empresa_id'] ?? null;
-            
-            if (!$data['empresa_id']) {
+            $empresa = $this->empresaDAO->findByUsuarioId($_SESSION['user_id']);
+            if (!$empresa) {
                 http_response_code(403);
-                echo json_encode(['success' => false, 'error' => 'No autorizado']);
+                echo json_encode(['success' => false, 'error' => 'Empresa no encontrada']);
                 return;
             }
             
+            $data = json_decode(file_get_contents('php://input'), true);
+            if (!$data) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Datos inválidos']);
+                return;
+            }
+            
+            $data['empresa_id'] = $empresa->id;
             $oferta = new OfertaEntity($data);
             $nueva = $this->dao->create($oferta);
             echo json_encode(['success' => true, 'id' => $nueva->id]);

@@ -3,14 +3,19 @@ session_start();
 header('Content-Type: application/json');
 
 require_once __DIR__ . '/../../dao/UserDAO.php';
-require_once __DIR__ . '/../../dao/AlumnoDAO.php';
-require_once __DIR__ . '/../../dao/EmpresaDAO.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method == 'POST') {
     try {
         $data = json_decode(file_get_contents('php://input'), true);
+        
+        // Validar campos requeridos
+        if (empty($data['email']) || empty($data['password'])) {
+            echo json_encode(['success' => false, 'error' => 'Email y contraseña requeridos']);
+            exit;
+        }
+        
         $email = $data['email'];
         $password = $data['password'];
 
@@ -27,21 +32,53 @@ if ($method == 'POST') {
             exit;
         }
         
-        if ($user->role === 'empresario' && ($user->aprobada ?? 0) == 0) {
+        // Verificar rol y estado
+        $pdo = Database::getInstance()->getConnection();
+        $rol = null;
+        $aprobada = 1;
+
+        // Verificar si es alumno
+        $stmt = $pdo->prepare("SELECT id FROM alumnos WHERE usuario_id = ?");
+        $stmt->execute([$user->id]);
+        if ($stmt->fetch()) {
+            $rol = 'alumno';
+        } else {
+            // Verificar si es empresa
+            $stmt = $pdo->prepare("SELECT id, aprobada FROM empresas WHERE usuario_id = ?");
+            $stmt->execute([$user->id]);
+            if ($row = $stmt->fetch()) {
+                $rol = 'empresario';
+                $aprobada = $row['aprobada'];
+            } else {
+                // Verificar si es admin
+                $stmt = $pdo->prepare("SELECT id FROM admin WHERE usuario_id = ?");
+                $stmt->execute([$user->id]);
+                if ($stmt->fetch()) {
+                    $rol = 'admin';
+                }
+            }
+        }
+
+        if (!$rol) {
+            echo json_encode(['success' => false, 'error' => 'Usuario sin rol asignado']);
+            exit;
+        }
+        
+        if ($rol === 'empresario' && $aprobada != 1) {
             echo json_encode(['success' => false, 'error' => 'Empresa pendiente de aprobación']);
             exit;
         }
         
         $_SESSION['user_id'] = $user->id;
         $_SESSION['email'] = $user->email;
-        $_SESSION['role'] = $user->role;
-        $_SESSION['aprobada'] = $user->aprobada ?? 1;
+        $_SESSION['role'] = $rol;
+        $_SESSION['aprobada'] = $aprobada;
 
         echo json_encode([
             'success' => true, 
             'user' => [
-                'role' => $user->role,
-                'aprobada' => $user->aprobada ?? 1
+                'role' => $rol,
+                'aprobada' => $aprobada
             ]
         ]);
     } catch (Exception $e) {

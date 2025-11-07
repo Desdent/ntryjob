@@ -8,17 +8,33 @@ class PostulacionDAO implements DAOInterface {
     public function __construct() { $this->db = Database::getInstance()->getConnection(); }
     
     public function getById($id) {
-        $stmt = $this->db->prepare("SELECT p.*, a.nombre as alumno_nombre, o.titulo as oferta_titulo FROM postulaciones p JOIN alumnos a ON p.alumno_id = a.id JOIN ofertas o ON p.oferta_id = o.id WHERE p.id = ?");
+        $stmt = $this->db->prepare("
+            SELECT p.*, a.nombre as alumno_nombre, o.titulo as oferta_titulo 
+            FROM postulaciones p 
+            JOIN alumnos a ON p.alumno_id = a.id 
+            JOIN ofertas o ON p.oferta_id = o.id 
+            WHERE p.id = ?
+        ");
         $stmt->execute([$id]);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, 'PostulacionEntity');
-        return $stmt->fetch() ?: null;
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? new PostulacionEntity($row) : null;
     }
 
 
     
     public function getAll() {
-        $stmt = $this->db->query("SELECT p.*, a.nombre as alumno_nombre, o.titulo as oferta_titulo FROM postulaciones p JOIN alumnos a ON p.alumno_id = a.id JOIN ofertas o ON p.oferta_id = o.id ORDER BY p.fecha_postulacion DESC");
-        return $stmt->fetchAll(PDO::FETCH_CLASS, 'PostulacionEntity');
+        $stmt = $this->db->query("
+            SELECT p.*, a.nombre as alumno_nombre, o.titulo as oferta_titulo 
+            FROM postulaciones p 
+            JOIN alumnos a ON p.alumno_id = a.id 
+            JOIN ofertas o ON p.oferta_id = o.id 
+            ORDER BY p.fecha_postulacion DESC
+        ");
+        $result = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new PostulacionEntity($row);
+        }
+        return $result;
     }
 
 
@@ -38,9 +54,19 @@ class PostulacionDAO implements DAOInterface {
     }
     
     public function getByAlumno($alumnoId) {
-        $stmt = $this->db->prepare("SELECT p.*, o.titulo as oferta_titulo, e.nombre as empresa_nombre FROM postulaciones p JOIN ofertas o ON p.oferta_id = o.id JOIN empresas e ON o.empresa_id = e.id WHERE p.alumno_id = ?");
+        $stmt = $this->db->prepare("
+            SELECT p.*, o.titulo as oferta_titulo, e.nombre as empresa_nombre 
+            FROM postulaciones p 
+            JOIN ofertas o ON p.oferta_id = o.id 
+            JOIN empresas e ON o.empresa_id = e.id 
+            WHERE p.alumno_id = ?
+        ");
         $stmt->execute([$alumnoId]);
-        return $stmt->fetchAll(PDO::FETCH_CLASS, 'PostulacionEntity');
+        $result = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new PostulacionEntity($row);
+        }
+        return $result;
     }
 
 

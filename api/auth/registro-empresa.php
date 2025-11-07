@@ -7,7 +7,16 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'POST') {
     try {
-        $data = json_decode(file_get_contents('php://input'), true) ?: $_POST;
+        $data = $_POST;
+        
+        // Validaciones básicas
+        $required = ['nombre', 'email', 'password', 'cif'];
+        foreach ($required as $field) {
+            if (empty($data[$field])) {
+                echo json_encode(['success' => false, 'error' => "El campo $field es requerido"]);
+                exit;
+            }
+        }
         
         if ($data['password'] !== $data['password_confirm']) {
             echo json_encode(['success' => false, 'error' => 'Las contraseñas no coinciden']);
@@ -15,6 +24,12 @@ if ($method === 'POST') {
         }
         
         $dao = new EmpresaDAO();
+        
+        // Procesar logo
+        if (isset($_FILES['logo']) && $_FILES['logo']['error'] === UPLOAD_ERR_OK) {
+            $data['logo'] = file_get_contents($_FILES['logo']['tmp_name']);
+        }
+        
         $empresa = new EmpresaEntity($data);
         $nueva = $dao->create($empresa);
         
