@@ -13,10 +13,13 @@ $method = $_SERVER['REQUEST_METHOD'];
 try {
     switch ($method) {
         case 'GET':
-            if (isset($_GET['id'])) {
+            if (isset($_GET['id']))
+            {
                 $alumno = $dao->getById($_GET['id']);
                 echo json_encode($alumno ? $alumno->toArray() : null);
-            } else {
+            } 
+            else
+            {
                 $alumnos = $dao->getAll();
                 echo json_encode([
                     'success' => true, 

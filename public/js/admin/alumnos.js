@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         // agrega al select
                         select.appendChild(option); 
 
-                        // 3. Crear una copia para el otro select
+                        // Crear una copia para el otro select
                         if (selectMassive) {
                             const optionMassive = option.cloneNode(true);
                             selectMassive.appendChild(optionMassive);
@@ -410,7 +410,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function listarAlumnos() {
         
-        fetch('/api/admin/AlumnosController.php', {
+        fetch('/api/admin/AlumnosController.php?email', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -568,26 +568,26 @@ document.addEventListener('DOMContentLoaded', function() {
     function leerArchivoCSV(file) {
         tableContainerAdd.innerHTML = ''
 
-        const reader = new FileReader()
+        const reader = new FileReader() // se crea un objeto FileReader como en java para que detecte el archivo
 
-        reader.onload = function(e){
-            const fileContenido = e.target.result;
-            const alumnosArray = parsearCSV(fileContenido, tableContainerAdd);
+        reader.onload = async function(e){ // Esto indica qué se ejecuta cuando el archivo se lee
+            const fileContenido = e.target.result; // Esto targetea el objeto FileReader que ha disparado el evento y coge su resultado como texto
+            const alumnosArray = await parsearCSV(fileContenido, tableContainerAdd);
 
             btnEnviar.classList.remove("hide");
             btnEnviar.classList.add("show");
 
             console.log("Datos del CSV cogidos:", alumnosArray);
 
-            alumnosArray.forEach(alumno => {
-
-            })
+            
         };
 
         reader.readAsText(file, "UTF-8");
+
+
     }
 
-    function parsearCSV(fileContent, tableContainerAdd) {
+    async function parsearCSV(fileContent, tableContainerAdd) {
         
         let data = [];
         const DELIMITADOR = ','; 
@@ -624,6 +624,7 @@ document.addEventListener('DOMContentLoaded', function() {
         tableContainerAdd.append(tableMassiveBodyContainer);
 
         for(let i = 1; i < rows.length; i++){
+            let existe = false;
             let values = rows[i].split(DELIMITADOR);
 
             let alumno = {};
@@ -636,14 +637,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if(j == 0 || j == headers.length + 1)
                 {
-                    let checkbox = document.createElement("input");
-                    checkbox.type = "checkbox";
+                    
                     
                     if (j == headers.length + 1) {
-                        checkbox.checked = true; 
+
+                        // Verifica que exista el email para poner una cruz o un check   
+                        let existe = await verificarEmailExistente(alumno['Correo']);   
+
+                        
+                        if(existe == true || !alumno['Nombre'] || !alumno['Apellidos'] || !alumno['Correo']
+                            || !alumno['Telefono'] || !alumno['Ciudad'])
+                        {
+                            fetch("/public/assets/imagenes/cross-mark.svg")
+                            .then(response => response.text()) // Pasa la ruta a a texto plano
+                            .then(data => {
+                                celda.innerHTML = data;
+                                fila.getElementsByTagName("td")[3].getElementsByTagName("input")[0].style.backgroundColor = "#fc9b9bff";
+                            })
+
+                            // Para coger el check de esa fila y deshabilitarlo
+                            let celdaConCheck = fila.getElementsByTagName("td")[0];
+                            let inputCheck = celdaConCheck.getElementsByTagName("input")[0];
+                            inputCheck.disabled = true;
+
+                        }
+                        else
+                        {
+                            fetch("/public/assets/imagenes/check-circle.svg")
+                            .then(response => response.text()) // Pasa la ruta a a texto plano
+                            .then(data => {
+                                celda.innerHTML = data;
+                            })
+                        }
+
+                    }
+                    else
+                    {
+
+                        let checkbox = document.createElement("input");
+                        checkbox.type = "checkbox";
+                        celda.append(checkbox);
                     }
 
-                    celda.append(checkbox);
                 }
                 else 
                 {
@@ -651,7 +686,43 @@ document.addEventListener('DOMContentLoaded', function() {
                     let valor = values[j-1].trim();
 
                     alumno[clave] = valor;
-                    celda.innerHTML = alumno[clave];
+                    let input = document.createElement("input");
+                    input.type = "text";
+                    celda.append(input);
+                    input.classList.add("inputsMassiveAdd");
+                    input.value = alumno[clave];
+
+                    input.addEventListener("keyup", async function(e){
+                        if(e.key === "Enter"){
+
+                        console.log(input.value);
+                        let respuesta = await verificarEmailExistente(input.value);
+                        console.log(respuesta);
+                        let celdavalidez = fila.getElementsByTagName("td")[6];
+                        let celdaCheck = fila.getElementsByTagName("td")[0]
+                        let checkForSwitching = celdaCheck.getElementsByTagName("input")[0];
+                        if(respuesta == false)
+                        {
+                            fetch("/public/assets/imagenes/check-circle.svg")
+                            .then(response => response.text()) // Pasa la ruta a a texto plano
+                            .then(data => {
+                                celdavalidez.innerHTML = data;
+                                checkForSwitching.disabled = false;
+                                fila.getElementsByTagName("td")[3].getElementsByTagName("input")[0].style.backgroundColor = "#fff";
+                            })
+                        }
+                        else
+                        {
+                            fetch("/public/assets/imagenes/cross-mark.svg")
+                            .then(response => response.text()) // Pasa la ruta a a texto plano
+                            .then(data => {
+                                celdavalidez.innerHTML = data;
+                                checkForSwitching.disabled = true;
+                                fila.getElementsByTagName("td")[3].getElementsByTagName("input")[0].style.backgroundColor = "#fc9b9bff";
+                            })
+                        }
+                        }
+                    })
                 }
                 
                 fila.append(celda);
@@ -677,6 +748,22 @@ document.addEventListener('DOMContentLoaded', function() {
     opts[2].addEventListener("click", function(){
         window.location.href ='index.php?page=dashboard-admin-empresas'
     })
+
+
+
+
+    function verificarEmailExistente(campo) {
+        const email = campo.trim();
+        
+        return fetch('/api/auth/email_exists.php?email=' + encodeURIComponent(email))
+            .then(response => response.json())
+            .then(data => data.existe)
+            .catch(error => {
+                console.error('Error al verificar email:', error);
+                return false;
+            });
+    }
+    
 
 });
 

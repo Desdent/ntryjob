@@ -91,10 +91,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
                 
             case 'telefono':
-                const telRegex = /^[0-9]{9,15}$/;
+                const telRegex = /^[0-9]{9}$/;
                 if (!telRegex.test(valor)) {
                     campo.classList.add('invalid');
-                    errorSpan.textContent = 'Teléfono inválido (9-15 dígitos)';
+                    errorSpan.textContent = 'Teléfono inválido (9 dígitos)';
                     return false;
                 }
                 campo.classList.add('valid');

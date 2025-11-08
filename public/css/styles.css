@@ -750,7 +750,8 @@ footer p {
 .form-group input,
 .form-group select,
 .form-group textarea,
-.form-group #fechaNacimiento {
+.form-group #fechaNacimiento,
+.inputsMassiveAdd {
     width: 100%;
     padding: 5px;
     border: 2px solid #7CC8F9;
@@ -762,7 +763,8 @@ footer p {
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus,
-.form-group #fechaNacimiento:focus {
+.form-group #fechaNacimiento:focus,
+.inputsMassiveAdd:hover {
     outline: none;
     border-color: #0876BE;
     
