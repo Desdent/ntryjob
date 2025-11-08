@@ -203,18 +203,32 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    const select = document.getElementById('ultimoCiclo');
+                    const select = document.getElementById('ultimoCiclo'); 
+                    const selectMassive = document.querySelector(".selectMassive"); 
+                    
+                    // Limpiar antes de rellenar
                     select.innerHTML = '<option value="">Selecciona un ciclo</option>';
 
-                    const selectMassive = document.querySelector(".selectMassive");
-                    selectMassive.innerHTML = '<option value="">Selecciona un ciclo</option>';
+                    // Solo limpiar de nuevo ssi el selectMassive existe
+                    if (selectMassive) {
+                        selectMassive.innerHTML = '<option value="">Selecciona un ciclo</option>';
+                    }
                     
                     data.data.forEach(ciclo => {
+
+                        // Crea el option base
                         const option = document.createElement('option');
                         option.value = ciclo.id;
                         option.textContent = `${ciclo.nombre} (${ciclo.codigo})`;
-                        select.appendChild(option);
-                        selectMassive.appendChild(option);
+
+                        // agrega al select
+                        select.appendChild(option); 
+
+                        // 3. Crear una copia para el otro select
+                        if (selectMassive) {
+                            const optionMassive = option.cloneNode(true);
+                            selectMassive.appendChild(optionMassive);
+                        }
                     });
                 } else {
                     console.error('Error al cargar ciclos:', data.error);
@@ -224,6 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error:', error);
             });
     }
+
 
     let btnAddAlumno = document.getElementById("createUser");
     let modalAdd = document.querySelector(".modalContainerAdd");
@@ -394,7 +409,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function listarAlumnos() {
-        console.log('Cargando alumnos desde AlumnosController...');
         
         fetch('/api/admin/AlumnosController.php', {
             method: 'GET',
@@ -467,7 +481,6 @@ document.addEventListener('DOMContentLoaded', function() {
     inputFamilia.classList.add("selectMassive");
     inputFamilia.classList.add("camposCSV");
     inputFamilia.id = "inputFamilia";
-    cargarCiclos() 
     containerCargarFamilia.append(inputFamilia);
 
     modalCloseMassive.onclick = function(){

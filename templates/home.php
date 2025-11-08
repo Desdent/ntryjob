@@ -15,7 +15,7 @@
 </section>
 
 <!-- OFERTAS DESTACADAS -->
-<section class="ofertas-destacadas">
+<section class="ofertas-destacadas container-azul">
     <div class="container">
         <h2>Ofertas destacadas</h2>
         
@@ -80,7 +80,7 @@
 </section>
 
 <!-- FOOTER CTA -->
-<section class="footer-cta">
+<section class="footer-cta container-azul">
     <div class="container">
         <div class="footer-cta-container">
             <div class="footer-cta-card">
