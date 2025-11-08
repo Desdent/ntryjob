@@ -709,7 +709,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 inputs.forEach(input => { // Aqui esta diciendole que a para cada input del array de inputs, le cree una constante campo, cuyo valor es el atributo extra que se le metió antes
                                             //y luego, dentro del objeto alumno, en la clave cuyo nombre es el valor de la cosntante campo, le meta el valor del input
-                                            
+
                                             // Esta genialidad es de la IA silverio, a mi esta abstracción no me sale solo
                     const campo = input.dataset.field.trim();
                     alumno[campo] = input.value.trim();
@@ -794,7 +794,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Validar email específicamente
+        // Validar email
         const emailInput = inputs.find(input => 
             input.dataset.field.toLowerCase().includes('email') || 
             input.dataset.field.toLowerCase().includes('correo')
