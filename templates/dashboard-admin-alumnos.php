@@ -114,8 +114,6 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
     </div>
 
 
-<!-- Es el dashboard-admin-alumnos.php -->
-
 
 
 
@@ -173,7 +171,7 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
     
 
     <div class="modalContainerMassive">
-       
+
     </div>
 
     

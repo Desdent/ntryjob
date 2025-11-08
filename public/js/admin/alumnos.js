@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function crearAlumno(datosAlumno) {
-        // Validar campos requeridos
+        // Validar campos
         if (!datosAlumno.nombre || !datosAlumno.apellidos || !datosAlumno.email || !datosAlumno.telefono) {
             alert('Por favor completa todos los campos requeridos');
             return;
@@ -516,9 +516,9 @@ document.addEventListener('DOMContentLoaded', function() {
     botonEjemplo.id = "botonEjemplo";
 
     let divTextoEjemplo = document.createElement("div");
-    divTextoEjemplo.innerHTML = "Juan;García;juan@alumno.com;654123789;Jaén" +
-                            "<br>" +"Maria;Soleras Viñas;maria@alumno.com;654197789;Jaén" +
-                            "<br>" +"Carlos;Solera Viñas;Carlos@alumno.com;664197789;Torredelcampo";
+    divTextoEjemplo.innerHTML = "Juan,García,juan@alumno.com,654123789,Jaén" +
+                            "<br>" +"Maria,Soleras Viñas,maria@alumno.com,654197789,Jaén" +
+                            "<br>" +"Carlos,Solera Viñas,Carlos@alumno.com,664197789,Torredelcampo";
     divTextoEjemplo.classList.add("hide");
     containerEjemplo.append(divTextoEjemplo);
 
@@ -566,41 +566,35 @@ document.addEventListener('DOMContentLoaded', function() {
     })
 
     function leerArchivoCSV(file) {
-        tableContainerAdd.innerHTML = ''
+        tableContainerAdd.innerHTML = '';
 
-        const reader = new FileReader() // se crea un objeto FileReader como en java para que detecte el archivo
+        const reader = new FileReader();
 
-        reader.onload = async function(e){ // Esto indica qué se ejecuta cuando el archivo se lee
-            const fileContenido = e.target.result; // Esto targetea el objeto FileReader que ha disparado el evento y coge su resultado como texto
-            const alumnosArray = await parsearCSV(fileContenido, tableContainerAdd);
+        reader.onload = async function(e){
+            const fileContenido = e.target.result;
+            await parsearCSV(fileContenido, tableContainerAdd);
 
             btnEnviar.classList.remove("hide");
             btnEnviar.classList.add("show");
 
-            console.log("Datos del CSV cogidos:", alumnosArray);
-
-            
         };
 
         reader.readAsText(file, "UTF-8");
-
-
     }
 
+    
+
     async function parsearCSV(fileContent, tableContainerAdd) {
-        
-        let data = [];
+
         const DELIMITADOR = ','; 
         
-        let rows = fileContent.trim().split("\n"); 
-
-        if(rows.length === 0 || rows[0].trim() === "")
-        {
-            return data; 
-        }
+        let rows = fileContent.trim().split("\n");
+        console.log('Filas leídas:', rows); 
         
-        let headers = rows[0].split(DELIMITADOR).map(h => h.trim()); 
+        let headers = ['nombre', 'apellidos', 'email', 'telefono', 'ciudad'];
+        let startRow = 1;
         
+        // Crear cabecera de tabla
         let tableMassiveHeaderContainer = document.createElement("thead");
         tableContainerAdd.append(tableMassiveHeaderContainer);
         let cabecera = document.createElement("tr");
@@ -612,7 +606,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         headers.forEach(header => {
             let celda = document.createElement("th");
-            celda.innerHTML = header;
+            celda.innerHTML = header.trim();
             cabecera.append(celda);
         });
 
@@ -623,115 +617,254 @@ document.addEventListener('DOMContentLoaded', function() {
         let tableMassiveBodyContainer = document.createElement("tbody");
         tableContainerAdd.append(tableMassiveBodyContainer);
 
-        for(let i = 1; i < rows.length; i++){
-            let existe = false;
+        // Procesar cada fila
+        for(let i = startRow; i < rows.length; i++) {
+            
+            
             let values = rows[i].split(DELIMITADOR);
-
-            let alumno = {};
+            
             let fila = document.createElement("tr");
             tableMassiveBodyContainer.append(fila);
 
-            for(let j = 0; j < headers.length + 2; j++){
-
+            let inputs = [];
+            
+            // Celda de checkbox (primera columna)
+            let celdaCheckbox = document.createElement("td");
+            let checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.disabled = true;
+            celdaCheckbox.append(checkbox);
+            fila.append(celdaCheckbox);
+            
+            // Crear inputs para cada campo
+            for(let j = 0; j < headers.length; j++) {
                 let celda = document.createElement("td");
+                let clave = headers[j].trim();
+                let valor = values[j] ? values[j].trim() : '';
                 
-                if(j == 0 || j == headers.length + 1)
-                {
-                    
-                    
-                    if (j == headers.length + 1) {
+                let input = document.createElement("input");
+                input.type = "text";
+                input.value = valor;
+                input.classList.add("inputsMassiveAdd");
+                input.dataset.field = clave;
+                
+                celda.append(input);
+                inputs.push(input);
 
-                        // Verifica que exista el email para poner una cruz o un check   
-                        let existe = await verificarEmailExistente(alumno['Correo']);   
+                // Evento para validar en tiempo real
+                input.addEventListener("blur", async function() {
+                    await validarFilaCompleta(fila, inputs, headers);
+                });
 
-                        
-                        if(existe == true || !alumno['Nombre'] || !alumno['Apellidos'] || !alumno['Correo']
-                            || !alumno['Telefono'] || !alumno['Ciudad'])
-                        {
-                            fetch("/public/assets/imagenes/cross-mark.svg")
-                            .then(response => response.text()) // Pasa la ruta a a texto plano
-                            .then(data => {
-                                celda.innerHTML = data;
-                                fila.getElementsByTagName("td")[3].getElementsByTagName("input")[0].style.backgroundColor = "#fc9b9bff";
-                            })
-
-                            // Para coger el check de esa fila y deshabilitarlo
-                            let celdaConCheck = fila.getElementsByTagName("td")[0];
-                            let inputCheck = celdaConCheck.getElementsByTagName("input")[0];
-                            inputCheck.disabled = true;
-
-                        }
-                        else
-                        {
-                            fetch("/public/assets/imagenes/check-circle.svg")
-                            .then(response => response.text()) // Pasa la ruta a a texto plano
-                            .then(data => {
-                                celda.innerHTML = data;
-                            })
-                        }
-
+                input.addEventListener("keypress", async function(e) {
+                    if(e.key === "Enter") {
+                        await validarFilaCompleta(fila, inputs, headers);
                     }
-                    else
-                    {
-
-                        let checkbox = document.createElement("input");
-                        checkbox.type = "checkbox";
-                        celda.append(checkbox);
-                    }
-
-                }
-                else 
-                {
-                    let clave = headers[j-1].trim();
-                    let valor = values[j-1].trim();
-
-                    alumno[clave] = valor;
-                    let input = document.createElement("input");
-                    input.type = "text";
-                    celda.append(input);
-                    input.classList.add("inputsMassiveAdd");
-                    input.value = alumno[clave];
-
-                    input.addEventListener("keyup", async function(e){
-                        if(e.key === "Enter"){
-
-                        console.log(input.value);
-                        let respuesta = await verificarEmailExistente(input.value);
-                        console.log(respuesta);
-                        let celdavalidez = fila.getElementsByTagName("td")[6];
-                        let celdaCheck = fila.getElementsByTagName("td")[0]
-                        let checkForSwitching = celdaCheck.getElementsByTagName("input")[0];
-                        if(respuesta == false)
-                        {
-                            fetch("/public/assets/imagenes/check-circle.svg")
-                            .then(response => response.text()) // Pasa la ruta a a texto plano
-                            .then(data => {
-                                celdavalidez.innerHTML = data;
-                                checkForSwitching.disabled = false;
-                                fila.getElementsByTagName("td")[3].getElementsByTagName("input")[0].style.backgroundColor = "#fff";
-                            })
-                        }
-                        else
-                        {
-                            fetch("/public/assets/imagenes/cross-mark.svg")
-                            .then(response => response.text()) // Pasa la ruta a a texto plano
-                            .then(data => {
-                                celdavalidez.innerHTML = data;
-                                checkForSwitching.disabled = true;
-                                fila.getElementsByTagName("td")[3].getElementsByTagName("input")[0].style.backgroundColor = "#fc9b9bff";
-                            })
-                        }
-                        }
-                    })
-                }
+                });
                 
                 fila.append(celda);
             }
-            data.push(alumno); 
+            
+            // Celda de validación 
+            let celdaValidacion = document.createElement("td");
+            fetch("/public/assets/imagenes/cross-mark.svg")
+                .then(response => response.text())
+                .then(data => {
+                    celdaValidacion.innerHTML = data;
+                });
+            celdaValidacion.classList.add('validation-cell');
+            fila.append(celdaValidacion);
+            
+            // Validar fila al inicio
+            setTimeout(async () => {
+                await validarFilaCompleta(fila, inputs, headers);
+            }, 100);
         }
 
-        return data;
+        btnEnviar.onclick = function() {
+            const selectCiclo = document.querySelector(".selectMassive") || document.getElementById("inputFamilia");
+            
+            if(!selectCiclo) {
+                alert("Error: No se encontró el selector de ciclo");
+                return;
+            }
+            
+            const cicloId = selectCiclo.value;
+            
+            if(!cicloId || cicloId === "") {
+                alert("Selecciona un ciclo");
+                return;
+            }
+            
+            // AQUÍ ES DONDE SE RECOGEN LOS DATOS
+            let alumnosSeleccionados = [];
+            const checkboxes = tableContainerAdd.querySelectorAll('input[type="checkbox"]:checked:not(:disabled)');
+            
+            console.log("Checkboxes seleccionados:", checkboxes.length); // Debug
+            
+            checkboxes.forEach(checkbox => {
+                const fila = checkbox.closest('tr'); //coge el tr en el que está que es el mas cercano
+                const inputs = fila.querySelectorAll('.inputsMassiveAdd');
+                let alumno = {};
+                
+                inputs.forEach(input => { // Aqui esta diciendole que a para cada input del array de inputs, le cree una constante campo, cuyo valor es el atributo extra que se le metió antes
+                                            //y luego, dentro del objeto alumno, en la clave cuyo nombre es el valor de la cosntante campo, le meta el valor del input
+                                            
+                                            // Esta genialidad es de la IA silverio, a mi esta abstracción no me sale solo
+                    const campo = input.dataset.field.trim();
+                    alumno[campo] = input.value.trim();
+                });
+                
+                alumno["ciclo_id"] = parseInt(cicloId);
+                alumnosSeleccionados.push(alumno);
+            });
+            
+            console.log("Total alumnos seleccionados:", alumnosSeleccionados.length); // Debug
+            console.log("Datos a enviar:", alumnosSeleccionados); // Debug
+            
+            if(alumnosSeleccionados.length === 0) {
+                alert("Selecciona al menos un alumno válido");
+                return;
+            }
+            
+            fetch("/api/admin/AlumnosController.php?accion=massive", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(alumnosSeleccionados),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Respuesta del servidor:", data); // debug
+                if(data.success) {
+                    alert(`Alumnos añadidos correctamente: ${data.creados || alumnosSeleccionados.length} creados`);
+                    modalContainerMassive.style.display = "none";
+                    trasfondoModal.style.display = "none";
+                    listarAlumnos();
+                    tableContainerAdd.innerHTML = "";
+                    inputCSV.value = '';
+                    btnEnviar.classList.remove("show");
+                    btnEnviar.classList.add("hide");
+                } else {
+                    alert(data.error || "Error al cargar los alumnos");
+                    if(data.detalles) {
+                        console.error("Detalles:", data.detalles);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error de conexión: ' + error.message);
+            });
+        };
+        
     }
+
+    // validar y actualizar
+    async function validarYActualizarFila(fila, inputs, headers, alumnoObj) {
+        const esValida = await validarFilaCompleta(fila, inputs, headers);
+        
+        // Actualizar los valores en el objeto alumno
+        inputs.forEach(input => {
+            alumnoObj[input.dataset.field] = input.value.trim();
+        });
+        
+        return esValida;
+    }
+
+
+    async function validarFilaCompleta(fila, inputs, headers) {
+        let esValida = true;
+        let datosFila = {};
+        
+        // Validar campos 
+        inputs.forEach(input => {
+            const valor = input.value.trim();
+            const campo = input.dataset.field;
+            
+            datosFila[campo] = valor;
+            
+            // Validar si el campo está vacío
+            if (!valor) {
+                input.style.backgroundColor = "#fc8989ff";
+                esValida = false;
+            } else {
+                input.style.backgroundColor = "#ffffff";
+            }
+        });
+        
+        // Validar email específicamente
+        const emailInput = inputs.find(input => 
+            input.dataset.field.toLowerCase().includes('email') || 
+            input.dataset.field.toLowerCase().includes('correo')
+        );
+        
+        if (emailInput) {
+            const email = emailInput.value.trim();
+            if (email) {
+                const emailExiste = await verificarEmailExistente(email);
+                if (emailExiste) {
+                    emailInput.style.backgroundColor = "#fc8989ff";
+                    esValida = false;
+                }
+            }
+        }
+        
+        // Actualizar estado de la fila
+        actualizarEstadoFila(fila, esValida);
+        
+        return esValida;
+    }
+
+
+    function actualizarEstadoFila(fila, esValida) {
+        const celdaValidez = fila.querySelector('td:last-child');
+        const celdaCheck = fila.querySelector('td:first-child');
+        const checkbox = celdaCheck.querySelector('input[type="checkbox"]');
+        
+        if (esValida) {
+            // Fila válida
+            fetch("/public/assets/imagenes/check-circle.svg")
+                .then(response => response.text())
+                .then(data => {
+                    celdaValidez.innerHTML = data;
+                });
+            checkbox.disabled = false;
+        } else {
+            // Fila inválida
+            fetch("/public/assets/imagenes/cross-mark.svg")
+                .then(response => response.text())
+                .then(data => {
+                    celdaValidez.innerHTML = data;
+                });
+            checkbox.disabled = true;
+        }
+    }
+
+    function verificarEmailExistente(email) {
+        if (!email || email.trim() === '') {
+            return Promise.resolve(false);
+        }
+        
+        return fetch('/api/auth/email_exists.php?email=' + encodeURIComponent(email))
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();
+            })
+            .then(data => {
+                return data.existe || false;
+            })
+            .catch(error => {
+                console.error('Error al verificar email:', error);
+                return false;
+            });
+    }
+
+
+
 
     let opts = document.querySelectorAll(".optLateral");
 
@@ -748,21 +881,6 @@ document.addEventListener('DOMContentLoaded', function() {
     opts[2].addEventListener("click", function(){
         window.location.href ='index.php?page=dashboard-admin-empresas'
     })
-
-
-
-
-    function verificarEmailExistente(campo) {
-        const email = campo.trim();
-        
-        return fetch('/api/auth/email_exists.php?email=' + encodeURIComponent(email))
-            .then(response => response.json())
-            .then(data => data.existe)
-            .catch(error => {
-                console.error('Error al verificar email:', error);
-                return false;
-            });
-    }
     
 
 });
