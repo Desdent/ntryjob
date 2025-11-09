@@ -203,7 +203,7 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
                 </div>
                 <div id="containerAddSearch">
                     <div id="input-search">
-                        <input type="text" id="search-admin" name="search-admin" placeholder="Buscar usuario, email...">
+                        <input type="text" id="search-admin" name="search-admin" placeholder="Buscar alumno, email...">
                     </div>
 
                     <div>

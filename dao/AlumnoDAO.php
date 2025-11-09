@@ -46,7 +46,8 @@ class AlumnoDAO implements DAOInterface {
             ORDER BY a.apellidos, a.nombre
         ");
 
-        $stmt->execute([$searchParam, $searchParam, (int)$searchParam, $searchParam, $searchParam]);
+        $stmt->execute([$searchParam, $searchParam, $searchParam, $searchParam, $searchParam]);
+        //No hace falta hacerle (int) a ningun parametro, parece que la base de datos lo pasa automatico
         
         $result = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
