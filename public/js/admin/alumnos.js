@@ -750,6 +750,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (data.success) {
                 console.log('Alumnos cargados:', data.data);
+                vaciarContenidoCeldas();
                 mostrarTablaAlumnos(data.data);
             } else {
                 alert(data.error || 'Error al cargar alumnos');
