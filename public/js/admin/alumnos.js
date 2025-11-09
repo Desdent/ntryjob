@@ -156,6 +156,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 huecoSortEmail.textContent = "  ◀";
                 huecoSortTelefono.textContent = "  ◀";
                 break;
+            default:
+                headerName.classList.remove("ascendente");
+                headerName.classList.remove("descendente");
+                headerApellidos.classList.remove("ascendente");
+                headerApellidos.classList.remove("descendente");
+                headerEmail.classList.remove("ascendente");
+                headerEmail.classList.remove("descendente");
+                headerTelefono.classList.remove("ascendente");
+                headerTelefono.classList.remove("descendente");
+                headerCiudad.classList.remove("ascendente");
+                headerCiudad.classList.remove("descendente");
+
+                huecoSortName.textContent = "  ◀";
+                huecoSortApellidos.textContent = "  ◀";
+                huecoSortEmail.textContent = "  ◀";
+                huecoSortTelefono.textContent = "  ◀";
+                huecoSortCiudad.textContent = "  ◀";
         }
     }
 
@@ -752,6 +769,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Alumnos cargados:', data.data);
                 vaciarContenidoCeldas();
                 mostrarTablaAlumnos(data.data);
+                restaurarOpciones("default");
             } else {
                 alert(data.error || 'Error al cargar alumnos');
             }
