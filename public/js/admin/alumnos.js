@@ -17,57 +17,354 @@ document.addEventListener('DOMContentLoaded', function() {
     let botonEquis = document.querySelector(".modal-close");
     let botonActualizar = document.querySelector(".btn-actualizar");
 
-    function mostrarTablaAlumnos(alumnos) {
-        const contenedor = document.getElementById('tablaAlumnos');
-        contenedor.innerHTML = "";
 
-        let head = document.createElement("thead");
-        contenedor.append(head);
-
-        let cabecera = document.createElement("tr");
-        head.append(cabecera);
-
-        let headerName = document.createElement("th");
-        headerName.innerHTML = "Nombre";
-        cabecera.append(headerName);
-        let huecoSortName = document.createElement("span");
-        huecoSortName.textContent = " ▼";
-        headerName.append(huecoSortName);
-
-        let headerApellidos = document.createElement("th");
-        headerApellidos.innerHTML = "Apellidos";
-        cabecera.append(headerApellidos);
-        let huecoSortApellidos = document.createElement("span");
-        huecoSortApellidos.textContent = " ▼";
-        headerApellidos.append(huecoSortApellidos);
-
-        let headerEmail = document.createElement("th");
-        headerEmail.innerHTML = "Email";
-        cabecera.append(headerEmail);
-        let huecoSortEmail = document.createElement("span");
-        huecoSortEmail.textContent = " ▼";
-        headerEmail.append(huecoSortEmail);
-
-        let headerTelefono = document.createElement("th");
-        headerTelefono.innerHTML = "Teléfono";
-        cabecera.append(headerTelefono);
-        let huecoSortTelefono = document.createElement("span");
-        huecoSortTelefono.textContent = " ▼";
-        headerTelefono.append(huecoSortTelefono);
-
-        let headerCiudad = document.createElement("th");
-        headerCiudad.innerHTML = "Ciudad";
-        cabecera.append(headerCiudad);
-        let huecoSortCiudad = document.createElement("span");
-        huecoSortCiudad.textContent = " ▼";
-        headerCiudad.append(huecoSortCiudad);
-
-        let headerActions = document.createElement("th");
-        headerActions.innerHTML = "Acciones";
-        cabecera.append(headerActions);
-
-        let cuerpo = document.createElement("tbody");
+    const contenedor = document.getElementById('tablaAlumnos');
         
+
+    let head = document.createElement("thead");
+    contenedor.append(head);
+
+    let cabecera = document.createElement("tr");
+    head.append(cabecera);
+
+    let headerName = document.createElement("th");
+    headerName.innerHTML = "Nombre";
+    cabecera.append(headerName);
+    let huecoSortName = document.createElement("span");
+    huecoSortName.textContent = "  ◀"; 
+    headerName.append(huecoSortName);
+
+    let headerApellidos = document.createElement("th");
+    headerApellidos.innerHTML = "Apellidos";
+    cabecera.append(headerApellidos);
+    let huecoSortApellidos = document.createElement("span");
+    huecoSortApellidos.textContent = "  ◀";
+    headerApellidos.append(huecoSortApellidos);
+
+    let headerEmail = document.createElement("th");
+    headerEmail.innerHTML = "Email";
+    cabecera.append(headerEmail);
+    let huecoSortEmail = document.createElement("span");
+    huecoSortEmail.textContent = "  ◀";
+    headerEmail.append(huecoSortEmail);
+
+    let headerTelefono = document.createElement("th");
+    headerTelefono.innerHTML = "Teléfono";
+    cabecera.append(headerTelefono);
+    let huecoSortTelefono = document.createElement("span");
+    huecoSortTelefono.textContent = "  ◀";
+    headerTelefono.append(huecoSortTelefono);
+
+    let headerCiudad = document.createElement("th");
+    headerCiudad.innerHTML = "Ciudad";
+    cabecera.append(headerCiudad);
+    let huecoSortCiudad = document.createElement("span");
+    huecoSortCiudad.textContent = "  ◀";
+    headerCiudad.append(huecoSortCiudad);
+
+    let headerActions = document.createElement("th");
+    headerActions.innerHTML = "Acciones";
+    cabecera.append(headerActions);
+
+    let cuerpo = document.createElement("tbody");
+
+
+
+    function vaciarContenidoCeldas() {
+        const tbody = document.querySelector('#tablaAlumnos tbody');
+        
+        tbody.innerHTML = "";
+    }
+
+
+    function restaurarOpciones(botonPulsado)
+    {
+        switch(botonPulsado)
+        {
+            case "nombre":
+                headerApellidos.classList.remove("ascendente");
+                headerApellidos.classList.remove("descendente");
+                headerEmail.classList.remove("ascendente");
+                headerEmail.classList.remove("descendente");
+                headerTelefono.classList.remove("ascendente");
+                headerTelefono.classList.remove("descendente");
+                headerCiudad.classList.remove("ascendente");
+                headerCiudad.classList.remove("descendente");
+
+                huecoSortApellidos.textContent = "  ◀";
+                huecoSortEmail.textContent = "  ◀";
+                huecoSortTelefono.textContent = "  ◀";
+                huecoSortCiudad.textContent = "  ◀";
+                break;
+            case "apellidos":
+                headerName.classList.remove("ascendente");
+                headerName.classList.remove("descendente");
+                headerEmail.classList.remove("ascendente");
+                headerEmail.classList.remove("descendente");
+                headerTelefono.classList.remove("ascendente");
+                headerTelefono.classList.remove("descendente");
+                headerCiudad.classList.remove("ascendente");
+                headerCiudad.classList.remove("descendente");
+
+                huecoSortName.textContent = "  ◀";
+                huecoSortEmail.textContent = "  ◀";
+                huecoSortTelefono.textContent = "  ◀";
+                huecoSortCiudad.textContent = "  ◀";
+                break;
+            case "email":
+                headerName.classList.remove("ascendente");
+                headerName.classList.remove("descendente");
+                headerApellidos.classList.remove("ascendente");
+                headerApellidos.classList.remove("descendente");
+                headerTelefono.classList.remove("ascendente");
+                headerTelefono.classList.remove("descendente");
+                headerCiudad.classList.remove("ascendente");
+                headerCiudad.classList.remove("descendente");
+
+                huecoSortName.textContent = "  ◀";
+                huecoSortApellidos.textContent = "  ◀";
+                huecoSortTelefono.textContent = "  ◀";
+                huecoSortCiudad.textContent = "  ◀";
+                break;
+            case "telefono":
+                headerName.classList.remove("ascendente");
+                headerName.classList.remove("descendente");
+                headerApellidos.classList.remove("ascendente");
+                headerApellidos.classList.remove("descendente");
+                headerEmail.classList.remove("ascendente");
+                headerEmail.classList.remove("descendente");
+                headerCiudad.classList.remove("ascendente");
+                headerCiudad.classList.remove("descendente");
+
+                huecoSortName.textContent = "  ◀";
+                huecoSortApellidos.textContent = "  ◀";
+                huecoSortEmail.textContent = "  ◀";
+                huecoSortCiudad.textContent = "  ◀";
+                break;
+            case "ciudad":
+                headerName.classList.remove("ascendente");
+                headerName.classList.remove("descendente");
+                headerApellidos.classList.remove("ascendente");
+                headerApellidos.classList.remove("descendente");
+                headerEmail.classList.remove("ascendente");
+                headerEmail.classList.remove("descendente");
+                headerTelefono.classList.remove("ascendente");
+                headerTelefono.classList.remove("descendente");
+
+                huecoSortName.textContent = "  ◀";
+                huecoSortApellidos.textContent = "  ◀";
+                huecoSortEmail.textContent = "  ◀";
+                huecoSortTelefono.textContent = "  ◀";
+                break;
+        }
+    }
+
+    function mostrarTablaAlumnos(alumnos) {
+        
+        
+
+        headerName.onclick = function(){
+            if(headerName.classList.contains("ascendente"))
+            {
+                headerName.classList.remove("ascendente");
+                headerName.classList.add("descendente");
+                console.log(1 + alumnos);
+                vaciarContenidoCeldas()
+                alumnos.sort((a,b) => b.nombre.localeCompare(a.nombre));
+                huecoSortName.textContent = "";
+                huecoSortName.textContent = " ▲";
+
+                restaurarOpciones("nombre");
+            }
+            else if(headerName.classList.contains("descendente"))
+            {
+                headerName.classList.remove("descendente");
+                headerName.classList.add("ascendente");
+                console.log(2 + alumnos);
+                vaciarContenidoCeldas()
+                alumnos.sort((a,b) => a.nombre.localeCompare(b.nombre));
+                huecoSortName.textContent = "";
+                huecoSortName.textContent = " ▼"
+
+                restaurarOpciones("nombre");
+            }
+            else
+            {
+                headerName.classList.add("ascendente");
+                console.log(3 + alumnos);
+                vaciarContenidoCeldas()
+                alumnos.sort((a,b) => a.nombre.localeCompare(b.nombre));
+                huecoSortName.textContent = "";
+                huecoSortName.textContent = " ▼"
+
+                restaurarOpciones("nombre");
+            }
+
+            mostrarTablaAlumnos(alumnos);
+        }
+
+
+        headerApellidos.onclick = function(){
+            if(headerApellidos.classList.contains("ascendente"))
+            {
+                headerApellidos.classList.remove("ascendente");
+                headerApellidos.classList.add("descendente");
+                vaciarContenidoCeldas()
+                alumnos.sort((a,b) => b.apellidos.localeCompare(a.apellidos));
+                huecoSortApellidos.textContent = "";
+                huecoSortApellidos.textContent = " ▲";
+
+                restaurarOpciones("apellidos");
+            }
+            else if(headerApellidos.classList.contains("descendente"))
+            {
+                headerApellidos.classList.remove("descendente");
+                headerApellidos.classList.add("ascendente");
+                vaciarContenidoCeldas()
+                alumnos.sort((a,b) => a.apellidos.localeCompare(b.apellidos));
+                huecoSortApellidos.textContent = "";
+                huecoSortApellidos.textContent = " ▼";
+
+                restaurarOpciones("apellidos");
+            }
+            else
+            {
+                headerApellidos.classList.add("ascendente");
+                vaciarContenidoCeldas()
+                alumnos.sort((a,b) => a.apellidos.localeCompare(b.apellidos));
+                huecoSortApellidos.textContent = "";
+                huecoSortApellidos.textContent = " ▼";
+
+                restaurarOpciones("apellidos");
+            }
+
+            mostrarTablaAlumnos(alumnos);
+        }
+
+
+        headerEmail.onclick = function(){
+            if(headerEmail.classList.contains("ascendente"))
+            {
+                headerEmail.classList.remove("ascendente");
+                headerEmail.classList.add("descendente");
+                vaciarContenidoCeldas()
+                alumnos.sort((a,b) => b.email.localeCompare(a.email));
+                huecoSortEmail.textContent = "";
+                huecoSortEmail.textContent = " ▲";
+
+                restaurarOpciones("email");
+            }
+            else if(headerEmail.classList.contains("descendente"))
+            {
+                headerEmail.classList.remove("descendente");
+                headerEmail.classList.add("ascendente");
+                vaciarContenidoCeldas()
+                alumnos.sort((a,b) => a.email.localeCompare(b.email));
+                huecoSortEmail.textContent = "";
+                huecoSortEmail.textContent = " ▼";
+
+                restaurarOpciones("email");
+            }
+            else
+            {
+                headerEmail.classList.add("ascendente");
+                vaciarContenidoCeldas()
+                alumnos.sort((a,b) => a.email.localeCompare(b.email));
+                huecoSortEmail.textContent = "";
+                huecoSortEmail.textContent = " ▼";
+
+                restaurarOpciones("email");
+            }
+
+            mostrarTablaAlumnos(alumnos);
+        }
+
+
+        headerTelefono.onclick = function(){
+            if(headerTelefono.classList.contains("ascendente"))
+            {
+                headerTelefono.classList.remove("ascendente");
+                headerTelefono.classList.add("descendente");
+                vaciarContenidoCeldas()
+                alumnos.sort((a,b) => b.telefono.localeCompare(a.telefono));
+                huecoSortTelefono.textContent = "";
+                huecoSortTelefono.textContent = " ▲";
+
+                restaurarOpciones("telefono");
+                
+            }
+            else if(headerTelefono.classList.contains("descendente"))
+            {
+                headerTelefono.classList.remove("descendente");
+                headerTelefono.classList.add("ascendente");
+                vaciarContenidoCeldas()
+                alumnos.sort((a,b) => a.telefono.localeCompare(b.telefono));
+                huecoSortTelefono.textContent = "";
+                huecoSortTelefono.textContent = " ▼";
+                
+                restaurarOpciones("telefono");
+            }
+            else
+            {
+                headerTelefono.classList.add("ascendente");
+                vaciarContenidoCeldas()
+                alumnos.sort((a,b) => a.telefono.localeCompare(b.telefono));
+                huecoSortTelefono.textContent = "";
+                huecoSortTelefono.textContent = " ▼";
+
+                restaurarOpciones("telefono");
+            }
+
+            mostrarTablaAlumnos(alumnos);
+        }
+
+
+
+        headerCiudad.onclick = function(){
+            if(headerCiudad.classList.contains("ascendente"))
+            {
+                headerCiudad.classList.remove("ascendente");
+                headerCiudad.classList.add("descendente");
+                vaciarContenidoCeldas()
+                alumnos.sort((a,b) => b.ciudad.localeCompare(a.ciudad));
+                huecoSortCiudad.textContent = "";
+                huecoSortCiudad.textContent = " ▲";
+
+                restaurarOpciones("ciudad");
+            }
+            else if(headerCiudad.classList.contains("descendente"))
+            {
+                headerCiudad.classList.remove("descendente");
+                headerCiudad.classList.add("ascendente");
+                vaciarContenidoCeldas()
+                alumnos.sort((a,b) => a.ciudad.localeCompare(b.ciudad));
+                huecoSortCiudad.textContent = "";
+                huecoSortCiudad.textContent = " ▼";
+
+                restaurarOpciones("ciudad");
+            }
+            else
+            {
+                headerCiudad.classList.add("ascendente");
+                vaciarContenidoCeldas()
+                alumnos.sort((a,b) => a.ciudad.localeCompare(b.ciudad));
+                huecoSortCiudad.textContent = "";
+                huecoSortCiudad.textContent = " ▼";
+
+                restaurarOpciones("ciudad");
+            }
+
+            mostrarTablaAlumnos(alumnos);
+        }
+
+
+
+        
+
+
+
+
+
         alumnos.forEach(alumno => {
             let id = alumno.id;
 
