@@ -751,7 +751,9 @@ footer p {
 .form-group select,
 .form-group textarea,
 .form-group #fechaNacimiento,
-.inputsMassiveAdd {
+.inputsMassiveAdd,
+#search-admin {
+    margin-top:0.3em;
     width: 100%;
     padding: 5px;
     border: 2px solid #7CC8F9;
@@ -764,7 +766,8 @@ footer p {
 .form-group select:focus,
 .form-group textarea:focus,
 .form-group #fechaNacimiento:focus,
-.inputsMassiveAdd:hover {
+.inputsMassiveAdd:hover,
+#search-admin:hover {
     outline: none;
     border-color: #0876BE;
     
@@ -1137,8 +1140,12 @@ button:hover {
 }
 
 #headerTableContainer{
-    display: flex;
+    display: block;
     justify-content: space-between;
+}
+
+#headerTableContainer #divh2 {
+    margin-bottom: 1em;
 }
 
 
@@ -1221,6 +1228,17 @@ tbody tr:hover {
     margin-top: 0.3em;
     margin-bottom: 0.3em;
 }
+
+.botonesAñadirCargar {
+    margin-bottom: 1em;
+}
+
+#containerAddSearch {
+    display: flex;
+    justify-content: space-between;
+}
+
+
 
 
 

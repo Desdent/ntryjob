@@ -16,21 +16,34 @@ try {
             if (isset($_GET['id'])) {
                 $alumno = $dao->getById($_GET['id']);
                 echo json_encode($alumno ? $alumno->toArray() : null);
-            } else {
+            } 
+            else if(isset($_GET['searchValue']))
+            {
+                $alumnos = $dao->searchAlumnos($_GET['searchValue']);
+                $resultado = [];
+                foreach ($alumnos as $alumno) {
+                    $resultado[] = $alumno->toArray();
+                }
+                echo json_encode([
+                    'success' => true,
+                    'data' => $resultado
+                ]);
+            }
+            else {
                 $alumnos = $dao->getAll();
+                $resultado = [];
+                foreach ($alumnos as $alumno) {
+                    $resultado[] = $alumno->toArray();
+                }
                 echo json_encode([
                     'success' => true, 
-                    'data' => array_map(fn($a) => $a->toArray(), $alumnos)
+                    'data' => $resultado
                 ]);
             }
             break;
 
         case 'POST':
             $data = json_decode(file_get_contents('php://input'), true);
-            
-            if (!$data) {
-                $data = $_POST;
-            }
             
             // Verificar si es carga masiva
             if (isset($_GET["accion"]) && $_GET["accion"] === "massive") {
@@ -47,7 +60,7 @@ try {
                 
                 foreach ($data as $index => $alumnoData) {
                     try {
-                        // Validar datos mínimos
+                        // Validar datos
                         if (empty($alumnoData['nombre']) || empty($alumnoData['email'])) {
                             $errores[] = "Fila " . ($index + 1) . ": Nombre y email requeridos";
                             continue;

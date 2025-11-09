@@ -198,10 +198,18 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
         
         <div class="table-container">
             <div id="headerTableContainer">
-                <h2>Listado de Alumnos</h2>
-                <div>
-                    <button class="botonesAñadirCargar" id="createUser">Añadir Alumno</button>
-                    <button class="botonesAñadirCargar" id="massiveAdd">Carga Masiva</button>
+                <div id="divh2">
+                    <h2>Listado de Alumnos</h2>
+                </div>
+                <div id="containerAddSearch">
+                    <div id="input-search">
+                        <input type="text" id="search-admin" name="search-admin" placeholder="Buscar usuario, email...">
+                    </div>
+
+                    <div>
+                        <button class="botonesAñadirCargar" id="createUser">Añadir Alumno</button>
+                        <button class="botonesAñadirCargar" id="massiveAdd">Carga Masiva</button>
+                    </div>
                 </div>
             </div>
             <table id="tablaAlumnos"></table>

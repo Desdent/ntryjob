@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
         btnLogout.addEventListener('click', cerrarSesion);
     }
 
+
+
+
     let trasfondoModal = document.querySelector(".trasfondoModal");
     let modalContainer = document.querySelector(".modalContainer");
     let botonCancelar = document.getElementById("btnCancelarModal");
@@ -409,8 +412,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function listarAlumnos() {
+
         
+
         fetch('/api/admin/AlumnosController.php?email', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Datos parseados:', data);
+            
+            if (data.success) {
+                console.log('Alumnos cargados:', data.data);
+                mostrarTablaAlumnos(data.data);
+            } else {
+                alert(data.error || 'Error al cargar alumnos');
+            }
+        })
+        .catch(error => {
+            console.error('Error completo:', error);
+            alert('Error: ' + error.message);
+        });
+    }
+
+
+    function listarBusquedaAlumnos(searchValue)
+    {
+        fetch('/api/admin/AlumnosController.php?searchValue=' +encodeURIComponent(searchValue), {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -628,7 +659,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             let inputs = [];
             
-            // Celda de checkbox (primera columna)
+            // Celda del checkbox
             let celdaCheckbox = document.createElement("td");
             let checkbox = document.createElement("input");
             checkbox.type = "checkbox";
@@ -862,6 +893,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 return false;
             });
     }
+
+
+    //Busqueda en la lista
+    let inputSearch = document.getElementById("search-admin");
+
+    inputSearch.addEventListener("keypress", function(e){
+        if(e.key ==="Enter")
+        {
+            if(this.value == "")
+            {
+                listarAlumnos();
+            }
+            else
+            {
+                listarBusquedaAlumnos(this.value);
+            }
+        }
+    })
+
 
 
 

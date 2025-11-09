@@ -22,6 +22,39 @@ class AlumnoDAO implements DAOInterface {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ? new AlumnoEntity($row) : null;
     }
+
+
+    public function searchAlumnos($searchValue) {
+        $searchParam = "%" . $searchValue . "%";
+        
+        $stmt = $this->db->prepare("
+            SELECT 
+                a.id, a.usuario_id, a.nombre, a.apellidos, a.telefono, 
+                a.fecha_nacimiento, a.pais, a.provincia, a.ciudad, 
+                a.direccion, a.codigo_postal, a.ciclo_id, a.fecha_inicio, 
+                a.fecha_fin, a.verificado, a.created_at,
+                u.email,
+                CASE WHEN a.cv IS NOT NULL THEN 1 ELSE 0 END as tiene_cv,
+                CASE WHEN a.foto IS NOT NULL THEN 1 ELSE 0 END as tiene_foto
+            FROM alumnos a
+            JOIN usuarios u ON a.usuario_id = u.id
+            WHERE LOWER(a.nombre) LIKE LOWER(?)
+                OR LOWER(a.apellidos) LIKE LOWER(?)
+                OR LOWER(a.telefono) LIKE LOWER(?)
+                OR LOWER(a.ciudad) LIKE LOWER(?)
+                OR LOWER(u.email) LIKE LOWER(?)
+            ORDER BY a.apellidos, a.nombre
+        ");
+
+        $stmt->execute([$searchParam, $searchParam, (int)$searchParam, $searchParam, $searchParam]);
+        
+        $result = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new AlumnoEntity($row);
+        }
+        
+        return $result;
+    }
     
 
     public function getAll() {
