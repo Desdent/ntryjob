@@ -37,16 +37,16 @@ foreach($empresasPendientes as $empresaPendiente)
         
         <div id="menu-izq"> 
             <h3>Panel de Navegación</h2>
-                <div class="optLateral">
-                    <a href="index.php?page=dashboard-admin-alumnos">Panel de Alumnos</a>
-                </div>
-                <div class="optLateral">
-                    <a href="index.php?page=dashboard-admin-empresas">Panel de Empresas</a>
-                </div>
-                <div class="optLateral">
-                    <a href="index.php?page=dashboard-admin-ofertas">Panel de Ofertas</a>
-                </div>
+            <div class="optLateral">
+                <a href="index.php?page=dashboard-admin-alumnos">Panel de Alumnos</a>
             </div>
+            <div class="optLateral">
+                <a href="index.php?page=dashboard-admin-empresas">Panel de Empresas</a>
+            </div>
+            <div class="optLateral">
+                <a href="index.php?page=dashboard-admin-ofertas">Panel de Ofertas</a>
+            </div>
+        </div>
         
         <div class="table-container">
             <div class="headerTableContainer">
@@ -59,7 +59,7 @@ foreach($empresasPendientes as $empresaPendiente)
                     </div>
 
                     <div>
-                        <button class="botonesAñadirCargar" id="createEmpresa">Añadir Empresa</button>
+                        <a href="index.php?page=dashboard-admin-addEmpresa" class="addEmpresa">Añadir Empresa</a>
                     </div>
                 </div>
             </div>

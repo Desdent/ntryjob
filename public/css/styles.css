@@ -768,14 +768,27 @@ footer p {
 }
 
 #search-empresas,
-#search-empresasPendientes {
+#search-empresasPendientes,
+.inputsAddEmpresa
+ {
     display: inline;
     margin-top:0.3em;
+    margin-bottom: 0.5em;
     padding: 5px;
     border: 2px solid #7CC8F9;
     border-radius: 0.7em;
     font-size: 1rem;
     box-sizing: border-box;
+}
+
+.filasAddAlumno form{
+    display: flex;
+    margin-top: 1em;
+
+}
+
+.filasAddAlumno form input{
+    margin-right: 1em;
 }
 
 .form-group input:focus,
@@ -799,11 +812,6 @@ footer p {
 #input-searchEmpresas {
     display: inline;
 }
-
-#input-searchPendientes {
-    margin-bottom: 0.7em;
-}
-
 
 #nombre:focus,
 #apellidos:focus,
@@ -1005,6 +1013,13 @@ footer p {
     display: block;
 }
 
+.pErrorAddEmpresa {
+    color: #f44336;
+    font-size: 12px;
+    margin-top: 5px;
+    min-height: 18px;
+}
+
 /* ========== FOOTER DEL MODAL ========== */
 .modal-footer, .modal-footerAdd, .modal-footerMassive {
     padding: 20px 30px;
@@ -1161,7 +1176,7 @@ button:hover {
 }
 
 /* 2. CONTENEDOR DE LA TABLA - Estilos visuales */
-.table-container, .tablePendientes-container {
+.table-container, .tablePendientes-container, .addEmpresa-container {
     /*  Esto hace que ecupe el espacio restante */
     flex-grow: 1; 
     
@@ -1193,7 +1208,7 @@ button:hover {
 }
 
 
-.table-container h2 {
+.table-container h2, .addEmpresa-container h2 {
     display: inline;
     color: #0876BE;
     margin: 0 0 20px 0;
@@ -1521,7 +1536,11 @@ tbody tr:hover {
     color: #ffffff;
 }
 
-button {
+#divAddEmpresa{
+    margin-top: 1em;
+}
+
+button, .addEmpresa {
     border-radius: 0.7em;
     padding: 0.7em 2em;
     border: none;
@@ -1530,9 +1549,11 @@ button {
     color: #0876BE;
     font-weight: 600;
     cursor: pointer;
+    margin-bottom: 1em;
+    text-decoration: none;
 }
 
-button:hover {
+button:hover, .addEmpresa:hover {
     background: #075588;
     box-shadow: 0em 0.35em 0em 0 #075588;
     color: #ffffff;

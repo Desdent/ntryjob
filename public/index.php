@@ -69,6 +69,16 @@ switch($page) {
         echo $templates->render('dashboard-admin-empresas');
         break;
 
+    case 'dashboard-admin-addEmpresa':
+        AuthMiddleware::requiereAuth(["admin"]);
+        echo $templates->render('dashboard-admin-addEmpresa');
+        break;
+    
+    case 'confirmacion-addedEmpresa':
+        AuthMiddleware::requiereAuth(["admin"]);
+        echo $templates->render('confirmacion-addedEmpresa');
+        break;
+
     case 'dashboard-admin-ofertas':
         AuthMiddleware::requiereAuth(["admin"]);
         echo $templates->render('dashboard-admin-ofertas');
