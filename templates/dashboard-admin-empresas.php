@@ -103,7 +103,7 @@ foreach($empresasPendientes as $empresaPendiente)
         <div class="tablePendientes-container">
             <div class="headerTableContainer">
                 <div id="divh2Pendientes">
-                    <h2>Pendientes de aprobación</h2>
+                    <h2>Pendientes de Aprobación</h2>
                 </div>
                 <div id="containerSearchPendientes">
                     <div id="input-searchPendientes">
