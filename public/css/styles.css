@@ -1581,6 +1581,6 @@ button:hover, .addEmpresa:hover {
     text-decoration: none;
 }
 
-#menu-izq a:visited {
-    color: #333;
+#menu-izq a:hover{
+    color: #0876BE;
 }

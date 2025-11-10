@@ -7,6 +7,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . '/middleware/AuthMiddleware.php';
 
 AuthMiddleware::requiereAuth(['admin']);
 
+
 $errores = [];
 if (isset($_SESSION["errores"])) {
     $errores = $_SESSION["errores"];
@@ -14,8 +15,11 @@ if (isset($_SESSION["errores"])) {
     unset($_SESSION["errores"]); 
 }
 
+
+
 if(isset($_SESSION["exito"]))
 {
+    unset($_SESSION["exito"]); 
 ?>
 
     <div class="dashboard-container">
@@ -26,7 +30,7 @@ if(isset($_SESSION["exito"]))
 
         <div class="divCentral">
             <div id="menu-izq"> 
-                <h3>Panel de Navegación</h2>
+                <h3>Panel de Navegación</h3>
                 <div class="optLateral">
                     <a href="index.php?page=dashboard-admin-alumnos">Panel de Alumnos</a>
                 </div>
@@ -40,7 +44,7 @@ if(isset($_SESSION["exito"]))
         
         
             <div class="table-container">
-                    <h2 id="h2AddEmpresa">Empresa Añadida</h2>
+                    <h2 id="h2AddEmpresa">¡Empresa Añadida!</h2>
             </div>
         </div>
 
@@ -49,9 +53,9 @@ if(isset($_SESSION["exito"]))
 
 <?php
 }
-?>
-
-
+else
+{
+    ?>
 
 <div class="dashboard-container">
     <div class="dashboard-header">
@@ -61,7 +65,7 @@ if(isset($_SESSION["exito"]))
 
     <div class="divCentral">
         <div id="menu-izq"> 
-            <h3>Panel de Navegación</h2>
+            <h3>Panel de Navegación</h3>
             <div class="optLateral">
                 <a href="index.php?page=dashboard-admin-alumnos">Panel de Alumnos</a>
             </div>
@@ -80,8 +84,10 @@ if(isset($_SESSION["exito"]))
                     <form action="index.php?page=confirmacion-addedEmpresa" method="POST" novalidate>
                         <div>
                             <label for="nombre">Nombre:</label>
-                            <input type="text" name="nombre" class="inputsAddEmpresa" required>
+                            <input type="text" name="nombre" class="inputsAddEmpresa" value="<?php echo isset($_SESSION['datosPrevios']['nombre']) ? htmlspecialchars($_SESSION['datosPrevios']['nombre']) : '' ?>"
+                                required>
                             <?php
+
                                 if (isset($errores["nombreError"])) {
                                     echo "<span> 
                                             <p class='pErrorAddEmpresa'>" . htmlspecialchars($errores["nombreError"]) . "</p>
@@ -92,8 +98,10 @@ if(isset($_SESSION["exito"]))
 
                         <div>
                             <label for="email">Email:</label>
-                            <input type="text" name="email" class="inputsAddEmpresa" required>
+                            <input type="text" name="email" class="inputsAddEmpresa" value="<?php echo isset($_SESSION['datosPrevios']['email']) ? htmlspecialchars($_SESSION['datosPrevios']['email']) : '' ?>"
+                            required>
                             <?php
+
                                 if (isset($errores["emailError"])) {
                                     echo "<span> 
                                             <p class='pErrorAddEmpresa'>" . htmlspecialchars($errores["emailError"]) . "</p>
@@ -104,8 +112,10 @@ if(isset($_SESSION["exito"]))
 
                         <div>
                             <label for="telefono">Telefono:</label>
-                            <input type="text" name="telefono" class="inputsAddEmpresa" required>
+                            <input type="text" name="telefono" class="inputsAddEmpresa" value="<?php echo isset($_SESSION['datosPrevios']['telefono']) ? htmlspecialchars($_SESSION['datosPrevios']['telefono']) : '' ?>"
+                            required>
                             <?php
+
                                 if (isset($errores["telefonoError"])) {
                                     echo "<span class='spanErrorsAddEmpresa'> 
                                             <p class='pErrorAddEmpresa'>" . htmlspecialchars($errores["telefonoError"]) . "</p>
@@ -125,3 +135,15 @@ if(isset($_SESSION["exito"]))
 
     
 </div>
+
+<?php
+}
+
+if(isset($_SESSION["datosPrevios"]))
+{
+    unset($_SESSION["datosPrevios"]);
+}
+
+?>
+
+
