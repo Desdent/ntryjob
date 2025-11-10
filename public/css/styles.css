@@ -762,6 +762,22 @@ footer p {
     box-sizing: border-box;
 }
 
+#containerSearchEmpresas {
+    display: flex;
+    justify-content: space-between;
+}
+
+#search-empresas,
+#search-empresasPendientes {
+    display: inline;
+    margin-top:0.3em;
+    padding: 5px;
+    border: 2px solid #7CC8F9;
+    border-radius: 0.7em;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus,
@@ -772,6 +788,22 @@ footer p {
     border-color: #0876BE;
     
 }
+
+
+#search-empresas:hover,
+#search-empresasPendientes:hover {
+    outline: none;
+    border-color: #0876BE;
+}
+
+#input-searchEmpresas {
+    display: inline;
+}
+
+#input-searchPendientes {
+    margin-bottom: 0.7em;
+}
+
 
 #nombre:focus,
 #apellidos:focus,
@@ -983,7 +1015,8 @@ footer p {
     gap: 15px;
 }
 
-.modal-footer button, .modal-footerAdd button, .modal-footerMassive button {
+.modal-footer button, .modal-footerAdd button,
+.modal-footerMassive button {
     padding: 12px 30px;
     border: none;
     border-radius: 8px;
@@ -1128,7 +1161,7 @@ button:hover {
 }
 
 /* 2. CONTENEDOR DE LA TABLA - Estilos visuales */
-.table-container {
+.table-container, .tablePendientes-container {
     /*  Esto hace que ecupe el espacio restante */
     flex-grow: 1; 
     
@@ -1139,13 +1172,24 @@ button:hover {
     margin-bottom: 30px;
 }
 
-#headerTableContainer{
+.table-container {
+    min-width: 75%;
+}
+
+.tablePendientes-container {
+    grid-row: 2; 
+
+    grid-column: 2 / 3;
+}
+
+.headerTableContainer{
     display: block;
     justify-content: space-between;
 }
 
-#headerTableContainer #divh2 {
+.headerTableContainer #divh2,  .headerTableContainer #divh2Pendientes {
     margin-bottom: 1em;
+    color: #0876BE;
 }
 
 
@@ -1169,6 +1213,7 @@ thead {
     background: #0876BE;
     color: white;
 }
+
 
 th {
     padding: 15px;
@@ -1258,13 +1303,15 @@ tbody tr:hover {
 /* === Menu lateral dashboard === */
 
 .divCentral {
-    display: flex; 
-    gap: 30px; 
-    align-items: flex-start;
+    display: grid; 
+    grid-template-columns: 20% 1fr ;
+    gap: 2em; /* Espacio entre las columnas y filas */
+    align-items: start; 
+    grid-template-rows: auto auto;
 }
 
 #menu-izq{
-    width: 20%; 
+ 
     flex-shrink: 0;
     font-size: 0.88em;
     padding-left: 2em;
@@ -1273,6 +1320,9 @@ tbody tr:hover {
     border-radius: 2em;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     margin-bottom: 30px;
+    height: 100%;
+    grid-column: 1;
+    grid-row: 1 / 3;
 }
 
 .optLateral {
@@ -1486,4 +1536,30 @@ button:hover {
     background: #075588;
     box-shadow: 0em 0.35em 0em 0 #075588;
     color: #ffffff;
+}
+
+.botonesAccionEmpresas {
+    border-radius: 0.6em;
+    padding: 0.2em 0.6em 0.2em;
+    border: none;
+    background-color: #E7F6F8;
+    box-shadow: 0em 0.35em 0em 0 #7CC7F9;
+    color: #0876BE;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.botonesAccionEmpresas:hover {
+    background: #075588;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+    color: #ffffff;
+}
+
+#menu-izq a {
+    color: #333;
+    text-decoration: none;
+}
+
+#menu-izq a:visited {
+    color: #333;
 }

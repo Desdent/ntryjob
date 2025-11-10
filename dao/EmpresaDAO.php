@@ -17,7 +17,14 @@ class EmpresaDAO implements DAOInterface {
 
     
     public function getAll() {
-        $stmt = $this->db->query("SELECT * FROM empresas ORDER BY nombre");
+        $stmt = $this->db->query("
+            SELECT 
+                e.nombre, e.cif, e.telefono, e.sector, e.pais, e.provincia, e.ciudad,
+                e.direccion, e.aprobada, e.verificado, u.email,
+                CASE WHEN logo IS NOT NULL THEN 1 ELSE 0 END as tiene_logo
+            FROM empresas e
+            JOIN usuarios u ON e.usuario_id = u.id
+            WHERE e.verificado = 1");
         $result = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = new EmpresaEntity($row);
@@ -72,7 +79,14 @@ class EmpresaDAO implements DAOInterface {
     }
     
     public function getPendientes() {
-        $stmt = $this->db->query("SELECT * FROM empresas WHERE aprobada = 0 ORDER BY created_at DESC");
+        $stmt = $this->db->query("
+            SELECT 
+                e.nombre, e.cif, e.telefono, e.sector, e.pais, e.provincia, e.ciudad,
+                e.direccion, e.aprobada, e.verificado, u.email,
+                CASE WHEN logo IS NOT NULL THEN 1 ELSE 0 END as tiene_logo
+            FROM empresas e
+            JOIN usuarios u ON e.usuario_id = u.id
+            WHERE e.aprobada = 0");
         $result = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = new EmpresaEntity($row);

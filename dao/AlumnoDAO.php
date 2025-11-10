@@ -70,7 +70,6 @@ class AlumnoDAO implements DAOInterface {
                 CASE WHEN a.foto IS NOT NULL THEN 1 ELSE 0 END as tiene_foto
             FROM alumnos a
             JOIN usuarios u ON a.usuario_id = u.id
-            ORDER BY a.apellidos, a.nombre
         ");
         
         $result = [];
