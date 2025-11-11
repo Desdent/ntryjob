@@ -27,7 +27,7 @@ class EmpresaDAO implements DAOInterface {
                 CASE WHEN logo IS NOT NULL THEN 1 ELSE 0 END as tiene_logo
             FROM empresas e
             JOIN usuarios u ON e.usuario_id = u.id
-            WHERE e.verificado = 1");
+            WHERE e.aprobada = 1");
         $result = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = new EmpresaEntity($row);
@@ -117,8 +117,7 @@ class EmpresaDAO implements DAOInterface {
     public function getPendientes() {
         $stmt = $this->db->query("
             SELECT 
-                e.nombre, e.cif, e.telefono, e.sector, e.pais, e.provincia, e.ciudad,
-                e.direccion, e.aprobada, e.verificado, u.email,
+                e.*, u.email,
                 CASE WHEN logo IS NOT NULL THEN 1 ELSE 0 END as tiene_logo
             FROM empresas e
             JOIN usuarios u ON e.usuario_id = u.id
@@ -134,11 +133,6 @@ class EmpresaDAO implements DAOInterface {
     
     public function aprobar($id) {
         $stmt = $this->db->prepare("UPDATE empresas SET aprobada = 1 WHERE id = ?");
-        return $stmt->execute([$id]);
-    }
-    
-    public function rechazar($id) {
-        $stmt = $this->db->prepare("UPDATE empresas SET aprobada = 0 WHERE id = ?");
         return $stmt->execute([$id]);
     }
     

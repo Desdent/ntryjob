@@ -35,12 +35,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     <div id="divh2">
                         <?php if(isset($_POST["btnActualizarEmpresa"])) : ?>
                         <h2>¡Empresa Actualizada!</h2>
-                        <?php elseif(isset($_POST["btnBorrarrEmpresa"])) : ?>
+                        <?php elseif(isset($_POST["btnBorrarEmpresa"])) : ?>
                         <h2>¡Empresa Borrada!</h2>
                         <?php elseif(isset($_POST["btnAprobarEmpresa"])) : ?>
                         <h2>¡Empresa Aprobada!</h2>
                         <?php elseif(isset($_POST["btnRechazarEmpresa"])) : ?>
-                        <h2>¡Empresa Rechazada!</h2>
+                        <h2>¡Empresa Rechazada! (Y borrada de la base de datos)</h2>
                         <?php
                         endif
                         ?>
@@ -49,6 +49,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                         <h3>
                             Redirigiendo al panel de empresas...
                         </h3>
+                        
                     </div>
                 </div>
             </div>
@@ -58,7 +59,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     </div>
 
 
-        <!-- <meta http-equiv="refresh" content="3;url=?page=dashboard-admin-empresas"> -->
+        <meta http-equiv="refresh" content="3;url=?page=dashboard-admin-empresas">
         <?php
 }
 

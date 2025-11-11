@@ -161,6 +161,13 @@ foreach($empresasPendientes as $empresaPendiente)
                     <?php
                         
                         foreach($resultadoPendientes as $dataPendientes){
+
+                            new EmpresasController();
+                            $empresaPendiente = EmpresasController::obtenerEmpresa($dataPendientes["email"]);
+                            
+                            $empresaPendienteDatos = $empresaPendiente->toArray();
+
+
                             echo "<tr>";
                                 foreach($dataPendientes as $campoPendientes)
                                 {
@@ -169,10 +176,20 @@ foreach($empresasPendientes as $empresaPendiente)
                                 ?>
                                 <td>
                                     <form action="" method="POST">
+
+                                        <?php
+                                        $datosPendienteSerialized = serialize($empresaPendienteDatos);
+                                        ?>
+                                        <!-- Para pasar el string a array -->
+                                        <input type="hidden" name="datosPendienteSerialized" value="<?php echo htmlspecialchars($datosPendienteSerialized)?>">
+                                        
                                         <input type="submit" name="btnRechazarEmpresa" value="Rechazar" class="botonesAccionEmpresas">
                                     </form>
 
                                     <form action="" method="POST">
+
+                                        <input type="hidden" name="datosPendienteSerialized" value="<?php echo htmlspecialchars($datosPendienteSerialized)?>">
+
                                         <input type="submit" name="btnAprobarEmpresa" value="Aprobar" class="botonesAccionEmpresas">
                                     </form>
                                 </td>

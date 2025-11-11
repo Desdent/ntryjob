@@ -43,7 +43,7 @@ class EmpresasController {
     {
         $empresa = new EmpresaEntity($empresaPOST);
         $dao = new EmpresaDAO();
-        $dao->rechazar($empresa->id);
+        $dao->delete($empresa->id);
     }
 
 }
