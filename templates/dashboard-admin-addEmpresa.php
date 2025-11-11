@@ -125,11 +125,11 @@ else
                         </div>
 
                         
-                        </div>
+                </div>
                         <div id="divAddEmpresa">
                             <input type="submit" value="Añadir Empresa" class="addEmpresa">
                         </div>
-                    </form>
+                </form>
         </div>
     </div>
 

@@ -3,8 +3,14 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
 
 AuthMiddleware::requiereAuth(['admin']);
 
+require_once $_SERVER["DOCUMENT_ROOT"] . '/dao/EmpresaDAO.php';
+require_once $_SERVER["DOCUMENT_ROOT"] . '/models/entities/EmpresaEntity.php';
+require_once $_SERVER["DOCUMENT_ROOT"] . '/middleware/AuthMiddleware.php';
+
 $errores = [];
 $datosPrevios = [];
+
+$dao = new EmpresaDAO();
 
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
@@ -46,9 +52,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     if(isset($_SESSION["datosPrevios"])) {
         unset($_SESSION["datosPrevios"]);
     }
-    $_SESSION["exito"] = "exito";
-    header("location: index.php?page=dashboard-admin-addEmpresa");
-    exit;
+
+
+    $empresa = new EmpresaEntity($datosPrevios);
+    $nuevo = $dao->create($empresa);
+
+    if($nuevo)
+    {
+        $_SESSION["exito"] = "exito";
+        header("location: index.php?page=dashboard-admin-addEmpresa");
+        exit;
+    }
+
+    
+
+
 
 }
 else

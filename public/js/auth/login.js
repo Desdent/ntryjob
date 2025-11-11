@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             window.location.href = '/public/index.php?page=dashboard-empresario';
                         } else {
                             alert('Tu empresa está pendiente de aprobación');
-                            // Opcional: redirigir a página de espera
                         }
                     } else if (role === 'alumno') {
                         window.location.href = '/public/index.php?page=dashboard-alumno';

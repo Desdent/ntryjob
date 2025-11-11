@@ -14,6 +14,9 @@ $empresas = $dao->getAll();
 $empresasPendientes = $dao->getPendientes();
 $resultado = [];
 $resultadoPendientes = [];
+
+$empresa;
+
 foreach($empresas as $empresa)
 {
     $resultado[] = $empresa->toArrayDTO();
@@ -77,17 +80,33 @@ foreach($empresasPendientes as $empresaPendiente)
                 <tbody>
                     <?php
                         
+                        
                         foreach($resultado as $data){
+                            
                             echo "<tr>";
                                 foreach($data as $campo)
                                 {
                                     echo "<td> $campo </td>";
                                 }
+
+                                $empresa = $dao->findByEmail($data["email"]);
+                                $empresaDatos = $empresa->toArray();
+                                var_dump($empresaDatos);
                                 ?>
                                 <td>
-                                    <form action="">
+                                    <form action="?page=admin-editarEmpresa" method="POST">
+
+                                    <?php
+                                        $datosSerialized = serialize($empresaDatos);
+                                    ?>
+                                                                                        <!-- Para pasar el string a array -->
+                                    <input type="hidden" name="datosSerialized" value="<?php echo htmlspecialchars($datosSerialized)?>">
+
                                     <input type="submit" value="Editar" class="botonesAccionEmpresas">
-                                    <input type="submit" value="Borrar" class="botonesAccionEmpresas">
+                                    </form>
+
+                                    <form action="">
+                                        <input type="submit" name="BorrarEmpresa" value="Borrar" class="botonesAccionEmpresas">
                                     </form>
                                 </td>
                                 

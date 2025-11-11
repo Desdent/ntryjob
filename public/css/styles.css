@@ -769,8 +769,8 @@ footer p {
 
 #search-empresas,
 #search-empresasPendientes,
-.inputsAddEmpresa
- {
+.inputsAddEmpresa, .inputsEditarEmpresa
+{
     display: inline;
     margin-top:0.3em;
     margin-bottom: 0.5em;
@@ -780,6 +780,58 @@ footer p {
     font-size: 1rem;
     box-sizing: border-box;
 }
+
+.filasEditarEmpresa {
+    display: block;
+}
+
+
+.filasEditarEmpresa div {
+    margin-bottom: 2em;
+    display: inline;
+}
+
+#divActualizarEmpresa {
+    display: flex;
+    justify-content: end;
+}
+
+.actualizarEmpresa {
+    border-radius: 0.7em;
+    padding: 0.7em 2em;
+    border: none;
+    background-color: #E7F6F8;
+    box-shadow: 0em 0.35em 0em 0 #7CC7F9;
+    color: #0876BE;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.actualizarEmpresa:hover {
+    background: #075588;
+    box-shadow: 0em 0.35em 0em 0 #075588;
+    color: #ffffff;
+}
+
+
+
+
+
+
+#textareaEditarEmpresa {
+    display: inline;
+    margin-top:0.3em;
+    margin-bottom: 0.5em;
+    padding: 5px;
+    border: 2px solid #7CC8F9;
+    border-radius: 0.7em;
+    font-size: 1rem;
+    box-sizing: border-box;
+    height: 7em;
+    width: 20em;
+}
+
+
 
 .filasAddAlumno form{
     display: flex;

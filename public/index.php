@@ -5,6 +5,9 @@ session_start();
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../dao/UserDAO.php';
+require_once __DIR__ . '/../dao/EmpresaDAO.php';
+require_once __DIR__ . '/../api/admin/EmpresasController.php';
+require_once __DIR__ . '/../models/entities/AlumnoEntity.php';
 require_once __DIR__ . '/../middleware/AuthMiddleware.php';
 
 use League\Plates\Engine;
@@ -73,10 +76,28 @@ switch($page) {
         AuthMiddleware::requiereAuth(["admin"]);
         echo $templates->render('dashboard-admin-addEmpresa');
         break;
+
+    case 'admin-editarEmpresa':
+        if(isset($_POST["btnActualizarEmpresa"]))
+        {
+            new EmpresasController;
+            EmpresasController::actualizarEmpresa($_POST["email"]);
+            var_dump($_POST);
+            
+        }
+        AuthMiddleware::requiereAuth(["admin"]);
+        echo $templates->render('admin-editarEmpresa');
+        if($_POST["btnActualizarEmpresa"])
+        break;
     
     case 'confirmacion-addedEmpresa':
         AuthMiddleware::requiereAuth(["admin"]);
         echo $templates->render('confirmacion-addedEmpresa');
+        break;
+
+    case 'admin-empresaActualizada';
+        AuthMiddleware::requiereAuth(["admin"]);
+        echo $templates->render('admin-empresaActualizada');
         break;
 
     case 'dashboard-admin-ofertas':

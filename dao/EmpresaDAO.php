@@ -39,16 +39,28 @@ class EmpresaDAO implements DAOInterface {
             $userDAO = new UserDAO();
             
             // Asegurar que la contraseña esté hasheada
-            $password = $empresa->password ?: 'admin123';
+            $password = ($empresa->password) ? $empresa->password : 'admin123';
             $usuarioId = $userDAO->createUser($empresa->email, $password);
             
-            $stmt = $this->db->prepare("
+            if(empty($empresa->password))
+            {
+                $stmt = $this->db->prepare("
                 INSERT INTO empresas (usuario_id, nombre, cif, telefono, sector, descripcion, 
-                    pais, provincia, ciudad, direccion, logo, aprobada) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
-            ");
+                    pais, provincia, ciudad, direccion, logo, aprobada, verificado) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0)
+                ");
+            }
+            else
+            {
+                $stmt = $this->db->prepare("
+                INSERT INTO empresas (usuario_id, nombre, cif, telefono, sector, descripcion, 
+                    pais, provincia, ciudad, direccion, logo, aprobada, verificado) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1)
+                ");
+            }
+            
             $stmt->execute([
-                $usuarioId, $empresa->nombre, $empresa->cif ?? null, $empresa->telefono ?? null,
+                $usuarioId, $empresa->nombre, $empresa->cif ?? null, $empresa->telefono,
                 $empresa->sector ?? null, $empresa->descripcion ?? null, $empresa->pais ?? null,
                 $empresa->provincia ?? null, $empresa->ciudad ?? null, $empresa->direccion ?? null,
                 $empresa->logo ?? null
@@ -118,6 +130,16 @@ class EmpresaDAO implements DAOInterface {
     public function findByUsuarioId($usuarioId) {
         $stmt = $this->db->prepare("SELECT * FROM empresas WHERE usuario_id = ?");
         $stmt->execute([$usuarioId]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? new EmpresaEntity($row) : null;
+    }
+
+    public function findByEmail($email) {
+        $stmt = $this->db->prepare("SELECT e.*, u.*
+                                    FROM empresas e
+                                    JOIN usuarios u ON e.usuario_id = u.id
+                                    WHERE u.email = ?");
+        $stmt->execute([$email]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ? new EmpresaEntity($row) : null;
     }
