@@ -9,7 +9,10 @@ class EmpresaDAO implements DAOInterface {
     public function __construct() { $this->db = Database::getInstance()->getConnection(); }
     
     public function getById($id) {
-        $stmt = $this->db->prepare("SELECT * FROM empresas WHERE id = ?");
+        $stmt = $this->db->prepare("SELECT e.*, u.*
+                    FROM empresas e
+                    JOIN usuarios u ON e.usuario_id = u.id
+                    WHERE e.id = ?");
         $stmt->execute([$id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ? new EmpresaEntity($row) : null;
@@ -75,6 +78,27 @@ class EmpresaDAO implements DAOInterface {
     }
     
     public function update($empresa) {
+        
+
+        $empresaActual = $this->getById($empresa->id);
+        if(!$empresaActual)
+        {
+            throw new Exception("Empresa no encontrada");
+        }
+
+        $userDAO = new UserDAO();
+        if(isset($empresa->email))
+        {
+            if($empresaActual->email !== $empresa->email)
+            {
+                if($userDAO->emailExists($empresa->email))
+                {
+                    throw new Exception ("El email introducido ya está en uso");
+                }
+                $userDAO->editEmail($empresaActual->id, $empresa->email);
+            }
+        }
+
         $stmt = $this->db->prepare("
             UPDATE empresas SET nombre=?, cif=?, telefono=?, sector=?, descripcion=?,
                 pais=?, provincia=?, ciudad=?, direccion=? WHERE id=?
@@ -135,7 +159,7 @@ class EmpresaDAO implements DAOInterface {
     }
 
     public function findByEmail($email) {
-        $stmt = $this->db->prepare("SELECT e.*, u.*
+        $stmt = $this->db->prepare("SELECT e.*, u.email, u.password
                                     FROM empresas e
                                     JOIN usuarios u ON e.usuario_id = u.id
                                     WHERE u.email = ?");

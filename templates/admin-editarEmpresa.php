@@ -1,10 +1,12 @@
 <?php
 $this->layout('layout', ['title' => 'Dashboard Admin']);
 
+$datosForm = [];
 
 if(isset($_POST["datosSerialized"]))
 {
-    $datosForm = unserialize($_POST["datosSerialized"]); 
+    $datosForm = unserialize($_POST["datosSerialized"]);
+    $datosSerialized = $_POST["datosSerialized"];
 }
 
 // Se desserializa el objeto enviado por post en hidden serializado
@@ -13,6 +15,18 @@ if(isset($_POST["datosSerialized"]))
 
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
+
+    if(isset($_POST["btnActualizarEmpresa"])) {
+        $datosForm = $_POST;
+    }
+    // Si viene con datos serializados, usar esos
+    elseif(isset($_POST["datosSerialized"])) {
+        $datosForm = unserialize($_POST["datosSerialized"]);
+    }
+    // Si no hay datos, array vacío
+    else {
+        $datosForm = [];
+    }
 
     
     ?>
@@ -47,6 +61,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                         <div class="filasEditarEmpresa">
                             
                                 <div>
+                                    <input type="hidden" name="datosSerialized" value="<?php echo htmlspecialchars($datosSerialized)?>">
+
+
                                     <label for="nombre">Nombre:</label>
                                     <input type="text" name="nombre" class="inputsEditarEmpresa"
                                     value="<?php echo $datosForm["nombre"] ? htmlspecialchars($datosForm["nombre"]) : '' ?>"

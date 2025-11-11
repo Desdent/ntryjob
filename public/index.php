@@ -68,9 +68,37 @@ switch($page) {
         break;
 
     case 'dashboard-admin-empresas':
-        AuthMiddleware::requiereAuth(["admin"]);
-        echo $templates->render('dashboard-admin-empresas');
-        break;
+        if(isset($_POST["btnBorrarEmpresa"]) || isset($_POST["btnAprobarEmpresa"]))
+        {
+            if($_POST["btnBorrarEmpresa"])
+            {
+                $datosUnserialize = unserialize($_POST["datosSerialized"]);
+                new EmpresasController;
+                EmpresasController::borrarEmpresa($datosUnserialize);
+            }
+            elseif($_POST["btnAprobarEmpresa"])
+            {
+                $datosUnserialize = unserialize($_POST["datosSerialized"]);
+                new EmpresasController;
+                EmpresasController::aprobarEmpresa($datosUnserialize);
+            }
+            elseif($_POST["btnRechazarEmpresa"])
+            {
+                $datosUnserialize = unserialize($_POST["datosSerialized"]);
+                new EmpresasController;
+                EmpresasController::rechazarEmpresa($datosUnserialize);
+            }
+            AuthMiddleware::requiereAuth(["admin"]);
+            echo $templates->render('admin-empresaConfirmarAcciones');
+            break;
+        }
+        else
+        {
+            AuthMiddleware::requiereAuth(["admin"]);
+            echo $templates->render('dashboard-admin-empresas');
+            break;
+        }
+        
 
     case 'dashboard-admin-addEmpresa':
         AuthMiddleware::requiereAuth(["admin"]);
@@ -80,15 +108,40 @@ switch($page) {
     case 'admin-editarEmpresa':
         if(isset($_POST["btnActualizarEmpresa"]))
         {
-            new EmpresasController;
-            EmpresasController::actualizarEmpresa($_POST["email"]);
-            var_dump($_POST);
+                $datosUnserialize = unserialize($_POST["datosSerialized"]);
+                new EmpresasController;
+                EmpresasController::actualizarEmpresa($datosUnserialize);
+
+            if(isset($_POST["btnBorrarEmpresa"]))
+            {
+                $datosUnserialize = unserialize($_POST["datosSerialized"]);
+                new EmpresasController;
+                EmpresasController::borrarEmpresa($datosUnserialize);
+            }
+            elseif(isset($_POST["btnAprobarEmpresa"]))
+            {
+                $datosUnserialize = unserialize($_POST["datosSerialized"]);
+                new EmpresasController;
+                EmpresasController::aprobarEmpresa($datosUnserialize);
+            }
+            elseif(isset($_POST["btnRechazarEmpresa"]))
+            {
+                $datosUnserialize = unserialize($_POST["datosSerialized"]);
+                new EmpresasController;
+                EmpresasController::rechazarEmpresa($datosUnserialize);
+            }
+            AuthMiddleware::requiereAuth(["admin"]);
+            echo $templates->render('admin-empresaConfirmarAcciones');
+            break;
+
             
         }
-        AuthMiddleware::requiereAuth(["admin"]);
-        echo $templates->render('admin-editarEmpresa');
-        if($_POST["btnActualizarEmpresa"])
-        break;
+        else
+        {
+            AuthMiddleware::requiereAuth(["admin"]);
+            echo $templates->render('admin-editarEmpresa');
+            break;
+        }
     
     case 'confirmacion-addedEmpresa':
         AuthMiddleware::requiereAuth(["admin"]);

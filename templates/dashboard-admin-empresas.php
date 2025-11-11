@@ -1,6 +1,8 @@
 <?php
 $this->layout('layout', ['title' => 'Dashboard Admin']);
 
+require_once __DIR__ . '/../api/admin/EmpresasController.php';
+
 require_once $_SERVER["DOCUMENT_ROOT"] . '/dao/EmpresaDAO.php';
 require_once $_SERVER["DOCUMENT_ROOT"] . '/models/entities/EmpresaEntity.php';
 require_once $_SERVER["DOCUMENT_ROOT"] . '/middleware/AuthMiddleware.php';
@@ -8,6 +10,13 @@ require_once $_SERVER["DOCUMENT_ROOT"] . '/middleware/AuthMiddleware.php';
 
 AuthMiddleware::requiereAuth(['admin']);
 
+$datosForm = [];
+
+if(isset($_POST["datosSerialized"]))
+{
+    $datosForm = unserialize($_POST["datosSerialized"]);
+    $datosSerialized = $_POST["datosSerialized"];
+}
 
 $dao = new EmpresaDAO();
 $empresas = $dao->getAll();
@@ -83,37 +92,40 @@ foreach($empresasPendientes as $empresaPendiente)
                         
                         foreach($resultado as $data){
                             
+                            new EmpresasController();
+                            $empresa = EmpresasController::obtenerEmpresa($data["email"]);
+                            
+                            $empresaDatos = $empresa->toArray();
+
                             echo "<tr>";
                                 foreach($data as $campo)
                                 {
                                     echo "<td> $campo </td>";
                                 }
 
-                                $empresa = $dao->findByEmail($data["email"]);
-                                $empresaDatos = $empresa->toArray();
-                                var_dump($empresaDatos);
-                                ?>
-                                <td>
-                                    <form action="?page=admin-editarEmpresa" method="POST">
+                            ?>
+                            <td>
+                                <form action="?page=admin-editarEmpresa" method="POST">
 
                                     <?php
-                                        $datosSerialized = serialize($empresaDatos);
+                                    $datosSerialized = serialize($empresaDatos);
                                     ?>
-                                                                                        <!-- Para pasar el string a array -->
+                                    <!-- Para pasar el string a array -->
                                     <input type="hidden" name="datosSerialized" value="<?php echo htmlspecialchars($datosSerialized)?>">
 
                                     <input type="submit" value="Editar" class="botonesAccionEmpresas">
-                                    </form>
+                                </form>
 
-                                    <form action="">
-                                        <input type="submit" name="BorrarEmpresa" value="Borrar" class="botonesAccionEmpresas">
-                                    </form>
-                                </td>
+                                <form action="" method="POST">
+                                    <input type="hidden" name="datosSerialized" value="<?php echo htmlspecialchars($datosSerialized)?>">
+                                    <input type="submit" name="btnBorrarEmpresa" value="Borrar" class="botonesAccionEmpresas">
+                                </form>
+                            </td>
                                 
 
-                                <?php
-                            echo "</tr>";
-                        }
+                    <?php
+                    echo "</tr>";
+                    }
                     ?>
                 </tbody>
             </table>
@@ -156,9 +168,12 @@ foreach($empresasPendientes as $empresaPendiente)
                                 }
                                 ?>
                                 <td>
-                                    <form action="">
-                                    <input type="submit" value="Aprobar" class="botonesAccionEmpresas">
-                                    <input type="submit" value="Rechazar" class="botonesAccionEmpresas">
+                                    <form action="" method="POST">
+                                        <input type="submit" name="btnRechazarEmpresa" value="Rechazar" class="botonesAccionEmpresas">
+                                    </form>
+
+                                    <form action="" method="POST">
+                                        <input type="submit" name="btnAprobarEmpresa" value="Aprobar" class="botonesAccionEmpresas">
                                     </form>
                                 </td>
                                 

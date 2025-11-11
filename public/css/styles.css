@@ -1620,6 +1620,7 @@ button:hover, .addEmpresa:hover {
     color: #0876BE;
     font-weight: 600;
     cursor: pointer;
+    margin-bottom: 0.5em;
 }
 
 .botonesAccionEmpresas:hover {

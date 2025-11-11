@@ -21,6 +21,21 @@ class EmpresaEntity {
     public function __construct($data=[]) {
         foreach ($data as $k => $v) if (property_exists($this, $k)) $this->$k = $v;
     }
+
+    public function setAlgunosParametros($nombre, $cif, $email, $telefono, $sector, $pais, $provincia, $ciudad, $direccion, $descripcion)
+    {
+        $this->nombre = $nombre;
+        $this->cif = $cif;
+        $this->email = $email;
+        $this->telefono = $telefono;
+        $this->sector = $sector;
+        $this->pais = $pais;
+        $this->provincia = $provincia;
+        $this->ciudad = $ciudad;
+        $this->direccion = $direccion;
+        $this->direccion = $descripcion;
+    }
+
     public function toArray() { return get_object_vars($this); }
 
     public function toArrayDTO(){
