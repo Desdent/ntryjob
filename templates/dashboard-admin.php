@@ -16,7 +16,6 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
             <h3>Panel de Navegación</h3>
             <div class="optLateral"></div>
             <div class="optLateral"></div>
-            <div class="optLateral"></div>
             </div>
         
         <div class="table-container">

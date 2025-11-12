@@ -162,4 +162,152 @@ class EmpresaDAO implements DAOInterface {
         return $row ? new EmpresaEntity($row) : null;
     }
 
+    public function sortBy($parameter, $metodo)
+    {
+        if($metodo == "asc")
+        {
+            $metodoSQL = "ASC";
+        }
+        else
+        {
+            $metodoSQL = "DESC";
+        }
+
+        $stmt = $this->db->query("
+            SELECT 
+                e.nombre, e.cif, e.telefono, e.sector, e.pais, e.provincia, e.ciudad,
+                e.direccion, e.aprobada, e.verificado, u.email,
+                CASE WHEN logo IS NOT NULL THEN 1 ELSE 0 END as tiene_logo
+            FROM empresas e
+            JOIN usuarios u ON e.usuario_id = u.id
+            WHERE e.aprobada = 1
+            ORDER BY " . $parameter . " " . $metodoSQL);
+        $result = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new EmpresaEntity($row);
+        }
+        return $result;
+    }
+
+    public function sortPendientesBy($parameter, $metodo)
+    {
+        if($metodo == "asc")
+        {
+            $metodoSQL = "ASC";
+        }
+        else
+        {
+            $metodoSQL = "DESC";
+        }
+
+        $stmt = $this->db->query("
+            SELECT 
+                e.nombre, e.cif, e.telefono, e.sector, e.pais, e.provincia, e.ciudad,
+                e.direccion, e.aprobada, e.verificado, u.email,
+                CASE WHEN logo IS NOT NULL THEN 1 ELSE 0 END as tiene_logo
+            FROM empresas e
+            JOIN usuarios u ON e.usuario_id = u.id
+            WHERE e.aprobada = 0
+            ORDER BY " . $parameter . " " . $metodoSQL);
+        $result = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new EmpresaEntity($row);
+        }
+        return $result;
+    }
+
+    public function searchWord($searchValue)
+    {
+        $searchParam = "%" . $searchValue . "%";
+        if(empty($searchValue))
+        {
+            $stmt = $this->db->prepare("
+                SELECT 
+                    e.*,
+                    u.email
+                FROM empresas e
+                JOIN usuarios u ON e.usuario_id = u.id
+                WHERE e.aprobada = 1
+            ");
+            $stmt->execute();
+            
+        }
+        else
+        {
+            $stmt = $this->db->prepare("
+            SELECT 
+                e.*,
+                u.email
+            FROM empresas e
+            JOIN usuarios u ON e.usuario_id = u.id
+            WHERE (LOWER(e.nombre) LIKE LOWER(?)
+                OR LOWER(e.cif) LIKE LOWER(?)
+                OR LOWER(u.email) LIKE LOWER(?)
+                OR LOWER(e.telefono) LIKE LOWER(?)
+                OR LOWER(e.ciudad) LIKE LOWER(?)
+                )
+                AND e.aprobada = 1
+            ");
+        $stmt->execute([$searchParam, $searchParam, $searchParam, $searchParam, $searchParam]);
+        }
+        
+
+        
+        //No hace falta hacerle (int) a ningun parametro, parece que la base de datos lo pasa automatico
+        
+        $result = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new EmpresaEntity($row);
+        }
+        
+        return $result;
+    }
+
+    public function searchPendientesWord($searchValue)
+    {
+        $searchParam = "%" . $searchValue . "%";
+        if(empty($searchValue))
+        {
+            $stmt = $this->db->prepare("
+                SELECT 
+                    e.*,
+                    u.email
+                FROM empresas e
+                JOIN usuarios u ON e.usuario_id = u.id
+                WHERE e.aprobada = 1
+            ");
+            $stmt->execute();
+            
+        }
+        else
+        {
+            $stmt = $this->db->prepare("
+            SELECT 
+                e.*,
+                u.email
+            FROM empresas e
+            JOIN usuarios u ON e.usuario_id = u.id
+            WHERE (LOWER(e.nombre) LIKE LOWER(?)
+                OR LOWER(e.cif) LIKE LOWER(?)
+                OR LOWER(u.email) LIKE LOWER(?)
+                OR LOWER(e.telefono) LIKE LOWER(?)
+                OR LOWER(e.ciudad) LIKE LOWER(?)
+                )
+                AND e.aprobada = 1
+            ");
+        $stmt->execute([$searchParam, $searchParam, $searchParam, $searchParam, $searchParam]);
+        }
+        
+
+        
+        //No hace falta hacerle (int) a ningun parametro, parece que la base de datos lo pasa automatico
+        
+        $result = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new EmpresaEntity($row);
+        }
+        
+        return $result;
+    }
+
 }

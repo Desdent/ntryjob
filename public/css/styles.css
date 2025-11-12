@@ -908,7 +908,7 @@ footer p {
     box-sizing: border-box;
 }
 
-#containerSearchEmpresas {
+#containerSearchEmpresas, #containerSearchPendientes {
     display: flex;
     justify-content: space-between;
 }
@@ -1738,7 +1738,7 @@ tbody tr:hover {
     margin-top: 1em;
 }
 
-button, .addEmpresa {
+button, .addEmpresa, .botonesEmpresa {
     border-radius: 0.7em;
     padding: 0.7em 2em;
     border: none;

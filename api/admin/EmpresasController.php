@@ -46,5 +46,37 @@ class EmpresasController {
         $dao->delete($empresa->id);
     }
 
+    public static function ordenarEmpresas($parameter, $metodo)
+    {
+        $dao = new EmpresaDAO();
+        $empresas = $dao->sortBy($parameter, $metodo);
+        return $empresas;
+    }
+
+    public static function ordenarPendientes($parameter, $metodo)
+    {
+        $dao = new EmpresaDAO();
+        $empresas = $dao->sortPendientesBy($parameter, $metodo);
+        return $empresas;
+    }
+
+    public static function searchByWords($palabra)
+    {
+        $dao = new EmpresaDAO();
+        var_dump($palabra);
+        
+        $empresas = $dao->searchWord($palabra);
+        return $empresas;
+    }
+
+    public static function searchPendientesByWords($palabra)
+    {
+        $dao = new EmpresaDAO();
+        var_dump($palabra);
+        
+        $empresas = $dao->searchPendientesWord($palabra);
+        return $empresas;
+    }
+
 }
 
