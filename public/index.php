@@ -152,11 +152,6 @@ switch($page) {
         AuthMiddleware::requiereAuth(["admin"]);
         echo $templates->render('admin-empresaActualizada');
         break;
-
-    case 'dashboard-admin-ofertas':
-        AuthMiddleware::requiereAuth(["admin"]);
-        echo $templates->render('dashboard-admin-ofertas');
-        break;
         
     case 'dashboard-empresario':
         AuthMiddleware::requiereAuth(["empresario"]);

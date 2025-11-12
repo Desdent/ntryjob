@@ -2,13 +2,21 @@
 
 <!-- HERO -->
 <section class="hero">
-    <div class="container">
+    <div class="container" id="contenedorSitio">
         <h1>Encuentra tu sitio</h1>
         <p>Trabajamos para que tu búsqueda de empleo sea una experiencia tranquila y exitosa. Explora nuestras últimas ofertas</p>
         
         <div class="search-box">
-            <input type="text" placeholder="Buscar por puesto, empresa o sector...">
-            <input type="text" placeholder="En toda España">
+            <input type="text" placeholder="Buscar...">
+            <select name="queBuscar" id="quebuscar">
+                <option value="ofertas" selected>En ofertas</option>
+                <option value="empresas">En empresas</option>
+                <option value="ciclos">En ciclos</option>
+                <option value="ciudad">En ciudades</option>
+                <option value="ofertas">En provincias</option>
+                
+            </select>
+
             <button class="btn-search">Buscar</button>
         </div>
     </div>
@@ -21,36 +29,74 @@
         
         <div class="ofertas-container">
             <!-- Card 1 -->
-            <div class="oferta-card">
-                <div class="oferta-logo">
-                    <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
+            <div class="grupo-tarjetas">
+                <div class="oferta-card">
+                    <div class="oferta-logo">
+                        <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
+                    </div>
+                    <h3>Desarrollador Front-End Junior</h3>
+                    <span class="oferta-badge">OFERTA POPULAR</span>
+                    <p>Únete a nuestro equipo para gestionar campañas de PPC y SEO a nivel internacional</p>
+                    <a href="#" class="btn-ver-oferta">Ver Oferta</a>
                 </div>
-                <h3>Desarrollador Front-End Junior</h3>
-                <span class="oferta-badge">OFERTA POPULAR</span>
-                <p>Únete a nuestro equipo para gestionar campañas de PPC y SEO a nivel internacional</p>
-                <a href="#" class="btn-ver-oferta">Ver Oferta</a>
+
+                <!-- Card 2 -->
+                <div class="oferta-card">
+                    <div class="oferta-logo">
+                        <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
+                    </div>
+                    <h3>Especialista en Marketing Digital</h3>
+                    <span class="oferta-badge">OFERTA CARA</span>
+                    <p>Únete a nuestro equipo para gestionar campañas de PPC y SEO a nivel internacional</p>
+                    <a href="#" class="btn-ver-oferta">Ver Oferta</a>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="oferta-card">
+                    <div class="oferta-logo">
+                        <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
+                    </div>
+                    <h3>Diseñador UX/UI Senior</h3>
+                    <span class="oferta-badge">OFERTA POPULAR</span>
+                    <p>Únete a nuestro equipo para gestionar campañas de PPC y SEO a nivel internacional</p>
+                    <a href="#" class="btn-ver-oferta">Ver Oferta</a>
+                </div>
             </div>
 
-            <!-- Card 2 -->
-            <div class="oferta-card">
-                <div class="oferta-logo">
-                    <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
-                </div>
-                <h3>Especialista en Marketing Digital</h3>
-                <span class="oferta-badge">OFERTA CARA</span>
-                <p>Únete a nuestro equipo para gestionar campañas de PPC y SEO a nivel internacional</p>
-                <a href="#" class="btn-ver-oferta">Ver Oferta</a>
-            </div>
 
-            <!-- Card 3 -->
-            <div class="oferta-card">
-                <div class="oferta-logo">
-                    <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
+
+            <div class="grupo-tarjetas">
+                <div class="oferta-card">
+                    <div class="oferta-logo">
+                        <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
+                    </div>
+                    <h3>Desarrollador Front-End Junior</h3>
+                    <span class="oferta-badge">OFERTA POPULAR</span>
+                    <p>Únete a nuestro equipo para gestionar campañas de PPC y SEO a nivel internacional</p>
+                    <a href="#" class="btn-ver-oferta">Ver Oferta</a>
                 </div>
-                <h3>Diseñador UX/UI Senior</h3>
-                <span class="oferta-badge">OFERTA POPULAR</span>
-                <p>Únete a nuestro equipo para gestionar campañas de PPC y SEO a nivel internacional</p>
-                <a href="#" class="btn-ver-oferta">Ver Oferta</a>
+
+                <!-- Card 2 -->
+                <div class="oferta-card">
+                    <div class="oferta-logo">
+                        <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
+                    </div>
+                    <h3>Especialista en Marketing Digital</h3>
+                    <span class="oferta-badge">OFERTA CARA</span>
+                    <p>Únete a nuestro equipo para gestionar campañas de PPC y SEO a nivel internacional</p>
+                    <a href="#" class="btn-ver-oferta">Ver Oferta</a>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="oferta-card">
+                    <div class="oferta-logo">
+                        <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
+                    </div>
+                    <h3>Diseñador UX/UI Senior</h3>
+                    <span class="oferta-badge">OFERTA POPULAR</span>
+                    <p>Únete a nuestro equipo para gestionar campañas de PPC y SEO a nivel internacional</p>
+                    <a href="#" class="btn-ver-oferta">Ver Oferta</a>
+                </div>
             </div>
         </div>
 

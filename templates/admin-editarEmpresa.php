@@ -47,9 +47,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 <div class="optLateral">
                     <a href="index.php?page=dashboard-admin-empresas">Panel de Empresas</a>
                 </div>
-                <div class="optLateral">
-                    <a href="index.php?page=dashboard-admin-ofertas">Panel de Ofertas</a>
-                </div>
             </div>
             
             <div class="table-container">

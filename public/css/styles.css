@@ -74,9 +74,16 @@ nav a:hover {
 /* HERO */
 .hero {
     text-align: center;
+    background-image: url("/public/assets/imagenes/sean-pollock-PhYq704ffdA-unsplash.jpg");
+    position: relative;
     padding: 4rem 2rem;
-    max-width: 800px;
+    height: 40em;
+    width: 100%;
     margin: 0 auto;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .hero h1 {
@@ -92,6 +99,10 @@ nav a:hover {
     margin-bottom: 2rem;
 }
 
+#contenedorSitio {
+    margin-top: 10%;
+}
+
 .search-box {
     display: flex;
     gap: 1rem;
@@ -101,12 +112,60 @@ nav a:hover {
     margin: 0 auto;
 }
 
+.search-box select {
+    padding: 0.8em 2.5em 0.8em 1em;
+    border: 2px solid #7CC8F9;
+    border-radius: 0.7em;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #0876BE;
+    background-color: #E7F6F8;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230876BE' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1em center;
+    background-size: 12px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-box select:hover {
+    background-color: #d5eff5;
+    border-color: #0876BE;
+}
+
+.search-box select:focus {
+    outline: none;
+    border-color: #0876BE;
+    background-color: #ffffff;
+}
+
+.search-box select option {
+    padding: 0.5em;
+    background-color: #ffffff;
+    color: #333;
+}
+
 .search-box input {
-    flex: 1;
+    flex: 0 0 250px;
     padding: 0.8em;
     border: 2px solid #7CC8F9;
     border-radius: 0.7em;
     font-size: 1rem;
+    transition: all 0.4s ease-in-out;
+    background-image: url("/public/assets/imagenes/lupa.png");
+    background-repeat: no-repeat;
+    background-position: right 1em center;
+    background-size:18px;
+}
+
+.search-box input:focus {
+    flex: 1 1 auto; /* Se expande */
+    outline: none;
+    border-color: #0876BE;
+    box-shadow: 0 0 0 3px rgba(8, 118, 190, 0.1);
 }
 
 .btn-search {
@@ -120,6 +179,32 @@ nav a:hover {
     box-shadow: 0em 0.35em 0em 0 #075588;
 }
 
+.btn-search.searching {
+    position: relative;
+    pointer-events: none;
+}
+
+.btn-search.searching::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spinner 0.6s linear infinite;
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .btn-search:hover {
     background: #075588;
     box-shadow: 0em 0.35em 0em 0 #075588;
@@ -128,7 +213,7 @@ nav a:hover {
 
 /* === OFERTAS DESTACADAS === */
 .ofertas-destacadas {
-    padding: 60px 20px;
+    padding: 60px 0px;
     text-align: center;
     background: #E7F7F8;
 }
@@ -140,12 +225,75 @@ nav a:hover {
 }
 
 .ofertas-container {
+    display: block; 
+    position: relative;
+    max-width: 100%;
+    margin: 0 0 40px;
+    height: 400px;
+    overflow: hidden;
+}
+
+.grupo-tarjetas {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto 40px;
+    position: absolute;
+    width: 100%;
+    left: 0;
+}
+
+.grupo-tarjetas:nth-child(1) {
+    animation: slideInOut1 15s ease-in-out infinite;
+}
+
+.grupo-tarjetas:nth-child(2) {
+    animation: slideInOut2 15s ease-in-out infinite;
+}
+
+@keyframes slideInOut1 {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    8% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    42% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideInOut2 {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    50% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    58% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    92% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
 }
 
 .oferta-card {
@@ -154,11 +302,10 @@ nav a:hover {
     padding: 30px;
     border-radius: 2em;
     text-align: left;
-    flex: 1 1 300px;
+    flex: 0 0 300px;
     max-width: 350px;
     box-shadow: 0em 0.625em 0em 0 #075588;
 }
-
 .oferta-logo {
     width: 60px;
     height: 60px;
@@ -250,6 +397,11 @@ nav a:hover {
     padding: 60px 20px;
     background-color: #f5f5f5;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-image: url(/public/assets/imagenes/sean-pollock-PhYq704ffdA-unsplash.jpg);
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .colaboradores h2 {
