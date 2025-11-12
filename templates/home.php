@@ -4,7 +4,7 @@
 <section class="hero">
     <div class="container" id="contenedorSitio">
         <h1>Encuentra tu sitio</h1>
-        <p>Trabajamos para que tu búsqueda de empleo sea una experiencia tranquila y exitosa. Explora nuestras últimas ofertas</p>
+        <p>Buscar empleo no tiene por qué ser complicado</p>
         
         <div class="search-box">
             <input type="text" placeholder="Buscar...">
