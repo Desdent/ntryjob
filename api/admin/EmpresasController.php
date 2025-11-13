@@ -63,7 +63,6 @@ class EmpresasController {
     public static function searchByWords($palabra)
     {
         $dao = new EmpresaDAO();
-        var_dump($palabra);
         
         $empresas = $dao->searchWord($palabra);
         return $empresas;
@@ -72,7 +71,6 @@ class EmpresasController {
     public static function searchPendientesByWords($palabra)
     {
         $dao = new EmpresaDAO();
-        var_dump($palabra);
         
         $empresas = $dao->searchPendientesWord($palabra);
         return $empresas;

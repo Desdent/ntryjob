@@ -16,6 +16,8 @@ header {
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     padding: 1rem 2rem;
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 nav {
@@ -65,7 +67,7 @@ nav a:hover {
 }
 
 .btn-primary:hover {
-      background: #075588;
+    background: #075588;
     box-shadow: 0em 0.35em 0em 0 #075588;
     color: #ffffff;
 }
@@ -88,10 +90,10 @@ nav a:hover {
 
 .hero h1 {
     display: inline-block;
-    font-size: 2.5rem;
+
     text-transform: upp;
     color: #1e293b;
-    margin-bottom: 1rem;
+    margin-bottom: 0.1em;
 }
 
 .hero p {
@@ -1313,6 +1315,8 @@ button:hover {
 
 
 /* === PARA EL NAV ALTERNATIVO === */
+
+
 .navbar-logo h1 {
     color: #0876BE;
     margin: 0;
