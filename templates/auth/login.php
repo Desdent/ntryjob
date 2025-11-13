@@ -29,25 +29,23 @@
                     </h3>
 
                     <?php
-                        if (isset($_SESSION['error_login'])): ?>
+                    // Mostrar errores de PHP
+                    if (isset($_SESSION['error_login'])): ?>
                         <p class="msgError">
                             <?= $_SESSION['error_login'] ?>
                         </p>
-                        <?php unset($_SESSION['error_login']); // Elimina el error después de mostrarlo ?>
+                        <?php unset($_SESSION['error_login']); ?>
                     <?php endif; ?>
 
-
-                    <div id="mensaje-error" class="msgError" style="display:none;"></div>
-                    <form action="" method="post" id="form-login">
+                    <form action="/public/index.php?page=login" method="post" id="form-login">
                         <span class="campos-login">
                             <label for="email" class="fontDivContent">Email: </label><br>
-                            <input type="text" name="email" id="email"><br>
+                            <input type="text" name="email" id="email" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>"><br>
                         </span>
 
                         <span class="campos-login">
                             <label for="password" class="fontDivContent">Contraseña: </label><br>
                             <input type="password" name="password" id="password"><br>
-
                         </span>
                         
                         <span class="campos-login">
@@ -69,13 +67,11 @@
                         </h3>
                     </span>
                     <span class="campos-registrarse">
-
                         <p class="fontDivContent">
                             ¡Regístrate y accede a miles de ofertas disponibles!
                         </p>
                     </span>
-
-                   <span class="campos-registrarse">
+                    <span class="campos-registrarse">
                         <a href="/public/index.php?page=register" id="botonRegistrarse" class="button">
                             Registrarse
                         </a>
@@ -88,6 +84,5 @@
     <footer>
         <p>&copy; 2025 NTRYJOB - Tu espacio de búsqueda tranquilo</p>
     </footer>
-
 </body>
 </html>

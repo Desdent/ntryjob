@@ -9,7 +9,7 @@ require_once __DIR__ . '/../dao/EmpresaDAO.php';
 require_once __DIR__ . '/../api/admin/EmpresasController.php';
 require_once __DIR__ . '/../models/entities/AlumnoEntity.php';
 require_once __DIR__ . '/../middleware/AuthMiddleware.php';
-
+require_once __DIR__ . '/../api/auth/LoginController.php';
 use League\Plates\Engine;
 
 $templates = new Engine(__DIR__ . '/../templates');
@@ -23,25 +23,10 @@ switch($page) {
         break;
     
     case 'login':
-        if (isset($_SESSION['user_id'])) {
-            $rol = $_SESSION['role'];
-            switch($rol) {
-                case "admin": 
-                    header('Location: index.php?page=dashboard-admin'); 
-                    exit;
-                case "empresario": 
-                    if ($_SESSION['aprobada'] == 1) {
-                        header('Location: index.php?page=dashboard-empresario'); 
-                    } else {
-                        // Mostrar página de espera de aprobación
-                        echo $templates->render('auth/espera-aprobacion');
-                    }
-                    exit;
-                case "alumno": 
-                    header('Location: index.php?page=dashboard-alumno'); 
-                    exit;
-            }
-        }
+        $loginController = new LoginController();
+        $loginController->handleLogin(); // Procesar login si es POST
+        $loginController->showLoginPage(); // Mostrar página de login
+        break;
     echo $templates->render('auth/login');
     break;
     
