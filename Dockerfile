@@ -4,6 +4,9 @@ FROM php:8.2-apache
 # Instala las extensiones necesarias de PHP para conectar con MySQL
 RUN docker-php-ext-install pdo pdo_mysql
 
+# Instala Xdebug
+RUN pecl install xdebug && docker-php-ext-enable xdebug
+
 # Copia TODOS los archivos del proyecto al directorio raíz del servidor web (Apache)
 COPY . /var/www/html
 

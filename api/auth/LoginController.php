@@ -94,6 +94,7 @@ try {
     $_SESSION['email'] = $user->email;
     $_SESSION['role'] = $rol;
     $_SESSION['aprobada'] = $aprobada;
+    $_SESSION['token'] = $token;
 
     // Determinar URL de redirección
     $redirectUrls = [

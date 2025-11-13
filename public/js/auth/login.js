@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const datosObjeto = Object.fromEntries(datosFormulario.entries());
 
         try {
-            // 1. Obtener token
+    
             const tokenResponse = await fetch("/api/TokenController.php", {
                 method: "POST",
                 headers: {
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const token = tokenData.token;
             sessionStorage.setItem("token", token);
 
-            // 2. Hacer login con el token
+            //Hacer login con el token
             const loginResponse = await fetch("/api/auth/LoginController.php", {
                 method: "POST",
                 headers: {

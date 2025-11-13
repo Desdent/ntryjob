@@ -48,7 +48,6 @@ try{
             $token = Token::generarToken($user);
             
             $tieneToken = $daoToken->tieneToken($user->id);
-
             if($tieneToken > 0)
             {
                 $daoToken->updateToken($user->id, $token);
