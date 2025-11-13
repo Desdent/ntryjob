@@ -57,7 +57,7 @@ class TokenDAO {
         try{
             $stmt = $this->db->prepare($sql);
 
-            $resultado = $stmt->execute([$usuario_id, $token]);
+            $resultado = $stmt->execute([$token, $usuario_id]);
 
             return $resultado;
         }
