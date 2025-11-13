@@ -6,48 +6,50 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
 
         const datosFormulario = new FormData(formulario);
-
         const datosObjeto = Object.fromEntries(datosFormulario.entries());
 
-        await fetch("/api/TokenController.php",{
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(datosObjeto)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.success)
-            {
-
-                sessionStorage.setItem("token", data.token);
+        try {
+            // 1. Obtener token
+            const tokenResponse = await fetch("/api/TokenController.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(datosObjeto)
+            });
+            
+            const tokenData = await tokenResponse.json();
+            
+            if (!tokenData.success) {
+                alert(tokenData.error || "Error al obtener token");
+                return;
             }
-            else
-            {
-                alert(data.error || "Error al iniciar sesion");
-            }
-        })
+            
+            const token = tokenData.token;
+            sessionStorage.setItem("token", token);
 
-        await fetch("/api/auth/LoginController.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify(datosFormulario)
-            .then(response => response.json())
-            .then(data => {
-                if(data.success)
-                {
-                    window.location.href = data.redirec_url;
-                }
-                else
-                {
-                    alert(data.error || "Error al iniciar sesión")
-                }
-            })
-        })
+            // 2. Hacer login con el token
+            const loginResponse = await fetch("/api/auth/LoginController.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(datosObjeto)
+            });
+            
+            const loginData = await loginResponse.json();
+            console.log(loginData);
+            
+            if (loginData.success) {
+                window.location.href = loginData.redirect_url;
+            } else {
+                alert(loginData.error || "Error al iniciar sesión");
+            }
+            
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Error de conexión. Intenta de nuevo.");
+        }
     });
-
-})
+});

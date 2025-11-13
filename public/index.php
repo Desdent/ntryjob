@@ -9,7 +9,6 @@ require_once __DIR__ . '/../dao/EmpresaDAO.php';
 require_once __DIR__ . '/../api/admin/EmpresasController.php';
 require_once __DIR__ . '/../models/entities/AlumnoEntity.php';
 require_once __DIR__ . '/../middleware/AuthMiddleware.php';
-require_once __DIR__ . '/../api/auth/LoginController.php';
 use League\Plates\Engine;
 
 $templates = new Engine(__DIR__ . '/../templates');
@@ -23,12 +22,8 @@ switch($page) {
         break;
     
     case 'login':
-        $loginController = new LoginController();
-        $loginController->handleLogin(); // Procesar login si es POST
-        $loginController->showLoginPage(); // Mostrar página de login
+        echo $templates->render('auth/login');
         break;
-    echo $templates->render('auth/login');
-    break;
     
     case 'register':
         echo $templates->render('auth/register');
