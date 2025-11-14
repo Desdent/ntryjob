@@ -136,7 +136,12 @@ switch($page) {
         
         if(isset($_POST["btnEditarOferta"]))
         {
-
+            AuthMiddleware::requiereAuth(["empresario"]);
+            $_SESSION["accion"] = "editar";
+            echo $templates->render('dashboard-empresario-oferta-ver-editar');
+            break;
+            
+        
         }
         elseif(isset($_POST["btnBorrarOferta"]))
         {
@@ -154,8 +159,13 @@ switch($page) {
         {
             AuthMiddleware::requiereAuth(["empresario"]);
             echo $templates->render('dashboard-empresario');
+            
             break;
         }
+    case 'dashboard-empresario-oferta-ver-editar':
+        AuthMiddleware::requiereAuth(["empresario"]);
+        echo $templates->render('dashboard-empresario-oferta-ver-editar');
+        break;
     
     case 'dashboard-empresario-crearOferta':
         AuthMiddleware::requiereAuth(["empresario"]);
@@ -164,6 +174,10 @@ switch($page) {
     case 'confirmacion-addedOferta':
         AuthMiddleware::requiereAuth(["empresario"]);
         echo $templates->render('confirmacion-addedOferta');
+        break;
+    case 'confirmacion-ofertas':
+        AuthMiddleware::requiereAuth(["empresario"]);
+        echo $templates->render('confirmacion-ofertas');
         break;
         
     case 'dashboard-alumno':

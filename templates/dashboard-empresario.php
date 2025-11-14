@@ -59,6 +59,7 @@ $ofertas = $controller->getOfertasByEmpresa($userid);
                     <?php
                         foreach($ofertas as $oferta)
                         {
+                            $ofertaSerialized = htmlspecialchars(serialize($oferta));
                             ?>
                             <tr>
                                 <td>
@@ -92,6 +93,7 @@ $ofertas = $controller->getOfertasByEmpresa($userid);
                                         <input type="submit" value="Borrar" name="btnBorrarOerta" class="botonesAccionEmpresas">
                                         <input type="submit" value="Ver Oferta" name="btnVerOferta" class="botonesAccionEmpresas">
                                         <input type="submit" value="Ver Solicitudes" name="btnVerPostulantes" class="botonesAccionEmpresas">
+                                        <input type="hidden" value="<?php echo $ofertaSerialized; ?>" name="ofertaSerialized">
                                     </form>
                                 </td>
                             </tr>
