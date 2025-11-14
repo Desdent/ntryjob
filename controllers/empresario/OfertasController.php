@@ -1,102 +1,139 @@
 <?php
+
+// Requerir las dependencias
 require_once __DIR__ . '/../../dao/OfertaDAO.php';
 require_once __DIR__ . '/../../dao/EmpresaDAO.php';
+require_once __DIR__ . '/../../dao/CicloDAO.php';
 require_once __DIR__ . '/../../models/entities/OfertaEntity.php';
-require_once __DIR__ . '/../../middleware/AuthMiddleware.php';
 
-class OfertasController {
-    private $dao;
-    private $empresaDAO;
-    
-    public function __construct() {
-        $this->dao = new OfertaDAO();
+class OfertaController
+{
+    private OfertaDAO $ofertaDAO;
+    private EmpresaDAO $empresaDAO;
+    private CicloDAO $cicloDAO;
+
+    public function __construct()
+    {
+        $this->ofertaDAO = new OfertaDAO();
         $this->empresaDAO = new EmpresaDAO();
+        $this->cicloDAO = new CicloDAO();
+    }
+
+    // --- Métodos Privados de Utilidad ---
+
+    /**
+     * Intenta encontrar la Empresa por el ID de usuario.
+     * @param int $userId ID del usuario autenticado.
+     * @return int|string El ID de la empresa si se encuentra, o un mensaje de error.
+     */
+    private function _getEmpresaId(int $userId)
+    {
+        $empresa = $this->empresaDAO->findByUsuarioId($userId);
+
+        if (!$empresa) {
+            // Devolver un string de error.
+            return 'Empresa no encontrada';
+        }
+
+        return $empresa->id;
+    }
+
+    // --- Métodos de Acción ---
+
+    /**
+     * Obtiene todas las ofertas de la empresa del usuario autenticado.
+     * @param int $userId ID del usuario autenticado.
+     * @return array<OfertaEntity>|string Lista de objetos OfertaEntity o un mensaje de error.
+     */
+    public function getOfertasByEmpresa(int $userId)
+    {
+        $empresaId = $this->_getEmpresaId($userId);
+
+        if (is_string($empresaId)) {
+            return $empresaId; // Devuelve el mensaje de error si la empresa no existe
+        }
+
+        // Devolver directamente la lista de objetos OfertaEntity (sin array_map)
+        return $this->ofertaDAO->getByEmpresa($empresaId);
+    }
+
+    /**
+     * Obtiene el nombre de un Ciclo por su ID.
+     * @param int $cicloId ID del ciclo a buscar.
+     * @return string|null El nombre del ciclo o null/string de error.
+     */
+    public function getCicloById(int $cicloId)
+    {
+        $ciclo = $this->cicloDAO->getById($cicloId);
+
+        if (!$ciclo) {
+            return null;
+        }
+
+        return $ciclo->nombre;
     }
     
-    public function index() {
-        try {
-            session_start();
-            AuthMiddleware::requiereAuth(['empresario']);
-            
-            $empresa = $this->empresaDAO->findByUsuarioId($_SESSION['user_id']);
-            if (!$empresa) {
-                http_response_code(403);
-                echo json_encode(['success' => false, 'error' => 'Empresa no encontrada']);
-                return;
-            }
-            
-            $ofertas = $this->dao->getByEmpresa($empresa->id);
-            echo json_encode(['success' => true, 'data' => array_map(fn($o) => $o->toArray(), $ofertas)]);
-        } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    /**
+     * Crea una nueva oferta.
+     * @param int $userId ID del usuario autenticado.
+     * @param array $data Los datos de la oferta a crear.
+     * @return int|string El ID de la nueva oferta o un mensaje de error.
+     */
+    public function create(int $userId, array $data)
+    {
+        $empresaId = $this->_getEmpresaId($userId);
+        if (is_string($empresaId)) {
+            return $empresaId;
         }
+
+        $data['empresa_id'] = $empresaId;
+        
+        $oferta = new OfertaEntity($data);
+        $nueva = $this->ofertaDAO->create($oferta);
+
+        return $nueva->id;
     }
-    
-    public function create() {
-        try {
-            session_start();
-            AuthMiddleware::requiereAuth(['empresario']);
-            
-            $empresa = $this->empresaDAO->findByUsuarioId($_SESSION['user_id']);
-            if (!$empresa) {
-                http_response_code(403);
-                echo json_encode(['success' => false, 'error' => 'Empresa no encontrada']);
-                return;
-            }
-            
-            $data = json_decode(file_get_contents('php://input'), true);
-            if (!$data) {
-                http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Datos inválidos']);
-                return;
-            }
-            
-            $data['empresa_id'] = $empresa->id;
-            $oferta = new OfertaEntity($data);
-            $nueva = $this->dao->create($oferta);
-            echo json_encode(['success' => true, 'id' => $nueva->id]);
-        } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+
+    /**
+     * Actualiza una oferta existente.
+     * @param int $userId ID del usuario autenticado.
+     * @param array $data Los datos de la oferta a actualizar (debe incluir el 'id').
+     * @return bool|string El resultado de la actualización (booleano) o un mensaje de error.
+     */
+    public function update(int $userId, array $data)
+    {
+        $empresaId = $this->_getEmpresaId($userId);
+        if (is_string($empresaId)) {
+            return $empresaId;
         }
+
+        $data['empresa_id'] = $empresaId;
+
+        $oferta = new OfertaEntity($data);
+        $result = $this->ofertaDAO->update($oferta);
+
+        return $result;
     }
-    
-    public function update() {
-        try {
-            $data = json_decode(file_get_contents('php://input'), true);
-            
-            if (empty($data['id'])) {
-                http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'ID requerido']);
-                return;
-            }
-            
-            $oferta = new OfertaEntity($data);
-            $result = $this->dao->update($oferta);
-            echo json_encode(['success' => true, 'updated' => $result]);
-        } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+
+    /**
+     * Elimina una oferta.
+     * @param int $userId ID del usuario autenticado.
+     * @param ?int $ofertaId ID de la oferta a eliminar.
+     * @return bool|string El resultado de la eliminación (booleano) o un mensaje de error.
+     */
+    public function delete(int $userId, ?int $ofertaId)
+    {
+        $empresaId = $this->_getEmpresaId($userId);
+        if (is_string($empresaId)) {
+            return $empresaId;
         }
-    }
-    
-    public function delete() {
-        try {
-            $data = json_decode(file_get_contents('php://input'), true);
-            
-            if (empty($data['id'])) {
-                http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'ID requerido']);
-                return;
-            }
-            
-            $result = $this->dao->delete($data['id']);
-            echo json_encode(['success' => true, 'deleted' => $result]);
-        } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        
+        if (empty($ofertaId)) {
+            return 'ID de oferta requerido';
         }
+
+        $result = $this->ofertaDAO->delete($ofertaId);
+
+        return $result;
     }
 }
-

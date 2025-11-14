@@ -900,7 +900,8 @@ footer p {
 .form-group textarea,
 .form-group #fechaNacimiento,
 .inputsMassiveAdd,
-#search-admin {
+#search-admin,
+#search-ofertas-empresa {
     margin-top:0.3em;
     width: 100%;
     padding: 5px;
@@ -910,13 +911,14 @@ footer p {
     box-sizing: border-box;
 }
 
-#containerSearchEmpresas, #containerSearchPendientes {
+#containerSearchEmpresas, #containerSearchPendientes, #containerSearcOfertas {
     display: flex;
     justify-content: space-between;
 }
 
 #search-empresas,
 #search-empresasPendientes,
+#search-ofertas,
 .inputsAddEmpresa, .inputsEditarEmpresa
 {
     display: inline;
@@ -1378,6 +1380,7 @@ button:hover {
 }
 
 /* 2. CONTENEDOR DE LA TABLA - Estilos visuales */
+
 .table-container, .tablePendientes-container, .addEmpresa-container {
     /*  Esto hace que ecupe el espacio restante */
     flex-grow: 1; 
@@ -1752,10 +1755,14 @@ button, .addEmpresa, .botonesEmpresa {
     font-weight: 600;
     cursor: pointer;
     margin-bottom: 1em;
+    margin-right: 0.2em;
     text-decoration: none;
 }
 
-button:hover, .addEmpresa:hover {
+
+
+button:hover, .addEmpresa:hover,
+.botonesEmpresa:hover {
     background: #075588;
     box-shadow: 0em 0.35em 0em 0 #075588;
     color: #ffffff;
