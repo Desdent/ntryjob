@@ -77,7 +77,7 @@ class OfertaDAO implements DAOInterface {
         $stmt->execute([$empresaId]);
         $result = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $result[] = new OfertaEntity($row);
+            $result[] = new OfertaEntity($row);   
         }
         return $result;
     }

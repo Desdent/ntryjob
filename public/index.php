@@ -133,8 +133,37 @@ switch($page) {
         break;
         
     case 'dashboard-empresario':
+        
+        if(isset($_POST["btnEditarOferta"]))
+        {
+
+        }
+        elseif(isset($_POST["btnBorrarOferta"]))
+        {
+
+        }
+        elseif(isset($_POST["btnVerOferta"]))
+        {
+
+        }
+        elseif(isset($_POST["btnVerPostulantes"]))
+        {
+
+        }
+        else
+        {
+            AuthMiddleware::requiereAuth(["empresario"]);
+            echo $templates->render('dashboard-empresario');
+            break;
+        }
+    
+    case 'dashboard-empresario-crearOferta':
         AuthMiddleware::requiereAuth(["empresario"]);
-        echo $templates->render('dashboard-empresario');
+        echo $templates->render('dashboard-empresario-crearOferta');
+        break;
+    case 'confirmacion-addedOferta':
+        AuthMiddleware::requiereAuth(["empresario"]);
+        echo $templates->render('confirmacion-addedOferta');
         break;
         
     case 'dashboard-alumno':

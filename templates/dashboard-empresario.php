@@ -6,7 +6,6 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/controllers/empresario/OfertasControl
 $controller = new OfertaController();
 $userid = $_SESSION["user_id"];
 $ofertas = $controller->getOfertasByEmpresa($userid);
-
 ?>
 
 <div class="dashboard-container">
@@ -39,7 +38,10 @@ $ofertas = $controller->getOfertasByEmpresa($userid);
                             <input type="submit" name="submitOrdenarPendientes" value="Ordenar Tabla" class="botonesEmpresa">
                         </form>
                         <div>
-                            <button class="botonesAñadirCargar" id="createUser">Crear Oferta</button>
+                            <form action="?page=dashboard-empresario-crearOferta" method="POST" >
+                                <input type="submit" value="Crear Oferta" class="botonesEmpresa" name="btnCrearOferta">
+                            </form>
+                            
                         </div>
                 </div>
                 
@@ -51,7 +53,7 @@ $ofertas = $controller->getOfertasByEmpresa($userid);
                     <th>Ciclo</th>
                     <th>Fecha de Inicio</th>
                     <th>Fecha de Fin</th>
-                    <th>Accion</th>
+                    <th>Acciones</th>
                 </thead>
                 <tbody>
                     <?php
@@ -68,6 +70,7 @@ $ofertas = $controller->getOfertasByEmpresa($userid);
                                 <td>
                                     <?php
                                         echo $controller->getCicloById($oferta->ciclo_id);
+
                                     ?>
                                 </td>
 
@@ -84,11 +87,11 @@ $ofertas = $controller->getOfertasByEmpresa($userid);
                                 </td>
 
                                 <td>
-                                    <form action="">
+                                    <form action="" method="POST">
                                         <input type="submit" value="Editar" name="btnEditarOferta" class="botonesAccionEmpresas">
                                         <input type="submit" value="Borrar" name="btnBorrarOerta" class="botonesAccionEmpresas">
                                         <input type="submit" value="Ver Oferta" name="btnVerOferta" class="botonesAccionEmpresas">
-                                        <input type="submit" value="Ver Postulantes" name="btnVerPostulantes" class="botonesAccionEmpresas">
+                                        <input type="submit" value="Ver Solicitudes" name="btnVerPostulantes" class="botonesAccionEmpresas">
                                     </form>
                                 </td>
                             </tr>
