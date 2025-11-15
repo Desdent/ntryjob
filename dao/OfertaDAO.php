@@ -35,6 +35,30 @@ class OfertaDAO implements DAOInterface {
         return $result;
     }
 
+    public function sortBy($parameter, $metodo, $userid)
+    {
+        if($metodo == "asc")
+        {
+            $metodoSQL = "ASC";
+        }
+        else
+        {
+            $metodoSQL = "DESC";
+        }
+
+        $stmt = $this->db->prepare("
+            SELECT *
+            FROM ofertas
+            WHERE empresa_id = ?
+            ORDER BY " . $parameter . " " . $metodoSQL);
+        $result = [];
+        $stmt->execute([$userid]);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new OfertaEntity($row);
+        }
+        return $result;
+    }
+
 
     
     public function create($oferta) {
@@ -109,6 +133,58 @@ class OfertaDAO implements DAOInterface {
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = new OfertaEntity($row);
         }
+        return $result;
+    }
+
+
+
+    public function searchWord($searchValue, $empresaId)
+    {
+
+        
+        $searchParam = "%" . $searchValue . "%";
+        
+        $sql = "";
+        $params = [];
+        
+        if (empty($searchValue))
+        {
+            $sql = "
+                SELECT 
+                    *
+                FROM ofertas
+                WHERE empresa_id = ?
+            ";
+            $params = [$empresaId];
+        }
+        else
+        {
+            $sql = "
+                SELECT 
+                    *
+                FROM ofertas
+                WHERE empresa_id = ?
+                AND (
+                    LOWER(titulo) LIKE LOWER(?)
+                    OR LOWER(descripcion) LIKE LOWER(?)
+                    OR LOWER(fecha_inicio) LIKE LOWER(?)
+                    OR LOWER(fecha_cierre) LIKE LOWER(?)
+                    OR LOWER(salario) LIKE LOWER(?)
+                )
+            ";
+            $params = [$empresaId, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam];
+        }
+        
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        
+        $result = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = new OfertaEntity($row);
+        }
+        
         return $result;
     }
 }

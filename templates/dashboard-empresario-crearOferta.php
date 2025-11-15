@@ -199,6 +199,10 @@ else
 
                                 <input type="submit" value="Publicar Oferta" class="botonesEmpresa" name="btnPublicarOferta">
                             </form>
+
+                            <form action="?page=dashboard-empresario" method="POST">
+                                                <input type="submit" value="Volver" class="botonesEmpresa" name="btnVolver">
+                            </form>
                         </div>
                     </div>
                     

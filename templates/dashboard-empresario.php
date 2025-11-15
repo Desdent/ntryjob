@@ -5,7 +5,54 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/controllers/empresario/OfertasControl
 
 $controller = new OfertaController();
 $userid = $_SESSION["user_id"];
-$ofertas = $controller->getOfertasByEmpresa($userid);
+
+if(isset($_POST["search-ofertas"]))
+{
+
+    $ofertas = $controller->buscarOfertas($_POST["search-ofertas"], $userid);
+}
+elseif(isset($_POST["ordenarOfertas"]))
+{
+
+    switch($_POST["ordenarOfertas"])
+    {
+        case "sortNombreOfertasAsc":
+            $ofertas = $controller->sortOfertas("titulo", "asc", $userid);
+            break;
+        case "sortNombreOfertasDesc":
+            $ofertas = $controller->sortOfertas("titulo", "desc", $userid);
+            break;
+        case "sortCicloOfertasAsc":
+            $ofertas = $controller->sortOfertas("ciclo_id", "asc", $userid);
+            break;
+        case "sortCicloOfertasDesc":
+            $ofertas = $controller->sortOfertas("ciclo_id", "desc", $userid);
+            break;
+        case "sortFechaInicioOfertasAsc":
+            $ofertas = $controller->sortOfertas("fecha_inicio", "asc", $userid);
+            break;
+        case "sortFechaInicioOfertasDesc":
+            $ofertas = $controller->sortOfertas("fecha_inicio", "desc", $userid);
+            break;
+        case "sortFechaFinOfertasAsc":
+            $ofertas = $controller->sortOfertas("fecha_cierre", "asc", $userid);
+            break;
+        case "sortFechaFinOfertasDesc":
+            $ofertas = $controller->sortOfertas("fecha_cierre", "desc", $userid);
+            break;
+        case "sortSalarioOfertasAsc":
+            $ofertas = $controller->sortOfertas("salario", "asc", $userid);
+            break;
+        case "sortSalarioOfertasDesc":
+            $ofertas = $controller->sortOfertas("salario", "desc", $userid);
+            break; 
+        default:
+            $ofertas = $controller->getOfertasByEmpresa($userid);
+    }
+}
+else{
+    $ofertas = $controller->getOfertasByEmpresa($userid);
+}
 ?>
 
 <div class="dashboard-container">
@@ -24,7 +71,7 @@ $ofertas = $controller->getOfertasByEmpresa($userid);
                             <input type="submit" name="submitSearchOfertas" value="Buscar" class="botonesEmpresa">
                         </form>
                         <form action="" method="POST">
-                            <select name="ordenarOFertas" id="filtrarOfertas" class="botonesEmpresa">
+                            <select name="ordenarOfertas" id="filtrarOfertas" class="botonesEmpresa">
                                 <option value="" disabled selected>Sort By:</option>
                                 <option value="sortNombreOfertasAsc">Título ▲</option>
                                 <option value="sortNombreOfertasDesc">Título ▼</option>
@@ -38,7 +85,7 @@ $ofertas = $controller->getOfertasByEmpresa($userid);
                             <input type="submit" name="submitOrdenarPendientes" value="Ordenar Tabla" class="botonesEmpresa">
                         </form>
                         <div>
-                            <form action="?page=dashboard-empresario-crearOferta" method="POST" >
+                            <form action="" method="POST" >
                                 <input type="submit" value="Crear Oferta" class="botonesEmpresa" name="btnCrearOferta">
                             </form>
                             
@@ -90,7 +137,7 @@ $ofertas = $controller->getOfertasByEmpresa($userid);
                                 <td>
                                     <form action="" method="POST">
                                         <input type="submit" value="Editar" name="btnEditarOferta" class="botonesAccionEmpresas">
-                                        <input type="submit" value="Borrar" name="btnBorrarOerta" class="botonesAccionEmpresas">
+                                        <input type="submit" value="Borrar" name="btnBorrarOferta" class="botonesAccionEmpresas">
                                         <input type="submit" value="Ver Oferta" name="btnVerOferta" class="botonesAccionEmpresas">
                                         <input type="submit" value="Ver Solicitudes" name="btnVerPostulantes" class="botonesAccionEmpresas">
                                         <input type="hidden" value="<?php echo $ofertaSerialized; ?>" name="ofertaSerialized">

@@ -145,11 +145,17 @@ switch($page) {
         }
         elseif(isset($_POST["btnBorrarOferta"]))
         {
-
+            AuthMiddleware::requiereAuth(["empresario"]);
+            $_SESSION["accion"] = "borrar";
+            echo $templates->render('dashboard-empresario-oferta-ver-editar');
+            break;
         }
         elseif(isset($_POST["btnVerOferta"]))
         {
-
+            AuthMiddleware::requiereAuth(["empresario"]);
+            $_SESSION["accion"] = "ver";
+            echo $templates->render('dashboard-empresario-oferta-ver-editar');
+            break;
         }
         elseif(isset($_POST["btnVerPostulantes"]))
         {

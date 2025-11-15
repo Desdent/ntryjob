@@ -7,7 +7,6 @@ require_once $_SERVER["DOCUMENT_ROOT"] . '/middleware/AuthMiddleware.php';
 require_once $_SERVER["DOCUMENT_ROOT"] . "/controllers/empresario/OfertasController.php";
 
 $controlador = new OfertaController();
-
 $errores = [];
 $datosPrevios = [];
 $dao = new OfertaDAO();
@@ -102,6 +101,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             unset($_SESSION["datosPrevios"]);
         }
 
+        $datosPrevios["id"];
 
         $oferta = new OfertaEntity($datosPrevios);
         $nuevo = $dao->update($oferta);
@@ -115,18 +115,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         }
 
     }
+    elseif(isset($_SESSION["confirmarBorrado"]))
+    {
+
+
+        $borrado = $dao->delete($datosPrevios["id"]);
+
+    if($borrado)
+        {
+            $_SESSION["exito"] = "borrada";
+            header("location: index.php?page=dashboard-empresario-oferta-ver-editar");
+            exit;
+        }
+    }
 
     
-
-
-
-    
-
-    
-
-    
-
-
 
 }
 else

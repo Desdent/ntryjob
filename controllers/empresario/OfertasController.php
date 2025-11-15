@@ -51,6 +51,11 @@ class OfertaController
         return $this->cicloDAO->getAll();
     }
 
+    public function getOfertaById($id)
+    {
+        return $this->cicloDAO->getById($id);
+    }
+
 
     public function getCicloById(int $cicloId)
     {
@@ -107,5 +112,21 @@ class OfertaController
         $result = $this->ofertaDAO->delete($ofertaId);
 
         return $result;
+    }
+
+    public function sortOfertas($parameter, $metodo, $userid)
+    {
+        $empresaId = $this->_getEmpresaId($userid);
+
+        $ofertas = $this->ofertaDAO->sortBy($parameter, $metodo, $empresaId);
+        return $ofertas;
+    }
+
+    public function buscarOfertas($parameter, $userid)
+    {
+        $empresaId = $this->_getEmpresaId($userid);
+
+        $ofertas = $this->ofertaDAO->searchWord($parameter, $empresaId);
+        return $ofertas;
     }
 }
