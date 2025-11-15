@@ -2,7 +2,7 @@
 $this->layout('layout', ['title' => 'Dashboard Alumno']);
 ?>
 
-<script src="/public/js/alumno/main.js"></script>
+<script src="/public/js/alumno/datos.js"></script>
 
 <div class="dashboard-container">
     <div class="dashboard-header">
@@ -20,9 +20,13 @@ $this->layout('layout', ['title' => 'Dashboard Alumno']);
         
         <div class="table-container">
             <div id="divh2">
-                <h2>Vista Principal</h2>
+                <h2>Mis Datos</h2>
             </div>
-            <div id="ofertas-container">
+            <div id="datos-container" class="datosAlumno">
+
+            </div>
+        <div>
+                
         
     </div>
 </div>

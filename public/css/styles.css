@@ -931,6 +931,19 @@ footer p {
     box-sizing: border-box;
 }
 
+
+.inputsDatosAlumno
+{
+    display: inline;
+    margin-top:0.3em;
+    margin-bottom: 0.5em;
+    padding: 5px;
+    border: 2px solid #7CC8F9;
+    border-radius: 0.7em;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
 .inputsPublicarOfertas {
     display: inline;
     margin-top:0.3em;
@@ -1740,7 +1753,8 @@ tbody tr:hover {
     margin-top: 1em;
 }
 
-button, .addEmpresa, .botonesEmpresa {
+button, .addEmpresa, .botonesEmpresa,
+.botonesDatosAlumno {
     border-radius: 0.7em;
     padding: 0.7em 2em;
     border: none;
@@ -1775,7 +1789,7 @@ button:hover, .addEmpresa:hover,
     margin-bottom: 0.5em;
 }
 
-.botonesAccionEmpresas:hover {
+.botonesAccionEmpresas:hover, .botonesDatosAlumno:hover {
     background: #075588;
     box-shadow: 0em 0.35em 0em 0 #075588;
     color: #ffffff;

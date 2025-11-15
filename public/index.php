@@ -190,6 +190,14 @@ switch($page) {
         AuthMiddleware::requiereAuth(["alumno"]);
         echo $templates->render('dashboard-alumno');
         break;
+    case 'dashboard-alumno-datos':
+        AuthMiddleware::requiereAuth(["alumno"]);
+        echo $templates->render('dashboard-alumno-datos');
+        break;
+    case 'dashboard-alumno-ofertas':
+        AuthMiddleware::requiereAuth(["alumno"]);
+        echo $templates->render('dashboard-alumno-ofertas');
+        break;
     
     default:
         echo $templates->render('home');
