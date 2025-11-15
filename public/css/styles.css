@@ -1181,6 +1181,25 @@ footer p {
     overflow-y: auto;
 }
 
+.modal-body-centrado {
+    /* Desactiva temporalmente el layout de grid de dos columnas */
+    display: flex; 
+    
+    /* Centra horizontalmente */
+    justify-content: center; 
+    
+    /* Centra verticalmente (si modalBody tiene altura definida) */
+    align-items: center; 
+    
+    /* Asegura que ocupe todo el espacio disponible */
+    flex-direction: column; 
+    
+    /* Le da un alto al body del modal para centrar verticalmente */
+    min-height: 300px; /* Ajusta según lo necesites */
+
+    text-align: center;
+}
+
 
 /* ========== COLUMNAS DEL FORMULARIO ========== */
 .form-column, .form-columnAdd, .form-columnMassive{
@@ -1670,6 +1689,14 @@ tbody tr:hover {
     background-color: #E7F6F8;
     border-radius: 0.7em;
 
+}
+
+.hideModal{
+    display: none;
+}
+
+.showModal{
+    display: block;
 }
 
 

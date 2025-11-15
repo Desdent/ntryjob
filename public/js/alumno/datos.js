@@ -227,6 +227,9 @@ document.addEventListener("DOMContentLoaded", function(){
             btnVerFoto.onclick = function(e)
             {
                 e.preventDefault();
+                encenderTrasfondo();
+                encenderModalFoto();
+                obtenerYMostrarFotoBlob();
                 
             }
         }
@@ -243,6 +246,7 @@ document.addEventListener("DOMContentLoaded", function(){
         btnVerCiclos.onclick = function(e)
         {
             e.preventDefault();
+            encenderModslFoto();
             
         }
 
@@ -293,6 +297,12 @@ document.addEventListener("DOMContentLoaded", function(){
         
 
 
+        let btnGenerarPDF = document.createElement("button");
+        btnGenerarPDF.classList.add("botonesDatosAlumno");
+        btnGenerarPDF.name ="btnGenerarPDF";
+        btnGenerarPDF.innerHTML = "Generar PDF";
+        form.append(btnGenerarPDF)
+
 
         let submitForm = document.createElement("input");
         submitForm.type = "submit";
@@ -310,8 +320,140 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 
+// ---Modal ---
+    // --- Trasfondo ---
+    let body = document.body;
+
+    let trasfondoModal = document.createElement("div");
+    trasfondoModal.classList.add("trasfondoModal");
+    trasfondoModal.classList.add("hideModal");
+    body.append(trasfondoModal);
+
+    trasfondoModal.addEventListener("click", function(e)
+    {
+        if(e.target === trasfondoModal)
+        {
+            apagarModales();
+        }
+    });
 
 
+    // Modal Foto
+    let modalFotoContainer = document.createElement("div");
+    body.append(modalFotoContainer);
+    modalFotoContainer.classList.add("modal");
+    modalFotoContainer.classList.add("hideModal");
+
+    let modalFoto = document.createElement("div");
+    modalFoto.classList.add("modal-content");
+    modalFotoContainer.append(modalFoto);
+
+    let modalHeader = document.createElement("div");
+    modalHeader.classList.add("modal-header");
+    modalFoto.append(modalHeader);
+    let tituloModalFoto = document.createElement("h3");
+    tituloModalFoto.innerHTML= "Foto Actual";
+    modalHeader.append(tituloModalFoto);
+
+    let modalBody = document.createElement("div");
+    modalBody.classList.add("modal-body");
+    modalBody.classList.add("modal-body-centrado");
+    modalFoto.append(modalBody);
+
+    let containerFoto = document.createElement("div");
+    containerFoto.style.textAlign = 'center';
+    modalBody.append(containerFoto);
+    let imgElement = document.createElement("img");
+    containerFoto.append(imgElement);
+
+    let modalFooter = document.createElement("div");
+    modalFooter.classList.add("modal-footer");
+    modalFoto.append(modalFooter);
+    let btnCerrarModalFoto = document.createElement("button");
+    btnCerrarModalFoto.innerHTML= "Cerrar";
+    modalFooter.append(btnCerrarModalFoto);
+
+    btnCerrarModalFoto.onclick = function(e)
+    {
+        e.preventDefault();
+        apagarModales();
+    }
+
+
+
+    function encenderTrasfondo()
+    {
+        trasfondoModal.classList.remove("hideModal");
+        trasfondoModal.classList.add("showModal");
+    }
+
+    function encenderModalFoto()
+    {
+        modalFotoContainer.classList.remove("hideModal");
+        modalFotoContainer.classList.add("showModal");
+    }
+
+    function apagarModales()
+    {
+        trasfondoModal.classList.add("hideModal");
+        trasfondoModal.classList.remove("showModal");
+
+        modalFotoContainer.classList.remove("showModal");
+        modalFotoContainer.classList.add("hideModal")
+    }
+
+    // -----------TO-DO: MOSTRAR CV----------------
+
+
+
+
+
+
+    //----------------------- TO-DO: MODAL VER Y AÑADIR O QUITAR CICLOS--------------------
+
+    
+
+
+
+
+
+
+
+
+
+
+    async function obtenerYMostrarFotoBlob() {
+    const urlEndpointPHP = "/api/alumno/datosController.php?obtainImgBLOB";
+    
+
+    try {
+        const response = await fetch(urlEndpointPHP);
+
+        // 🎯 1. Verificación: Si la respuesta es OK (200), asumimos que hay datos.
+        if (response.ok && response.status === 200 && response.headers.get('content-length') !== '0') {
+            
+            // 2. Hay foto: Pilla el cuerpo como un Blob
+            const imageBlob = await response.blob();
+            
+            // Si el Blob tiene tamaño > 0 (Doble chequeo, aunque response.ok debería bastar)
+            if (imageBlob.size > 0) {
+                const imageUrl = URL.createObjectURL(imageBlob);
+                
+                imgElement.src = imageUrl;
+
+            }
+
+        } else {
+
+            containerFoto.innerHTML = "Sin foto";
+        }
+        
+
+    } catch (error) {
+
+        console.error("Error al cargar la foto:", error);
+    }
+}
 
 
 

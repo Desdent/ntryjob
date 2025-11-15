@@ -22,7 +22,25 @@ try {
     
     switch ($metodo) {
         case 'GET':
-            echo json_encode(["success" => true, "datos" => [
+            if(isset($_GET["obtainImgBLOB"]))
+            {
+                if($alumno->foto)
+                {
+                    header("Content-Type: image/jpeg");
+
+                    echo $alumno->foto;
+                    exit;
+                }
+                else
+                {
+                    http_response_code(404);
+                    echo "No se encontró la imagen";
+                    exit;
+                }
+            }
+            else
+            {
+                echo json_encode(["success" => true, "datos" => [
                 "nombre" => $alumno->nombre,
                 "apellidos" => $alumno->apellidos,
                 "telefono" => $alumno->telefono,
@@ -37,8 +55,9 @@ try {
                 "fecha_fin" => $alumno->fecha_fin,
                 "tieneCV" => ($alumno->cv) ? true : false,
                 "tieneFoto" => ($alumno->foto) ? true : false
-            ]
-        ]);
+                    ]
+                ]);
+            }
             break;
             
         default:
