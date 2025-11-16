@@ -52,6 +52,21 @@ try {
                     exit;
                 }
             }
+            elseif(isset($_GET["getCiclosAlumno"]))
+            {
+                $idAlumno = $alumno->id;
+                $ciclos = $alumnoDAO->getCiclosAlumno($idAlumno);
+
+                if($ciclos)
+                {
+                    echo json_encode(["success" => true, "ciclos" => $ciclos]);
+                }
+                else
+                {
+                    http_response_code(400);
+                    echo json_encode(["success" => false, "error" => "No tiene ciclos"]);
+                }
+            }
             else
             {
                 echo json_encode(["success" => true, "datos" => [

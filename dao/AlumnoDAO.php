@@ -1,7 +1,9 @@
 <?php
 require_once __DIR__.'/DAOInterface.php';
 require_once __DIR__.'/UserDAO.php';
+require_once __DIR__.'/CicloDAO.php';
 require_once __DIR__.'/../models/entities/AlumnoEntity.php';
+require_once __DIR__.'/../models/entities/CiclosAlumnosEntity.php';
 require_once __DIR__.'/../config/Database.php';
 
 class AlumnoDAO implements DAOInterface {
@@ -204,23 +206,35 @@ class AlumnoDAO implements DAOInterface {
     
     public function getCiclosAlumno($id) {
         $ciclos = [];
-        
+
+        $daoCiclo = new CicloDAO();
+
         // Obtener ciclo principal
         $stmt = $this->db->prepare("SELECT ciclo_id FROM alumnos WHERE id = ?");
         $stmt->execute([$id]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if ($result && $result['ciclo_id']) {
-            $ciclos[] = (int)$result['ciclo_id'];
+    
+        $alumno = $this->findByUsuarioId($id);
+        if($alumno->ciclo_id)
+        {
+            $datosKV = [
+                "nombre_ciclo" => $daoCiclo->getById($alumno->ciclo_id)->nombre,
+                "alumno_id" => $alumno->id,
+                "ciclo_id" => $alumno->ciclo_id,
+                "fecha_inicio" => $alumno->fecha_inicio,
+                "fecha_fin" => $alumno->fecha_fin
+            ];
+
+            $ciclos[] = new CiclosAlumnosEntity($datosKV);
         }
+
         
-        // Obtener ciclos adicionales de alumno_ciclos
-        $stmt = $this->db->prepare("SELECT ciclo_id FROM alumno_ciclos WHERE alumno_id = ?");
+        $stmt = $this->db->prepare("SELECT * FROM alumno_ciclos WHERE alumno_id = ?");
         $stmt->execute([$id]);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $ciclos[] = (int)$row['ciclo_id'];
+            $ciclos[] = new CiclosAlumnosEntity($row);
         }
         
-        return array_unique($ciclos);
+        return $ciclos;
     }
 }

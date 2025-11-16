@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", function(){
             let data = await response.json();
 
             datos = data.datos;
-            console.log(data.datos);
         }catch(error){
             console.error("Error en la solicitud: ", error);
             alert("Error al encontrar alumno");
@@ -248,51 +247,11 @@ document.addEventListener("DOMContentLoaded", function(){
 
         btnVerCiclos.onclick = function(e)
         {
+
             e.preventDefault();
+            encenderModalCiclos();
             
         }
-
-        // let divCicloId = document.createElement("div");
-        // div6.append(divCicloId);
-        // let labelCicloId = document.createElement("label");
-        // labelCicloId.textContent = "ID del Ciclo:";
-        // labelCicloId.htmlFor = "inputCicloId";
-        // divCicloId.append(labelCicloId);
-        // let inputCicloId = document.createElement("input");
-        // inputCicloId.type = "number";
-        // inputCicloId.name = "ciclo_id";
-        // inputCicloId.id = "inputCicloId";
-        // inputCicloId.classList.add("inputsDatosAlumno");
-        // inputCicloId.value= datos["ciclo_id"];
-        // div6.append(inputCicloId);
-
-        // // --- Campos Fecha Inicio y Fecha Fin (van a div7) ---
-        // let divFechaInicio = document.createElement("div");
-        // div7.append(divFechaInicio);
-        // let labelFechaInicio = document.createElement("label");
-        // labelFechaInicio.textContent = "Fecha de Inicio:";
-        // labelFechaInicio.htmlFor = "inputFechaInicio";
-        // divFechaInicio.append(labelFechaInicio);
-        // let inputFechaInicio = document.createElement("input");
-        // inputFechaInicio.type = "date";
-        // inputFechaInicio.name = "fecha_inicio";
-        // inputFechaInicio.id = "inputFechaInicio";
-        // inputFechaInicio.classList.add("inputsDatosAlumno");
-        
-        // div7.append(inputFechaInicio);
-
-        // let divFechaFin = document.createElement("div");
-        // div7.append(divFechaFin);
-        // let labelFechaFin = document.createElement("label");
-        // labelFechaFin.textContent = "Fecha de Fin:";
-        // labelFechaFin.htmlFor = "inputFechaFin";
-        // divFechaFin.append(labelFechaFin);
-        // let inputFechaFin = document.createElement("input");
-        // inputFechaFin.type = "date";
-        // inputFechaFin.name = "fecha_fin";
-        // inputFechaFin.id = "inputFechaFin";
-        // inputFechaFin.classList.add("inputsDatosAlumno");
-        // div7.append(inputFechaFin);
 
         
 
@@ -427,6 +386,110 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 
+    // Modal Ciclos
+    let modalCiclosContainer = document.createElement("div");
+    body.append(modalCiclosContainer);
+    modalCiclosContainer.classList.add("modal");
+    modalCiclosContainer.classList.add("hideModal");
+
+    let modalCiclos = document.createElement("div");
+    modalCiclos.classList.add("modal-content");
+    modalCiclosContainer.append(modalCiclos);
+
+    let modalHeaderCiclos = document.createElement("div");
+    modalHeaderCiclos.classList.add("modal-header");
+    modalCiclos.append(modalHeaderCiclos);
+    let tituloModalCiclos = document.createElement("h3");
+    tituloModalCiclos.innerHTML= "Ciclos";
+    modalHeaderCiclos.append(tituloModalCiclos);
+
+    let modalBodyCiclos = document.createElement("div");
+    modalBodyCiclos.classList.add("modal-body");
+    modalBodyCiclos.classList.add("modal-body-centrado");
+    modalCiclos.append(modalBodyCiclos)
+
+    let containerCiclos = document.createElement("div");
+    containerCiclos.style.textAlign = 'center';
+    modalBodyCiclos.append(containerCiclos);
+
+    let modalFooterCiclos = document.createElement("div");
+    modalFooterCiclos.classList.add("modal-footer");
+    modalCiclos.append(modalFooterCiclos);
+    let btnCerrarModalCiclos = document.createElement("button");
+    btnCerrarModalCiclos.innerHTML= "Cerrar";
+    modalFooterCiclos.append(btnCerrarModalCiclos);
+
+    btnCerrarModalCiclos.onclick = function(e)
+    {
+        e.preventDefault();
+        apagarModales();
+    }
+
+
+
+    let ciclosModal_containerAddCiclos = document.createElement("div");
+    modalBodyCiclos.append(ciclosModal_containerAddCiclos);
+    let ciclosModal_containerh3 = document.createElement("div");
+    ciclosModal_containerAddCiclos.append(ciclosModal_containerh3);
+    let ciclosModal_h3 = document.createElement("h3");
+    ciclosModal_h3.innerHTML = "Añadir Ciclo";
+    ciclosModal_containerh3.append(ciclosModal_h3);
+
+
+    let ciclosModal_containerInputsAdd = document.createElement("div");
+    modalBodyCiclos.append(ciclosModal_containerInputsAdd);
+    let inputAddCiclos_select = document.createElement("select");
+    inputAddCiclos_select.name ="selectCiclos";
+    inputAddCiclos_select.classList.add("inputsDatosAlumno");
+    let label_inputSelect = document.createElement("label");
+    label_inputSelect.htmlFor = "selectCiclos";
+    label_inputSelect.innerHTML = "Selecciona un ciclo: ";
+    ciclosModal_containerAddCiclos.append(label_inputSelect);
+    ciclosModal_containerAddCiclos.append(inputAddCiclos_select);
+    let optDefault = document.createElement("option");
+    optDefault.value = "" ;
+    optDefault.innerHTML ="- Ciclos -";
+    optDefault.disabled = true;
+    optDefault.defaultSelected = true;
+    inputAddCiclos_select.append(optDefault);
+    opcionesCiclos()
+    let divContainerFechas = document.createElement("div");
+    ciclosModal_containerAddCiclos.append(divContainerFechas);
+
+    let fechaInicio = document.createElement("input");
+    fechaInicio.type="date";
+    fechaInicio.classList.add("inputsDatosAlumno");
+    fechaInicio.name = "fechaInicio";
+    let labelFechaIni = document.createElement("label");
+    labelFechaIni.htmlFor="fechaInicio";
+    labelFechaIni.innerHTML=" Fecha de Inicio:";
+    divContainerFechas.append(labelFechaIni);
+    divContainerFechas.append(fechaInicio);
+    
+    let fechaFin = document.createElement("input");
+    fechaFin.type = "date";
+    fechaFin.classList.add("inputsDatosAlumno");
+    fechaFin.name = "fechaFin";
+    let labelFechaFin = document.createElement("label");
+    labelFechaFin.htmlFor = "fechaFin";
+    labelFechaFin.innerHTML = " Fecha de Fin:"; 
+    divContainerFechas.append(labelFechaFin);
+    divContainerFechas.append(fechaFin);
+
+    let btnAddCiclo = document.createElement("button");
+    btnAddCiclo.classList.add("botonesDatosAlumno");
+    btnAddCiclo.innerHTML="Añadir Ciclo";
+    divContainerFechas.append(btnAddCiclo);
+
+
+    let segundoh3= document.createElement("h3");
+    segundoh3.innerHTML="Mis Ciclos"
+    ciclosModal_containerAddCiclos.append(segundoh3)
+    let containerCiclosAlumno = document.createElement("div");
+    ciclosModal_containerAddCiclos.append(containerCiclosAlumno);
+    mostrarCiclosAlumno()
+
+
 
 
 
@@ -452,6 +515,12 @@ document.addEventListener("DOMContentLoaded", function(){
         modalCVContainer.classList.add("showModal");
     }
 
+    function encenderModalCiclos()
+    {
+        modalCiclosContainer.classList.remove("hideModal");
+        modalCiclosContainer.classList.add("showModal");
+    }
+
     function apagarModales()
     {
         trasfondoModal.classList.add("hideModal");
@@ -462,18 +531,12 @@ document.addEventListener("DOMContentLoaded", function(){
 
         modalCVContainer.classList.remove("showModal");
         modalCVContainer.classList.add("hideModal");
+
+        modalCiclosContainer.classList.remove("showModal");
+        modalCiclosContainer.classList.add("hideModal");
     }
 
-    // -----------MOda----------------
 
-
-
-
-
-
-    //----------------------- TO-DO: MODAL VER Y AÑADIR O QUITAR CICLOS--------------------
-
-    
 
 
 
@@ -491,13 +554,13 @@ document.addEventListener("DOMContentLoaded", function(){
     try {
         const response = await fetch(urlEndpointPHP);
 
-        // 🎯 1. Verificación: Si la respuesta es OK (200), asumimos que hay datos.
+
         if (response.ok && response.status === 200 && response.headers.get('content-length') !== '0') {
             
-            // 2. Hay foto: Pilla el cuerpo como un Blob
+
             const imageBlob = await response.blob();
             
-            // Si el Blob tiene tamaño > 0 (Doble chequeo, aunque response.ok debería bastar)
+
             if (imageBlob.size > 0) {
                 const imageUrl = URL.createObjectURL(imageBlob);
                 
@@ -559,6 +622,74 @@ document.addEventListener("DOMContentLoaded", function(){
     }
 
 
+
+
+    function opcionesCiclos()
+    {
+        fetch("/api/ciclos.php")
+        .then(response => response.json())
+        .then(data => {
+            data.data.forEach(ciclo => {
+                let selectOpt = document.createElement("option");
+                selectOpt.value = ciclo["id"];
+                selectOpt.innerHTML = ciclo["nombre"];
+                inputAddCiclos_select.append(selectOpt);
+            });
+        })
+    }
+
+
+    function mostrarCiclosAlumno()
+    {
+        fetch("/api/alumno/datosController.php?getCiclosAlumno")
+        .then(response => response.json())
+        .then(data => {
+                if(data.success)
+                {
+                    data.ciclos.forEach(ciclo => {
+                        console.log(ciclo);
+                        let divCiclo = document.createElement("div")
+                        containerCiclosAlumno.append(divCiclo);
+                        let inputNombre = document.createElement("input");
+                        inputNombre.classList.add("inputsDatosAlumno");
+                        inputNombre.type = "text";
+                        inputNombre.readOnly = true;
+                        inputNombre.name = "nombreCiclo";
+                        inputNombre.value = ciclo["nombre_ciclo"];
+                        containerCiclosAlumno.append(inputNombre);
+
+                        let inputFechaIni = document.createElement("input");
+                        inputFechaIni.classList.add("inputsDatosAlumno");
+                        inputFechaIni.type = "date";
+                        inputFechaIni.readOnly = true;
+                        inputFechaIni.name = "fechaIniCiclo";
+                        inputFechaIni.value = ciclo["fecha_inicio"];
+                        containerCiclosAlumno.append(inputFechaIni);
+
+                        let inputFechaFin = document.createElement("input");
+                        inputFechaFin.classList.add("inputsDatosAlumno");
+                        inputFechaFin.type = "date";
+                        inputFechaFin.readOnly = true;
+                        inputFechaFin.name ="FechaFin";
+                        inputFechaFin.value = ciclo["fecha_fin"];
+                        containerCiclosAlumno.append(inputFechaFin);
+
+                        let btnBorrarCiclo = document.createElement("button");
+                        btnBorrarCiclo.innerHTML = "Borrar";
+                        btnBorrarCiclo.classList.add("botonesDatosAlumno");
+                        containerCiclosAlumno.append(btnBorrarCiclo);
+
+                    });
+                }
+                else
+                {
+                    alert(data.error || "No se ha podido conectar con los ciclos del alumno");
+                }
+        })
+    }
+
+
+    // TO-DO: FUNCIONALIDAD AÑADIR CICLO, FUNCIONALIDAD BORRAR CICLO, FUNCIONALIDAD GENERAR PDF, FUNCIONALIDAD ACTUALIZAR DATOS
 
 
 
