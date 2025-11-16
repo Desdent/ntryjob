@@ -279,11 +279,50 @@ document.addEventListener("DOMContentLoaded", function(){
         submitForm.type = "submit";
         submitForm.name = "submitForm";
         submitForm.value = "Actualizar Datos";
+
+        
         submitForm.classList.add("botonesDatosAlumno");
         form.append(submitForm);
         submitForm.onclick = function(e)
         {
             e.preventDefault();
+
+
+            const formDataActualizar = new FormData();
+            formDataActualizar.append("nombre", inputNombre.value);
+            formDataActualizar.append("apellidos", inputApellidos.value);
+            formDataActualizar.append("telefono", inputTelefono.value);
+            formDataActualizar.append("fecha_nacimiento", inputFechaNacimiento.value);
+            formDataActualizar.append("pais", inputPais.value);
+            formDataActualizar.append("provincia", inputProvincia.value);
+            formDataActualizar.append("ciudad", inputCiudad.value);
+            formDataActualizar.append("direccion", inputDireccion.value);
+            formDataActualizar.append("codigo_postal", inputCodigoPostal.value);
+
+            if (inputCv.files && inputCv.files.length > 0) {
+                formDataActualizar.append("cv", inputCv.files[0]);
+            }
+
+            if (inputFoto.files && inputFoto.files.length > 0) {
+                formDataActualizar.append("foto", inputFoto.files[0]);
+            }
+
+
+            fetch("/api/alumno/datosController.php?updateAlumno", {
+                method: "POST",
+                body: formDataActualizar
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success)
+                {
+                    alert("Datos Actualizados.");
+                }
+                else
+                {
+                    alert(data.error || "Error al conectar con la base de datos")
+                }
+            })
         }
 
     }

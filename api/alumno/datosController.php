@@ -95,32 +95,109 @@ try {
             }
             break;
         case 'POST':
-            $id_alumno = $alumno->id;
-            var_dump($_POST);
-
-
-            $cicloAlumnosArray = [
-                "nombre_ciclo" => $_POST["nombreCiclo"],
-                "alumno_id" => $id_alumno,
-                "ciclo_id" => (int)($_POST["selectCiclos"]),
-                "fecha_inicio" => $_POST["fechaInicio"],
-                "fecha_fin" => $_POST["fechaFin"]
-            ];
-
-            $ciclosAlumnoEntity = new CiclosAlumnosEntity($cicloAlumnosArray);
-
-            $nuevo = $cicloAlumnoDAO->create($ciclosAlumnoEntity);
-
-            if($nuevo)
+            if(isset($_GET["updateAlumno"])) 
             {
-                echo json_encode(["success" => true]);
-                exit;
+                $id = $alumno->id;
+                $datosForm = $_POST; 
+                
+                $usuarioActual = $alumnoDAO->getById($id);
+
+                $fotoTiene = isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK;
+                $foto = null;
+                if($fotoTiene) {
+                    // Leer el contenido binario
+                    $foto = file_get_contents($_FILES['foto']['tmp_name']);
+                }
+                
+
+                $cvTiene = isset($_FILES['cv']) && $_FILES['cv']['error'] === UPLOAD_ERR_OK;
+                $cv = null;
+                if($cvTiene) {
+
+                    $cv = file_get_contents($_FILES['cv']['tmp_name']);
+                }
+
+
+                $alumnoArray = [
+                    "id" => $usuarioActual->id, // Usar el ID
+                    "nombre" => $datosForm["nombre"],
+                    "apellidos" => $datosForm["apellidos"],
+                    "telefono" => $datosForm["telefono"],
+                    "fecha_nacimiento" => $datosForm["fecha_nacimiento"],
+                    "pais" => $datosForm["pais"],
+                    "provincia" => $datosForm["provincia"],
+                    "ciudad" => $datosForm["ciudad"],
+                    "direccion" => $datosForm["direccion"],
+                    "codigo_postal" => $datosForm["codigo_postal"],
+                    "foto" => $fotoTiene, 
+                    "cv" => $cvTiene,     
+                    "email" => $usuarioActual->email,
+                    "password" => null
+                ];
+
+                $alumnoEntity = new AlumnoEntity($alumnoArray);
+                $updateGeneralExitoso = $alumnoDAO->update($alumnoEntity);
+                $actualizacionExitosa = $updateGeneralExitoso;
+                $errorMsg = "Error al actualizar los datos de texto del alumno.";
+
+
+                if($updateGeneralExitoso)
+                {
+
+                    if ($cvTiene) {
+                        if (!$alumnoDAO->updateCV($cv, $usuarioActual->id)) {
+                            $actualizacionExitosa = false;
+                            $errorMsg = "Error al actualizar el CV.";
+                        }
+                    }
+                    
+                    if ($actualizacionExitosa && $fotoTiene) { 
+
+                        if (!$alumnoDAO->updateFoto($foto, $usuarioActual->id)) {
+                            $actualizacionExitosa = false;
+                            $errorMsg = "Error al actualizar la foto.";
+                        }
+                    }
+
+                    if ($actualizacionExitosa) {
+                        echo json_encode(["success" => true]);
+                    } else {
+                        echo json_encode(["success" => false, "error" => $errorMsg]);
+                    }
+                    
+                } else {
+                    echo json_encode(["success" => false, "error" => $errorMsg]);
+                }
             }
             else
             {
-                http_response_code(400);
-                echo json_encode(["success" => false, "error" => "Error conectando con el cicloAlumnos"]);
-                exit;
+                $id_alumno = $alumno->id;
+
+
+
+                $cicloAlumnosArray = [
+                    "nombre_ciclo" => $_POST["nombreCiclo"],
+                    "alumno_id" => $id_alumno,
+                    "ciclo_id" => (int)($_POST["selectCiclos"]),
+                    "fecha_inicio" => $_POST["fechaInicio"],
+                    "fecha_fin" => $_POST["fechaFin"]
+                ];
+
+                $ciclosAlumnoEntity = new CiclosAlumnosEntity($cicloAlumnosArray);
+
+                $nuevo = $cicloAlumnoDAO->create($ciclosAlumnoEntity);
+
+                if($nuevo)
+                {
+                    echo json_encode(["success" => true]);
+                    exit;
+                }
+                else
+                {
+                    http_response_code(400);
+                    echo json_encode(["success" => false, "error" => "Error conectando con el cicloAlumnos"]);
+                    exit;
+                }
             }
             break;
 
@@ -146,7 +223,6 @@ try {
                 }
             }
             break;
-
         default:
             http_response_code(405);
             echo json_encode(['error' => 'Método no permitido']);

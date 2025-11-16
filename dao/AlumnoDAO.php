@@ -147,12 +147,12 @@ class AlumnoDAO implements DAOInterface {
         
         $stmt = $this->db->prepare("
             UPDATE alumnos SET nombre=?, apellidos=?, fecha_nacimiento=?, pais=?, provincia=?,
-            ciudad=?, codigo_postal=?, direccion=?, telefono=?, ciclo_id=?, fecha_inicio=?, fecha_fin=?
+            ciudad=?, codigo_postal=?, direccion=?, telefono=?, fecha_inicio=?, fecha_fin=?
             WHERE id=?
         ");
         return $stmt->execute([
             $alumno->nombre, $alumno->apellidos, $alumno->fecha_nacimiento, $alumno->pais, $alumno->provincia, 
-            $alumno->ciudad, $alumno->codigo_postal, $alumno->direccion, $alumno->telefono, $alumno->ciclo_id, 
+            $alumno->ciudad, $alumno->codigo_postal, $alumno->direccion, $alumno->telefono, 
             $alumno->fecha_inicio, $alumno->fecha_fin, $alumno->id
         ]);
     }
@@ -188,6 +188,11 @@ class AlumnoDAO implements DAOInterface {
     public function updateCV($alumnoId, $cvBlob) {
         $stmt = $this->db->prepare("UPDATE alumnos SET cv = ? WHERE id = ?");
         return $stmt->execute([$cvBlob, $alumnoId]);
+    }
+
+    public function updateFoto($alumnoId, $fotoBlob) {
+        $stmt = $this->db->prepare("UPDATE alumnos SET foto = ? WHERE id = ?");
+        return $stmt->execute([$fotoBlob, $alumnoId]);
     }
     
     public function getCV($alumnoId) {
