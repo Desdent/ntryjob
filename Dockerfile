@@ -21,4 +21,3 @@ RUN composer install || true
 
 # Expone el puerto 80 de Apache dentro del contenedor
 EXPOSE 80
-

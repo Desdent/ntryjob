@@ -265,6 +265,16 @@ document.addEventListener("DOMContentLoaded", function(){
         form.append(btnGenerarPDF)
 
 
+        const apiURL = "http://localhost:8080/generar_pdf.php"
+
+        btnGenerarPDF.onclick = function(e)
+        {
+            e.preventDefault();
+            window.open(apiURL, '_blank');
+        }
+
+
+
         let submitForm = document.createElement("input");
         submitForm.type = "submit";
         submitForm.name = "submitForm";
@@ -426,9 +436,11 @@ document.addEventListener("DOMContentLoaded", function(){
     }
 
 
+    let formCiclos = document.createElement("form");
+    modalBodyCiclos.append(formCiclos);
 
     let ciclosModal_containerAddCiclos = document.createElement("div");
-    modalBodyCiclos.append(ciclosModal_containerAddCiclos);
+    formCiclos.append(ciclosModal_containerAddCiclos);
     let ciclosModal_containerh3 = document.createElement("div");
     ciclosModal_containerAddCiclos.append(ciclosModal_containerh3);
     let ciclosModal_h3 = document.createElement("h3");
@@ -436,8 +448,6 @@ document.addEventListener("DOMContentLoaded", function(){
     ciclosModal_containerh3.append(ciclosModal_h3);
 
 
-    let ciclosModal_containerInputsAdd = document.createElement("div");
-    modalBodyCiclos.append(ciclosModal_containerInputsAdd);
     let inputAddCiclos_select = document.createElement("select");
     inputAddCiclos_select.name ="selectCiclos";
     inputAddCiclos_select.classList.add("inputsDatosAlumno");
@@ -482,15 +492,36 @@ document.addEventListener("DOMContentLoaded", function(){
     divContainerFechas.append(btnAddCiclo);
 
 
+    btnAddCiclo.onclick = function(e)
+    {
+        e.preventDefault();
+
+        const formData = new FormData(formCiclos);
+
+        fetch("/api/alumno/datosController.php",{
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data =>{
+            if(data.success)
+            {
+                alert("Ciclo Añadido");
+            }
+            else
+            {
+                alert(error || "Error conectando con el nuevo ciclo");
+            }
+        })
+    }
+
+
     let segundoh3= document.createElement("h3");
     segundoh3.innerHTML="Mis Ciclos"
     ciclosModal_containerAddCiclos.append(segundoh3)
     let containerCiclosAlumno = document.createElement("div");
     ciclosModal_containerAddCiclos.append(containerCiclosAlumno);
     mostrarCiclosAlumno()
-
-
-
 
 
 
@@ -641,6 +672,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
     function mostrarCiclosAlumno()
     {
+        containerCiclosAlumno.innerHTML = "";
+
         fetch("/api/alumno/datosController.php?getCiclosAlumno")
         .then(response => response.json())
         .then(data => {
@@ -679,6 +712,12 @@ document.addEventListener("DOMContentLoaded", function(){
                         btnBorrarCiclo.classList.add("botonesDatosAlumno");
                         containerCiclosAlumno.append(btnBorrarCiclo);
 
+                        btnBorrarCiclo.onclick = function(e) {
+                            e.preventDefault();
+                            console.log(ciclo);
+                            borrarCiclo(ciclo)
+                        }
+
                     });
                 }
                 else
@@ -692,7 +731,28 @@ document.addEventListener("DOMContentLoaded", function(){
     // TO-DO: FUNCIONALIDAD AÑADIR CICLO, FUNCIONALIDAD BORRAR CICLO, FUNCIONALIDAD GENERAR PDF, FUNCIONALIDAD ACTUALIZAR DATOS
 
 
-
+    function borrarCiclo(ciclo)
+    {
+        fetch("/api/alumno/datosController.php", {
+            method: "DELETE",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify(ciclo["ciclo_id"])
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success)
+            {
+                alert("Ciclo Borrado");
+            }
+            else
+            {
+                alert(data.error || "Error accediendo al ciclo que borrar");
+            }
+        })
+        
+    }
 
     function mostrarMenuIzq()
     {

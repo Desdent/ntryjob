@@ -14,6 +14,14 @@ class CicloDAO implements DAOInterface {
         return $row ? new CicloEntity($row) : null;
     }
 
+    public function getByNombre($nombre)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM ciclos WHERE nombre = ?");
+        $stmt->execute([$nombre]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? new CicloEntity($row) : null;
+    }
+
 
     public function getAll() {
         $stmt = $this->db->query("SELECT * FROM ciclos ORDER BY nombre");
