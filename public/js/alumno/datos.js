@@ -197,7 +197,10 @@ document.addEventListener("DOMContentLoaded", function(){
             btnVerCV.onclick = function(e)
             {
                 e.preventDefault();
-                
+                encenderTrasfondo();
+                encenderModalCV();
+                cargarPDFEnModal();
+
             }
         }
         div5.append(inputCv);
@@ -246,7 +249,6 @@ document.addEventListener("DOMContentLoaded", function(){
         btnVerCiclos.onclick = function(e)
         {
             e.preventDefault();
-            encenderModslFoto();
             
         }
 
@@ -310,7 +312,6 @@ document.addEventListener("DOMContentLoaded", function(){
         submitForm.value = "Actualizar Datos";
         submitForm.classList.add("botonesDatosAlumno");
         form.append(submitForm);
-
         submitForm.onclick = function(e)
         {
             e.preventDefault();
@@ -380,6 +381,58 @@ document.addEventListener("DOMContentLoaded", function(){
     }
 
 
+    // Modal CV
+    let modalCVContainer = document.createElement("div");
+    body.append(modalCVContainer);
+    modalCVContainer.classList.add("modal");
+    modalCVContainer.classList.add("hideModal");
+
+    let modalCV = document.createElement("div");
+    modalCV.classList.add("modal-content");
+    modalCVContainer.append(modalCV);
+
+    let modalHeaderCV = document.createElement("div");
+    modalHeaderCV.classList.add("modal-header");
+    modalCV.append(modalHeaderCV);
+    let tituloModalCV = document.createElement("h3");
+    tituloModalCV.innerHTML= "CV";
+    modalHeaderCV.append(tituloModalCV);
+
+    let modalBodyCV = document.createElement("div");
+    modalBodyCV.classList.add("modal-body");
+    modalBodyCV.classList.add("modal-body-centrado");
+    modalCV.append(modalBodyCV)
+
+    let containerCV = document.createElement("div");
+    containerCV.style.textAlign = 'center';
+    modalBodyCV.append(containerCV);
+    let iframeElement = document.createElement("iframe");
+    iframeElement.id = "iframe";
+    iframeElement.style.width = "100%";
+    iframeElement.style.height = "500px";
+    containerCV.append(iframeElement);
+
+    let modalFooterCV = document.createElement("div");
+    modalFooterCV.classList.add("modal-footer");
+    modalCV.append(modalFooterCV);
+    let btnCerrarModalCV = document.createElement("button");
+    btnCerrarModalCV.innerHTML= "Cerrar";
+    modalFooterCV.append(btnCerrarModalCV);
+
+    btnCerrarModalCV.onclick = function(e)
+    {
+        e.preventDefault();
+        apagarModales();
+    }
+
+
+
+
+
+
+
+
+
 
     function encenderTrasfondo()
     {
@@ -393,16 +446,25 @@ document.addEventListener("DOMContentLoaded", function(){
         modalFotoContainer.classList.add("showModal");
     }
 
+    function encenderModalCV()
+    {
+        modalCVContainer.classList.remove("hideModal");
+        modalCVContainer.classList.add("showModal");
+    }
+
     function apagarModales()
     {
         trasfondoModal.classList.add("hideModal");
         trasfondoModal.classList.remove("showModal");
 
         modalFotoContainer.classList.remove("showModal");
-        modalFotoContainer.classList.add("hideModal")
+        modalFotoContainer.classList.add("hideModal");
+
+        modalCVContainer.classList.remove("showModal");
+        modalCVContainer.classList.add("hideModal");
     }
 
-    // -----------TO-DO: MOSTRAR CV----------------
+    // -----------MOda----------------
 
 
 
@@ -453,7 +515,51 @@ document.addEventListener("DOMContentLoaded", function(){
 
         console.error("Error al cargar la foto:", error);
     }
+
 }
+
+
+
+    async function obtenerPDFBlob(urlPDF) {
+            try {
+                const response = await fetch(urlPDF);
+
+                if (!response.ok) {
+
+                    if (response.status === 404 || response.headers.get('content-length') === '0') {
+                        return null; 
+                    }
+                    throw new Error(`Error al obtener el PDF: ${response.status}`);
+                }
+
+                return await response.blob(); 
+
+            } catch (error) {
+                console.error("Error al obtener el PDF:", error);
+                return null;
+            }
+        }
+
+    async function cargarPDFEnModal() {
+        const pdfBLOB = await obtenerPDFBlob("/api/alumno/datosController.php?obtainCVBLOB");
+
+        containerCV.innerHTML = '';
+        iframeElement.style.display = 'none';
+        iframeElement.src = '';
+        containerCV.append(iframeElement);
+        
+        if (pdfBLOB && pdfBLOB.size > 0) {
+            const pdfURL = URL.createObjectURL(pdfBLOB);
+
+            iframeElement.src = pdfURL; 
+            iframeElement.style.display = 'block'; // Hacer visible SOLO si hay CV
+        } else {
+            containerCV.innerHTML = "Sin CV";
+        }
+    }
+
+
+
 
 
 

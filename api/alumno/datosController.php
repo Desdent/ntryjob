@@ -34,7 +34,21 @@ try {
                 else
                 {
                     http_response_code(404);
-                    echo "No se encontró la imagen";
+                    exit;
+                }
+            }
+            elseif(isset($_GET["obtainCVBLOB"]))
+            {
+                if($alumno->cv)
+                {
+                    header("Content-Type: application/PDF");
+
+                    echo $alumno->cv;
+                    exit;
+                }
+                else
+                {
+                    http_response_code(400);
                     exit;
                 }
             }
