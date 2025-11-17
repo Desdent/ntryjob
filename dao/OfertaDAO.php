@@ -20,6 +20,26 @@ class OfertaDAO implements DAOInterface {
         return $row ? new OfertaEntity($row) : null;
     }
 
+    public function getByCicloId($id) {
+        $stmt = $this->db->prepare("
+            SELECT o.*, e.nombre as empresa_nombre, c.nombre as ciclo_nombre
+            FROM ofertas o
+            JOIN empresas e ON o.empresa_id = e.id
+            LEFT JOIN ciclos c ON o.ciclo_id = c.id
+            WHERE o.ciclo_id = ? 
+        ");
+        $stmt->execute([$id]);
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $ofertas = [];
+        foreach ($rows as $row) {
+            $ofertas[] = new OfertaEntity($row);
+        }
+        
+        return $ofertas; 
+    }
+
     public function getAll() {
         $stmt = $this->db->query("
             SELECT o.*, e.nombre as empresa_nombre, c.nombre as ciclo_nombre

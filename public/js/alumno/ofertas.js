@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function(){
 
     mostrarMenuIzq()
-
-
+    let botonesAplicar = document.querySelectorAll(".btnAplicar");
+    // TO-DO APLICARLES LOS EVENTLISTENER CLICK
 
 
 

@@ -37,6 +37,26 @@ class CicloAlumnosDAO {
         }
     }
 
+    public function getAllByAlumnoId($alumno_id)
+    {
+        $stmt = $this->db->prepare("
+            SELECT ac.*
+            FROM alumno_ciclos ac
+            JOIN alumnos a ON ac.alumno_id = a.id
+            WHERE a.id = ? 
+        ");
+        $stmt->execute([$alumno_id]);
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $ciclosExtra = [];
+        foreach ($rows as $row) {
+            $ciclosExtra[] = new CiclosAlumnosEntity($row);
+        }
+        
+        return $ciclosExtra; 
+    }
+
     public function delete($id)
     {
         $stmt = $this->db->prepare("DELETE FROM alumno_ciclos WHERE ciclo_id = ?");

@@ -530,29 +530,49 @@ document.addEventListener("DOMContentLoaded", function(){
     btnAddCiclo.innerHTML="Añadir Ciclo";
     divContainerFechas.append(btnAddCiclo);
 
+    const selectElement = inputAddCiclos_select;
+    const nombreCiclo = selectElement.options[selectElement.selectedIndex].text;
+    console.log(nombreCiclo);
+
 
     btnAddCiclo.onclick = function(e)
-    {
-        e.preventDefault();
+{
+    e.preventDefault();
 
-        const formData = new FormData(formCiclos);
-
-        fetch("/api/alumno/datosController.php",{
-            method: "POST",
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data =>{
-            if(data.success)
-            {
-                alert("Ciclo Añadido");
-            }
-            else
-            {
-                alert(error || "Error conectando con el nuevo ciclo");
-            }
-        })
+    // Obtener el nombre del ciclo seleccionado
+    const selectElement = inputAddCiclos_select;
+    
+    // Validar que se haya seleccionado un ciclo válido
+    if(!selectElement.value || selectElement.value === "") {
+        alert("Por favor, selecciona un ciclo válido");
+        return;
     }
+    
+    const nombreCiclo = selectElement.options[selectElement.selectedIndex].text;
+
+    const formData = new FormData(formCiclos);
+    
+    // Agregar el nombre del ciclo al FormData
+    formData.append("nombreCiclo", nombreCiclo);
+
+    fetch("/api/alumno/datosController.php",{
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data =>{
+        if(data.success)
+        {
+            alert("Ciclo Añadido");
+            formCiclos.reset(); // Limpiar el formulario
+            mostrarCiclosAlumno(); // Recargar la lista de ciclos
+        }
+        else
+        {
+            alert(data.error || "Error conectando con el nuevo ciclo");
+        }
+    })
+}
 
 
     let segundoh3= document.createElement("h3");
@@ -703,6 +723,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 let selectOpt = document.createElement("option");
                 selectOpt.value = ciclo["id"];
                 selectOpt.innerHTML = ciclo["nombre"];
+                console.log(ciclo["nombre"])
                 inputAddCiclos_select.append(selectOpt);
             });
         })

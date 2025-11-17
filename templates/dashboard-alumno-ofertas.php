@@ -1,7 +1,14 @@
 <?php
 $this->layout('layout', ['title' => 'Dashboard Alumno']);
-?>
 
+require_once __DIR__ . "/../api/alumno/ofertasController.php";
+
+$ofertasController = new ofertasController();
+
+$ofertas = $ofertasController->getOfertas();
+$contador = 0;
+$ultimaOferta = end($ofertas);
+?>
 <script src="/public/js/alumno/ofertas.js"></script>
 
 <div class="dashboard-container">
@@ -21,9 +28,50 @@ $this->layout('layout', ['title' => 'Dashboard Alumno']);
         <div class="table-container">
             <div id="divh2">
                 <h2>Ofertas Disponibles</h2>
+
             </div>
             <div id="ofertas-container">
+                <?php
 
+                    foreach($ofertas as $oferta)
+                    {
+                        
+                        if($contador == 0)
+                        {
+                            ?>
+                                <div class="containerOfertas">
+                            <?php
+                            if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST"){
+                                json_encode(["oferta_id" => $oferta->id]);
+                            }
+                        }
+                            ?>
+                                <div class="oferta-card">
+                                    <div class="containerNombreEmpresaOferta">
+                                        <h4 class="nombreEmpresaOferta">
+                                            <?php
+                                                echo $ofertasController->findEmpresaById($oferta->empresa_id)->nombre;
+                                            ?>
+                                        </h4>
+                                    </div>
+                                    <h3><?php echo $oferta->titulo ?></h3>
+                                    <span class="oferta-badge"><?php echo $oferta->salario ?> $ </span>
+                                    <span class="oferta-badge"><?php echo $oferta->modalidad ?></span>
+                                    <p id="descripcion"><?php echo $oferta->descripcion ?></p>
+                                    <button id="add[<?php $oferta->id?>]" class="btnAplicar" value=">Aplicar</button>
+                                </div>
+                            <?php
+
+                        $contador++;
+
+                        if($contador == 2 || $oferta == $ultimaOferta){
+                            ?>
+                                </div>
+                            <?php
+                            $contador = 0;
+                        }
+                    }
+                ?>
             </div>
         </div>
         <div class="table-container">
