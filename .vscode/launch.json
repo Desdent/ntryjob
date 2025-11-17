@@ -11,7 +11,7 @@
             "port": 9003,
             "pathMappings": {
                 // Esta es la ruta del proyecto DENTRO del contenedor Docker
-                "/var/www/html": "${workspaceRoot}"
+                "/var/www/html": "${workspaceFolder}"
                 // ${workspaceRoot} es la ruta de tu proyecto en tu máquina local.
             }
         },

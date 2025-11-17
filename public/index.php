@@ -134,7 +134,13 @@ switch($page) {
         
     case 'dashboard-empresario':
         
-        if(isset($_POST["btnEditarOferta"]))
+        if(isset($_POST["btnCrearOferta"]))
+        {
+            AuthMiddleware::requiereAuth(["empresario"]);
+            echo $templates->render('dashboard-empresario-crearOferta');
+            break;
+        }
+        elseif(isset($_POST["btnEditarOferta"]))
         {
             AuthMiddleware::requiereAuth(["empresario"]);
             $_SESSION["accion"] = "editar";
