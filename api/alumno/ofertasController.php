@@ -8,6 +8,8 @@ require_once $_SERVER["DOCUMENT_ROOT"] . '/dao/CicloAlumnosDAO.php';
 require_once $_SERVER["DOCUMENT_ROOT"] . '/models/entities/CiclosAlumnosEntity.php';
 require_once $_SERVER["DOCUMENT_ROOT"] . '/dao/EmpresaDAO.php';
 require_once $_SERVER["DOCUMENT_ROOT"] . '/models/entities/EmpresaEntity.php';
+require_once $_SERVER["DOCUMENT_ROOT"] . '/dao/PostulacionDAO.php';
+require_once $_SERVER["DOCUMENT_ROOT"] . '/models/entities/PostulacionEntity.php';
 
 class ofertasController {
 
@@ -15,16 +17,18 @@ class ofertasController {
     private $alumno;
     private $cicloAlumnosDAO;
     private $empresaDAO;
+    private $postulacionDAO;
 
     public function __construct() {
         $this->ofertaDAO = new ofertaDAO();
         $this->alumno = new alumnoDAO();
         $this->cicloAlumnosDAO = new cicloAlumnosDAO();
         $this->empresaDAO = new EmpresaDAO();
+        $this->postulacionDAO = new PostulacionDAO();
 
     }
 
-    public function getOfertas()
+    public function getOfertas($bool)
     {
         if(isset($_SESSION["user_id"]))
         {
@@ -34,6 +38,8 @@ class ofertasController {
         $ciclosExtra = $this->cicloAlumnosDAO->getAllByAlumnoId($id);
 
         $ofertasTotales = [];
+        $ofertasFiltradas = [];
+        $ofertasPostuladas = [];
 
         $ofertasCicloPrincipal = $this->ofertaDAO->getByCicloId($id);
         
@@ -53,8 +59,38 @@ class ofertasController {
             }
         }
 
-        return $ofertasTotales;
+        foreach($ofertasTotales as $oferta){
 
+            $yaPostulado = $this->postulacionDAO->comprobarOferta($oferta->id, $id);
+
+            if(!$yaPostulado)
+            {
+                $ofertasFiltradas[] = $oferta;
+            }
+            else
+            {
+                $ofertasPostuladas[] = $oferta;
+            }
+
+        }
+
+        $resultado = null;
+        
+        if(!$bool)
+        {
+            $resultado = $ofertasFiltradas;
+        }
+
+        if(!$bool)
+        {
+            return $ofertasFiltradas;
+        }
+        else
+        {
+            return $ofertasPostuladas;
+        }
+
+        return $resultado;
         
     }
 

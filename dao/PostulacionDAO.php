@@ -37,6 +37,18 @@ class PostulacionDAO implements DAOInterface {
         return $result;
     }
 
+    public function comprobarOferta($oferta_id, $alumno_id)
+    {
+        $stmt = $this->db->prepare("
+            SELECT *
+            FROM postulaciones
+            WHERE alumno_id = ? AND oferta_id = ?
+        ");
+        $stmt->execute([$alumno_id, $oferta_id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? new PostulacionEntity($row) : null;
+    }
+
     
     public function create($postulacion) {
         $stmt = $this->db->prepare("INSERT INTO postulaciones (alumno_id, oferta_id) VALUES (?, ?)");

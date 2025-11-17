@@ -2,9 +2,41 @@ document.addEventListener("DOMContentLoaded", function(){
 
     mostrarMenuIzq()
     let botonesAplicar = document.querySelectorAll(".btnAplicar");
-    // TO-DO APLICARLES LOS EVENTLISTENER CLICK
 
+    botonesAplicar.forEach(btnAplicar => {
+        btnAplicar.addEventListener("click", function(e){
+            e.preventDefault();
+            
+            console.log(btnAplicar);
+            data = {"oferta_id" : this.value};
 
+            this.disabled=true;
+            this.innerHTML="Aplicado";
+            this.style.pointerEvents = "none";
+            this.style.color="white";
+            this.style.boxShadow = "none";
+            this.style.backgroundColor ="#075588";
+
+            fetch("/api/alumno/postulaciones.php", {
+                method: "POST",
+                headers: {
+                    "Content_Type":"application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success)
+                {
+                    alert("Postulación Realizada");
+                }
+                else
+                {
+                    alert("Error conectando la api postulaciones")
+                }
+            })
+        })
+    });
 
 
 
