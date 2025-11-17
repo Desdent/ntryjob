@@ -25,6 +25,19 @@ class AlumnoDAO implements DAOInterface {
         return $row ? new AlumnoEntity($row) : null;
     }
 
+    public function getByIdChiquito($id) {
+        $stmt = $this->db->prepare("
+            SELECT nombre, id
+            
+            FROM alumnos
+
+            WHERE id = ?
+        ");
+        $stmt->execute([$id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? new AlumnoEntity($row) : null;
+    }
+
 
     public function searchAlumnos($searchValue) {
         $searchParam = "%" . $searchValue . "%";

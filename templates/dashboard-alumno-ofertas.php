@@ -9,7 +9,7 @@ $ofertas = $ofertasController->getOfertas(0);
 $contador = 0;
 $ultimaOferta = end($ofertas);
 
-$ofertasPostuladas = $ofertasController->getOfertas(1);;
+$ofertasPostuladas = $ofertasController->getOfertas(1);
 $ultimaOfertaPostulada = end($ofertasPostuladas);
 ?>
 <script src="/public/js/alumno/ofertas.js"></script>

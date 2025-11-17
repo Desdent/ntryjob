@@ -5,7 +5,6 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/controllers/empresario/OfertasControl
 
 $controller = new OfertaController();
 $userid = $_SESSION["user_id"];
-
 if(isset($_POST["search-ofertas"]))
 {
 
@@ -141,6 +140,8 @@ else{
                                         <input type="submit" value="Ver Oferta" name="btnVerOferta" class="botonesAccionEmpresas">
                                         <input type="submit" value="Ver Solicitudes" name="btnVerPostulantes" class="botonesAccionEmpresas">
                                         <input type="hidden" value="<?php echo $ofertaSerialized; ?>" name="ofertaSerialized">
+                                        <input type="hidden" name="id_oferta" id="input_id_oferta" value="<?php echo $oferta->id; ?>">
+                                        <input type="hidden" name="id_user" id="input_id_user" value="<?php echo $userid?>">
                                     </form>
                                 </td>
                             </tr>

@@ -2,12 +2,14 @@
 require_once __DIR__.'/DAOInterface.php';
 require_once __DIR__.'/../models/entities/PostulacionEntity.php';
 require_once __DIR__.'/../config/Database.php';
+require_once __DIR__.'/AlumnoDAO.php';
 
 class PostulacionDAO implements DAOInterface {
     private $db;
     public function __construct() { $this->db = Database::getInstance()->getConnection(); }
     
     public function getById($id) {
+
         $stmt = $this->db->prepare("
             SELECT p.*, a.nombre as alumno_nombre, o.titulo as oferta_titulo 
             FROM postulaciones p 
@@ -18,6 +20,40 @@ class PostulacionDAO implements DAOInterface {
         $stmt->execute([$id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ? new PostulacionEntity($row) : null;
+    }
+
+
+    public function getPostulacionByOfertaIdAlumnoId($id_oferta, $id_alumno) {
+
+        $alumnoDAO = new AlumnoDAO();
+        
+        $stmt = $this->db->prepare("
+            SELECT *
+            FROM postulaciones
+            WHERE oferta_id = ? AND alumno_id = ?
+        ");
+        $stmt->execute([$id_oferta, $id_alumno]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row ? new PostulacionEntity($row) : null;
+    }
+
+    public function getPostulantesByOfertaId($id) {
+
+        $alumnoDAO = new AlumnoDAO();
+        
+        $stmt = $this->db->prepare("
+            SELECT alumno_id
+            FROM postulaciones
+            WHERE oferta_id = ?
+        ");
+        $stmt->execute([$id]);
+        $result = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $alumnoId = $row['alumno_id'];
+            $result[] = $alumnoDAO->getByIdChiquito($alumnoId);
+        }
+        return $result;
     }
 
 
@@ -60,7 +96,7 @@ class PostulacionDAO implements DAOInterface {
     public function update($postulacion) { return true; }
     
     public function delete($id) {
-        $stmt = $this->db->prepare("DELETE FROM postulaciones WHERE id = ?");
+        $stmt = $this->db->prepare("DELETE FROM postulaciones WHERE oferta_id = ?");
         return $stmt->execute([$id]);
     }
     

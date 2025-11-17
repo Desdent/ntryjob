@@ -46,13 +46,13 @@ try {
             
         case 'DELETE':
             $data = json_decode(file_get_contents('php://input'), true);
-            if (empty($data['id'])) {
+            if (empty($data['oferta_id'])) {
                 http_response_code(400);
                 echo json_encode(['success' => false, 'error' => 'ID requerido']);
                 exit;
             }
             
-            $postulacionDAO->delete($data['id']);
+            $postulacionDAO->delete($data['oferta_id']);
             echo json_encode(['success' => true]);
             break;
             

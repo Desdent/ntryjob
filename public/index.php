@@ -165,7 +165,9 @@ switch($page) {
         }
         elseif(isset($_POST["btnVerPostulantes"]))
         {
-
+            AuthMiddleware::requiereAuth(["empresario"]);
+            echo $templates->render("dashboard-empresario-postulaciones-oferta");
+            break;
         }
         else
         {

@@ -80,15 +80,11 @@ class ofertasController {
         {
             $resultado = $ofertasFiltradas;
         }
-
-        if(!$bool)
-        {
-            return $ofertasFiltradas;
-        }
         else
         {
-            return $ofertasPostuladas;
+            $resultado = $ofertasPostuladas;
         }
+
 
         return $resultado;
         
