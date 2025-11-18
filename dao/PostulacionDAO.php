@@ -24,13 +24,12 @@ class PostulacionDAO implements DAOInterface {
 
 
     public function getPostulacionByOfertaIdAlumnoId($id_oferta, $id_alumno) {
-
-        $alumnoDAO = new AlumnoDAO();
         
         $stmt = $this->db->prepare("
-            SELECT *
-            FROM postulaciones
-            WHERE oferta_id = ? AND alumno_id = ?
+            SELECT p.*, a.nombre AS alumno_nombre, a.apellidos AS alumno_apellidos, a.ciudad AS alumno_ciudad
+            FROM postulaciones p 
+            JOIN alumnos a ON p.alumno_id = a.id
+            WHERE p.oferta_id = ? AND p.alumno_id = ? AND p.estado NOT IN ('aprobada', 'rechazada')
         ");
         $stmt->execute([$id_oferta, $id_alumno]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -96,7 +95,7 @@ class PostulacionDAO implements DAOInterface {
     public function update($postulacion) { return true; }
     
     public function delete($id) {
-        $stmt = $this->db->prepare("DELETE FROM postulaciones WHERE oferta_id = ?");
+        $stmt = $this->db->prepare("DELETE FROM postulaciones WHERE id = ?");
         return $stmt->execute([$id]);
     }
     

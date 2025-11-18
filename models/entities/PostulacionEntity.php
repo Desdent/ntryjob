@@ -5,6 +5,10 @@ class PostulacionEntity {
     public $oferta_id;
     public $estado;
     public $fecha_postulacion;
+
+    public $alumno_nombre;
+    public $alumno_ciudad;
+    public $alumno_apellidos;
     
     public function __construct($data=[]) {
         foreach ($data as $k => $v) if (property_exists($this, $k)) $this->$k = $v;

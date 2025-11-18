@@ -19,16 +19,23 @@ try {
         case 'POST':
             {
                 $data = json_decode(file_get_contents("php://input"), true);
+                $oferta_id = $data["ofertaId"];
 
 
 
-                    $postulantes = $postulacionDAO->getPostulantesByOfertaId($data["ofertaId"]);
+                    $postulantes = $postulacionDAO->getPostulantesByOfertaId($oferta_id);
                     // TO-DO: ACABAR, SACAR LAS POSTULACIONES CON EL ID DE LA FOERTA Y EL ID DEL ALUMNO (LO TRAE EN EL OBJETO EN POSTULANTES)
                             //Y CON ESO SACAR LAS POSTULACIONES PARA CAMBIAR SUS ESTADOS 
 
-                    if($postulantes)
+                    $postulaciones = [];
+                    foreach($postulantes as $postulante)
                     {
-                        echo json_encode(["success" => true, "postulantes" => $postulantes]);
+                        $postulaciones[] = $postulacionDAO->getPostulacionByOfertaIdAlumnoId($oferta_id, $postulante->id);
+                    }
+
+                    if($postulaciones)
+                    {
+                        echo json_encode(["success" => true, "postulaciones" => $postulaciones]);
                     }
                     else
                     {
@@ -36,17 +43,10 @@ try {
                     }
             }
             break;
-        case 'PUT':
-            $data = json_decode(file_get_contents('php://input'), true);
-            if (isset($data['id'])) {
-                $dao->aprobar($data['id']);
-                echo json_encode(['success' => true]);
-            }
-            break;
         case 'DELETE':
             $id = $_GET['id'] ?? null;
             if ($id) {
-                $dao->delete($id);
+                $postulacionDAO->delete($id);
                 echo json_encode(['success' => true]);
             }
             break;

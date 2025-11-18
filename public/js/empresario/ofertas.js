@@ -36,12 +36,12 @@ document.addEventListener("DOMContentLoaded", function(){
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data.postulantes);
             if(data.success)
             {
                 let containerPostulante
-
-                data.postulantes.forEach(postulante => {
+                console.log(data.postulaciones);
+                data.postulaciones.forEach(postulante => {
+                    console.log(postulante);
                     if(contador == 0)
                     {
                         containerPostulante = document.createElement("div");
@@ -57,17 +57,65 @@ document.addEventListener("DOMContentLoaded", function(){
                     cardPostulante.append(containerNombre);
                     let h4Nombre = document.createElement("h4");
                     h4Nombre.classList.add("nombreEmpresaOferta");
-                    h4Nombre.innerHTML = postulante.nombre;
+                    h4Nombre.innerHTML = postulante.alumno_nombre + " " + postulante.alumno_apellidos;
                     containerNombre.append(h4Nombre);
+
+                    let containerCiudad = document.createElement("div");
+                    containerCiudad.classList.add("containerCiudadOferta"); 
+                    cardPostulante.append(containerCiudad);
+
+                    let h4Ciudad = document.createElement("p");
+                    h4Ciudad.style.color = "white";
+                    h4Ciudad.classList.add("ciudadPostulante"); 
+                    h4Ciudad.innerHTML = postulante.alumno_ciudad; 
+                    containerCiudad.append(h4Ciudad);
+
+
+                    let containerFecha = document.createElement("div");
+                    containerFecha.classList.add("containerFechaPostulacion"); 
+                    cardPostulante.append(containerFecha);
+
+                    let h4Fecha = document.createElement("p");
+                    h4Fecha.style.color="white";
+                    h4Fecha.classList.add("fechaPostulacion");
+                    h4Fecha.innerHTML = postulante.fecha_postulacion; 
+                    containerFecha.append(h4Fecha);
 
                     let divContainerBotones = document.createElement("div");
                     cardPostulante.append(divContainerBotones);
                     let btnAceptar = document.createElement("button");
                     btnAceptar.innerHTML="Aceptar";
                     divContainerBotones.append(btnAceptar);
+
+                    btnAceptar.addEventListener("click", function(){
+                        accionesPostulante(postulante);
+                        this.style.backgroundColor = "#075588";
+                        this.style.color = "white";
+                        this.innerHTML = "Aceptada";
+                        this.style.boxShadow  ="none";
+
+                        btnRechazar.style.display ="none";
+                        btnVerFicha.style.display ="none";
+                    })
+
+
                     let btnRechazar = document.createElement("button");
                     btnRechazar.innerHTML="Rechazar";
                     divContainerBotones.append(btnRechazar);
+
+                    btnRechazar.addEventListener("click", function(){
+                        accionesPostulante(postulante);
+                        this.style.backgroundColor = "#075588";
+                        this.style.color = "white";
+                        this.innerHTML = "Rechazada";
+                        this.style.boxShadow  ="none";
+
+                        btnAceptar.style.display ="none";
+                        btnVerFicha.style.display ="none";
+                    })
+                    let btnVerFicha = document.createElement("button");
+                    btnVerFicha.innerHTML="Ver Ficha";
+                    divContainerBotones.append(btnVerFicha);
 
 
                     contador++;
@@ -84,6 +132,31 @@ document.addEventListener("DOMContentLoaded", function(){
         })
     }
 
+
+    function accionesPostulante(postulante)
+    {
+        const postulacionId = postulante.id;
+
+        fetch(`/api/empresa/postulaciones.php?id=${postulacionId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify(postulante.oferta_id)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success){
+                alert("Acción realizada")
+            }
+            else
+            {
+                alert(error || "Error al conectar con las postulaciones");
+            }
+        })
+
+        
+    }
 
 
 })
