@@ -1,5 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     
+    const PAGE_SIZE = 10; // Número de filas por página
+    let currentPage = 1;
+    let alumnosData = []; // Almacena todos los datos de alumnos para paginar
+
+
     listarAlumnos();
     cargarCiclos();
     
@@ -7,9 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (btnLogout) {
         btnLogout.addEventListener('click', cerrarSesion);
     }
-
-
-
 
     let trasfondoModal = document.querySelector(".trasfondoModal");
     let modalContainer = document.querySelector(".modalContainer");
@@ -73,316 +75,147 @@ document.addEventListener('DOMContentLoaded', function() {
     function vaciarContenidoCeldas() {
         const tbody = document.querySelector('#tablaAlumnos tbody');
         
-        tbody.innerHTML = "";
+        if (!tbody) {
+            cuerpo = document.createElement("tbody");
+            contenedor.append(cuerpo);
+        } else {
+            tbody.innerHTML = "";
+            cuerpo = tbody;
+        }
     }
 
 
     function restaurarOpciones(botonPulsado)
     {
-        switch(botonPulsado)
-        {
-            case "nombre":
-                headerApellidos.classList.remove("ascendente");
-                headerApellidos.classList.remove("descendente");
-                headerEmail.classList.remove("ascendente");
-                headerEmail.classList.remove("descendente");
-                headerTelefono.classList.remove("ascendente");
-                headerTelefono.classList.remove("descendente");
-                headerCiudad.classList.remove("ascendente");
-                headerCiudad.classList.remove("descendente");
+        const headers = [
+            { el: headerName, arrow: huecoSortName, field: "nombre" },
+            { el: headerApellidos, arrow: huecoSortApellidos, field: "apellidos" },
+            { el: headerEmail, arrow: huecoSortEmail, field: "email" },
+            { el: headerTelefono, arrow: huecoSortTelefono, field: "telefono" },
+            { el: headerCiudad, arrow: huecoSortCiudad, field: "ciudad" },
+        ];
 
-                huecoSortApellidos.textContent = "  ◀";
-                huecoSortEmail.textContent = "  ◀";
-                huecoSortTelefono.textContent = "  ◀";
-                huecoSortCiudad.textContent = "  ◀";
-                break;
-            case "apellidos":
-                headerName.classList.remove("ascendente");
-                headerName.classList.remove("descendente");
-                headerEmail.classList.remove("ascendente");
-                headerEmail.classList.remove("descendente");
-                headerTelefono.classList.remove("ascendente");
-                headerTelefono.classList.remove("descendente");
-                headerCiudad.classList.remove("ascendente");
-                headerCiudad.classList.remove("descendente");
-
-                huecoSortName.textContent = "  ◀";
-                huecoSortEmail.textContent = "  ◀";
-                huecoSortTelefono.textContent = "  ◀";
-                huecoSortCiudad.textContent = "  ◀";
-                break;
-            case "email":
-                headerName.classList.remove("ascendente");
-                headerName.classList.remove("descendente");
-                headerApellidos.classList.remove("ascendente");
-                headerApellidos.classList.remove("descendente");
-                headerTelefono.classList.remove("ascendente");
-                headerTelefono.classList.remove("descendente");
-                headerCiudad.classList.remove("ascendente");
-                headerCiudad.classList.remove("descendente");
-
-                huecoSortName.textContent = "  ◀";
-                huecoSortApellidos.textContent = "  ◀";
-                huecoSortTelefono.textContent = "  ◀";
-                huecoSortCiudad.textContent = "  ◀";
-                break;
-            case "telefono":
-                headerName.classList.remove("ascendente");
-                headerName.classList.remove("descendente");
-                headerApellidos.classList.remove("ascendente");
-                headerApellidos.classList.remove("descendente");
-                headerEmail.classList.remove("ascendente");
-                headerEmail.classList.remove("descendente");
-                headerCiudad.classList.remove("ascendente");
-                headerCiudad.classList.remove("descendente");
-
-                huecoSortName.textContent = "  ◀";
-                huecoSortApellidos.textContent = "  ◀";
-                huecoSortEmail.textContent = "  ◀";
-                huecoSortCiudad.textContent = "  ◀";
-                break;
-            case "ciudad":
-                headerName.classList.remove("ascendente");
-                headerName.classList.remove("descendente");
-                headerApellidos.classList.remove("ascendente");
-                headerApellidos.classList.remove("descendente");
-                headerEmail.classList.remove("ascendente");
-                headerEmail.classList.remove("descendente");
-                headerTelefono.classList.remove("ascendente");
-                headerTelefono.classList.remove("descendente");
-
-                huecoSortName.textContent = "  ◀";
-                huecoSortApellidos.textContent = "  ◀";
-                huecoSortEmail.textContent = "  ◀";
-                huecoSortTelefono.textContent = "  ◀";
-                break;
-            default:
-                headerName.classList.remove("ascendente");
-                headerName.classList.remove("descendente");
-                headerApellidos.classList.remove("ascendente");
-                headerApellidos.classList.remove("descendente");
-                headerEmail.classList.remove("ascendente");
-                headerEmail.classList.remove("descendente");
-                headerTelefono.classList.remove("ascendente");
-                headerTelefono.classList.remove("descendente");
-                headerCiudad.classList.remove("ascendente");
-                headerCiudad.classList.remove("descendente");
-
-                huecoSortName.textContent = "  ◀";
-                huecoSortApellidos.textContent = "  ◀";
-                huecoSortEmail.textContent = "  ◀";
-                huecoSortTelefono.textContent = "  ◀";
-                huecoSortCiudad.textContent = "  ◀";
-        }
+        headers.forEach(h => {
+            if (h.field !== botonPulsado) {
+                h.el.classList.remove("ascendente", "descendente");
+                h.arrow.textContent = "  ◀";
+            }
+        });
     }
+
+    // =======================================================
+    // FUNCIÓN PRINCIPAL DE RENDERIZADO
 
     function mostrarTablaAlumnos(alumnos) {
         
+        // 1. Almacenar los datos si se reciben
+        if (alumnos) {
+            alumnosData = alumnos;
+            currentPage = 1; // Resetear a la página 1 al recibir nuevos datos
+        }
         
+        vaciarContenidoCeldas();
+        
+        // Calcular el rango de datos a mostrar
+        const startIndex = (currentPage - 1) * PAGE_SIZE;
+        const endIndex = startIndex + PAGE_SIZE;
+        const alumnosPagina = alumnosData.slice(startIndex, endIndex);
 
+
+        // --- Lógica de ORDENACIÓN (Nombre) ---
         headerName.onclick = function(){
-            if(headerName.classList.contains("ascendente"))
-            {
+            currentPage = 1;
+            if(headerName.classList.contains("ascendente")){
                 headerName.classList.remove("ascendente");
                 headerName.classList.add("descendente");
-                console.log(1 + alumnos);
-                vaciarContenidoCeldas()
-                alumnos.sort((a,b) => b.nombre.localeCompare(a.nombre));
-                huecoSortName.textContent = "";
+                alumnosData.sort((a,b) => b.nombre.localeCompare(a.nombre));
                 huecoSortName.textContent = " ▲";
-
-                restaurarOpciones("nombre");
-            }
-            else if(headerName.classList.contains("descendente"))
-            {
+            } else {
                 headerName.classList.remove("descendente");
                 headerName.classList.add("ascendente");
-                console.log(2 + alumnos);
-                vaciarContenidoCeldas()
-                alumnos.sort((a,b) => a.nombre.localeCompare(b.nombre));
-                huecoSortName.textContent = "";
+                alumnosData.sort((a,b) => a.nombre.localeCompare(b.nombre));
                 huecoSortName.textContent = " ▼"
-
-                restaurarOpciones("nombre");
             }
-            else
-            {
-                headerName.classList.add("ascendente");
-                console.log(3 + alumnos);
-                vaciarContenidoCeldas()
-                alumnos.sort((a,b) => a.nombre.localeCompare(b.nombre));
-                huecoSortName.textContent = "";
-                huecoSortName.textContent = " ▼"
-
-                restaurarOpciones("nombre");
-            }
-
-            mostrarTablaAlumnos(alumnos);
+            restaurarOpciones("nombre");
+            mostrarTablaAlumnos();
         }
 
-
+        // --- Lógica de ORDENACIÓN (Apellidos) ---
         headerApellidos.onclick = function(){
-            if(headerApellidos.classList.contains("ascendente"))
-            {
+            currentPage = 1;
+            if(headerApellidos.classList.contains("ascendente")){
                 headerApellidos.classList.remove("ascendente");
                 headerApellidos.classList.add("descendente");
-                vaciarContenidoCeldas()
-                alumnos.sort((a,b) => b.apellidos.localeCompare(a.apellidos));
-                huecoSortApellidos.textContent = "";
+                alumnosData.sort((a,b) => b.apellidos.localeCompare(a.apellidos));
                 huecoSortApellidos.textContent = " ▲";
-
-                restaurarOpciones("apellidos");
-            }
-            else if(headerApellidos.classList.contains("descendente"))
-            {
+            } else {
                 headerApellidos.classList.remove("descendente");
                 headerApellidos.classList.add("ascendente");
-                vaciarContenidoCeldas()
-                alumnos.sort((a,b) => a.apellidos.localeCompare(b.apellidos));
-                huecoSortApellidos.textContent = "";
+                alumnosData.sort((a,b) => a.apellidos.localeCompare(b.apellidos));
                 huecoSortApellidos.textContent = " ▼";
-
-                restaurarOpciones("apellidos");
             }
-            else
-            {
-                headerApellidos.classList.add("ascendente");
-                vaciarContenidoCeldas()
-                alumnos.sort((a,b) => a.apellidos.localeCompare(b.apellidos));
-                huecoSortApellidos.textContent = "";
-                huecoSortApellidos.textContent = " ▼";
-
-                restaurarOpciones("apellidos");
-            }
-
-            mostrarTablaAlumnos(alumnos);
+            restaurarOpciones("apellidos");
+            mostrarTablaAlumnos();
         }
-
-
+        
+        // --- Lógica de ORDENACIÓN (Email) ---
         headerEmail.onclick = function(){
-            if(headerEmail.classList.contains("ascendente"))
-            {
+            currentPage = 1;
+            if(headerEmail.classList.contains("ascendente")){
                 headerEmail.classList.remove("ascendente");
                 headerEmail.classList.add("descendente");
-                vaciarContenidoCeldas()
-                alumnos.sort((a,b) => b.email.localeCompare(a.email));
-                huecoSortEmail.textContent = "";
+                alumnosData.sort((a,b) => b.email.localeCompare(a.email));
                 huecoSortEmail.textContent = " ▲";
-
-                restaurarOpciones("email");
-            }
-            else if(headerEmail.classList.contains("descendente"))
-            {
+            } else {
                 headerEmail.classList.remove("descendente");
                 headerEmail.classList.add("ascendente");
-                vaciarContenidoCeldas()
-                alumnos.sort((a,b) => a.email.localeCompare(b.email));
-                huecoSortEmail.textContent = "";
+                alumnosData.sort((a,b) => a.email.localeCompare(b.email));
                 huecoSortEmail.textContent = " ▼";
-
-                restaurarOpciones("email");
             }
-            else
-            {
-                headerEmail.classList.add("ascendente");
-                vaciarContenidoCeldas()
-                alumnos.sort((a,b) => a.email.localeCompare(b.email));
-                huecoSortEmail.textContent = "";
-                huecoSortEmail.textContent = " ▼";
-
-                restaurarOpciones("email");
-            }
-
-            mostrarTablaAlumnos(alumnos);
+            restaurarOpciones("email");
+            mostrarTablaAlumnos();
         }
 
-
+        // --- Lógica de ORDENACIÓN (Teléfono) ---
         headerTelefono.onclick = function(){
-            if(headerTelefono.classList.contains("ascendente"))
-            {
+            currentPage = 1;
+            if(headerTelefono.classList.contains("ascendente")){
                 headerTelefono.classList.remove("ascendente");
                 headerTelefono.classList.add("descendente");
-                vaciarContenidoCeldas()
-                alumnos.sort((a,b) => b.telefono.localeCompare(a.telefono));
-                huecoSortTelefono.textContent = "";
+                // Usamos localeCompare porque los números vienen como strings
+                alumnosData.sort((a,b) => b.telefono.localeCompare(a.telefono)); 
                 huecoSortTelefono.textContent = " ▲";
-
-                restaurarOpciones("telefono");
-                
-            }
-            else if(headerTelefono.classList.contains("descendente"))
-            {
+            } else {
                 headerTelefono.classList.remove("descendente");
                 headerTelefono.classList.add("ascendente");
-                vaciarContenidoCeldas()
-                alumnos.sort((a,b) => a.telefono.localeCompare(b.telefono));
-                huecoSortTelefono.textContent = "";
+                alumnosData.sort((a,b) => a.telefono.localeCompare(b.telefono));
                 huecoSortTelefono.textContent = " ▼";
-                
-                restaurarOpciones("telefono");
             }
-            else
-            {
-                headerTelefono.classList.add("ascendente");
-                vaciarContenidoCeldas()
-                alumnos.sort((a,b) => a.telefono.localeCompare(b.telefono));
-                huecoSortTelefono.textContent = "";
-                huecoSortTelefono.textContent = " ▼";
-
-                restaurarOpciones("telefono");
-            }
-
-            mostrarTablaAlumnos(alumnos);
+            restaurarOpciones("telefono");
+            mostrarTablaAlumnos();
         }
 
-
-
+        // --- Lógica de ORDENACIÓN (Ciudad) ---
         headerCiudad.onclick = function(){
-            if(headerCiudad.classList.contains("ascendente"))
-            {
+            currentPage = 1;
+            if(headerCiudad.classList.contains("ascendente")){
                 headerCiudad.classList.remove("ascendente");
                 headerCiudad.classList.add("descendente");
-                vaciarContenidoCeldas()
-                alumnos.sort((a,b) => b.ciudad.localeCompare(a.ciudad));
-                huecoSortCiudad.textContent = "";
+                alumnosData.sort((a,b) => b.ciudad.localeCompare(a.ciudad));
                 huecoSortCiudad.textContent = " ▲";
-
-                restaurarOpciones("ciudad");
-            }
-            else if(headerCiudad.classList.contains("descendente"))
-            {
+            } else {
                 headerCiudad.classList.remove("descendente");
                 headerCiudad.classList.add("ascendente");
-                vaciarContenidoCeldas()
-                alumnos.sort((a,b) => a.ciudad.localeCompare(b.ciudad));
-                huecoSortCiudad.textContent = "";
+                alumnosData.sort((a,b) => a.ciudad.localeCompare(b.ciudad));
                 huecoSortCiudad.textContent = " ▼";
-
-                restaurarOpciones("ciudad");
             }
-            else
-            {
-                headerCiudad.classList.add("ascendente");
-                vaciarContenidoCeldas()
-                alumnos.sort((a,b) => a.ciudad.localeCompare(b.ciudad));
-                huecoSortCiudad.textContent = "";
-                huecoSortCiudad.textContent = " ▼";
-
-                restaurarOpciones("ciudad");
-            }
-
-            mostrarTablaAlumnos(alumnos);
+            restaurarOpciones("ciudad");
+            mostrarTablaAlumnos();
         }
-
-
-
         
-
-
-
-
-
-        alumnos.forEach(alumno => {
+        
+        // --- Renderizar FILAS de la página actual ---
+        alumnosPagina.forEach(alumno => {
             let id = alumno.id;
 
             let fila = document.createElement("tr");
@@ -493,7 +326,58 @@ document.addEventListener('DOMContentLoaded', function() {
         })
 
         contenedor.append(cuerpo);
+        renderizarPaginacionAlumnos(); // Renderiza los controles de paginación
     }
+
+    // =======================================================
+    // FUNCIÓN PARA RENDERIZAR CONTROLES DE PAGINACIÓN
+
+    function renderizarPaginacionAlumnos() {
+        const contenedorPaginacion = document.querySelector('#tablaAlumnos + p');
+        contenedorPaginacion.innerHTML = '';
+        contenedorPaginacion.classList.add('pagination-area'); 
+
+        const totalPages = Math.ceil(alumnosData.length / PAGE_SIZE);
+
+        if (totalPages > 1) {
+            const divPaginacion = document.createElement('div');
+            divPaginacion.classList.add('pagination-controls');
+
+            // Botón Anterior
+            const btnPrev = document.createElement('button');
+            btnPrev.textContent = 'Anterior';
+            btnPrev.classList.add('botonesAccion'); 
+            btnPrev.disabled = currentPage === 1;
+            btnPrev.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    mostrarTablaAlumnos(); 
+                }
+            };
+            divPaginacion.appendChild(btnPrev);
+
+            // Indicador de Página
+            const spanPage = document.createElement('span');
+            spanPage.textContent = ` Página ${currentPage} de ${totalPages} `;
+            divPaginacion.appendChild(spanPage);
+
+            // Botón Siguiente
+            const btnNext = document.createElement('button');
+            btnNext.textContent = 'Siguiente';
+            btnNext.classList.add('botonesAccion'); 
+            btnNext.disabled = currentPage === totalPages;
+            btnNext.onclick = () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    mostrarTablaAlumnos();
+                }
+            };
+            divPaginacion.appendChild(btnNext);
+            
+            contenedorPaginacion.appendChild(divPaginacion);
+        }
+    }
+
 
     trasfondoModal.addEventListener("click", function(e){
         if(e.target === trasfondoModal){
@@ -725,9 +609,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function listarAlumnos() {
+    // =======================================================
+    // LISTAR ALUMNOS
 
-        
+    function listarAlumnos() {
+        currentPage = 1; // Resetear la página al cargar todos
 
         fetch('/api/admin/AlumnosController.php?email', {
             method: 'GET',
@@ -741,7 +627,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (data.success) {
                 console.log('Alumnos cargados:', data.data);
-                mostrarTablaAlumnos(data.data);
+                mostrarTablaAlumnos(data.data); // Pasa todos los datos para almacenar y paginar
             } else {
                 alert(data.error || 'Error al cargar alumnos');
             }
@@ -753,8 +639,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
+    // =======================================================
+    // LISTAR BÚSQUEDA ALUMNOS
+
     function listarBusquedaAlumnos(searchValue)
     {
+        currentPage = 1; // Resetear la página al buscar
+
         fetch('/api/admin/AlumnosController.php?searchValue=' +encodeURIComponent(searchValue), {
             method: 'GET',
             headers: {
@@ -768,7 +659,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success) {
                 console.log('Alumnos cargados:', data.data);
                 vaciarContenidoCeldas();
-                mostrarTablaAlumnos(data.data);
+                mostrarTablaAlumnos(data.data); // Pasa solo los resultados de la búsqueda
                 restaurarOpciones("default");
             } else {
                 alert(data.error || 'Error al cargar alumnos');
@@ -1050,14 +941,11 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("Checkboxes seleccionados:", checkboxes.length); // Debug
             
             checkboxes.forEach(checkbox => {
-                const fila = checkbox.closest('tr'); //coge el tr en el que está que es el mas cercano
+                const fila = checkbox.closest('tr'); 
                 const inputs = fila.querySelectorAll('.inputsMassiveAdd');
                 let alumno = {};
                 
-                inputs.forEach(input => { // Aqui esta diciendole que a para cada input del array de inputs, le cree una constante campo, cuyo valor es el atributo extra que se le metió antes
-                                            //y luego, dentro del objeto alumno, en la clave cuyo nombre es el valor de la cosntante campo, le meta el valor del input
-
-                                            // Esta genialidad es de la IA silverio, a mi esta abstracción no me sale solo
+                inputs.forEach(input => { 
                     const campo = input.dataset.field.trim();
                     alumno[campo] = input.value.trim();
                 });
@@ -1150,10 +1038,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (emailInput) {
             const email = emailInput.value.trim();
             if (email) {
-                const emailExiste = await verificarEmailExistente(email);
-                if (emailExiste) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
                     emailInput.style.backgroundColor = "#fc8989ff";
                     esValida = false;
+                } else {
+                    const emailExiste = await verificarEmailExistente(email);
+                    if (emailExiste) {
+                        emailInput.style.backgroundColor = "#fc8989ff";
+                        esValida = false;
+                    }
                 }
             }
         }
@@ -1246,4 +1140,3 @@ document.addEventListener('DOMContentLoaded', function() {
     
 
 });
-

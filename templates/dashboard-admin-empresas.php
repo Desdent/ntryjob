@@ -8,20 +8,41 @@ require_once $_SERVER["DOCUMENT_ROOT"] . '/middleware/AuthMiddleware.php';
 
 AuthMiddleware::requiereAuth(['admin']);
 
-$datosForm = [];
-$resultado = [];
 $dao = new EmpresaDAO();
 $controller = new EmpresasController();
 
-if(isset($_POST["datosSerialized"]))
-{
-    $datosForm = unserialize($_POST["datosSerialized"]);
-    $datosSerialized = $_POST["datosSerialized"];
-}
+// =======================================================
+// LÓGICA DE PAGINACIÓN PHP
+$limit = 2; 
 
-// GESTIÓN DE EMPRESAS APROBADAS
+// --- EMPRESAS APROBADAS ---
+$page_aprobadas = isset($_GET['page_aprobadas']) ? max(1, (int)$_GET['page_aprobadas']) : 1;
+$offset_aprobadas = ($page_aprobadas - 1) * $limit;
+$sort_aprobadas = isset($_POST["ordenarEmpresas"]) ? $_POST["ordenarEmpresas"] : null;
+
+// --- EMPRESAS PENDIENTES ---
+$page_pendientes = isset($_GET['page_pendientes']) ? max(1, (int)$_GET['page_pendientes']) : 1;
+$offset_pendientes = ($page_pendientes - 1) * $limit;
+$sort_pendientes = isset($_POST["ordenarPendientes"]) ? $_POST["ordenarPendientes"] : null;
+
+// Función para construir URL de paginación manteniendo la ordenación y el estado de la otra tabla
+function buildUrl($page, $sort, $pageParam, $sortParam, $otherPageParam = null, $otherPageValue = null) {
+    $base = 'index.php?page=dashboard-admin-empresas';
+    $params = [$pageParam => $page];
+    if ($sort) {
+        $params[$sortParam] = $sort;
+    }
+    if ($otherPageParam && $otherPageValue) {
+        $params[$otherPageParam] = $otherPageValue;
+    }
+    return $base . '&' . http_build_query($params);
+}
+// =======================================================
+
+
 if(isset($_POST["ordenarEmpresas"]))
 {
+    
     switch($_POST["ordenarEmpresas"])
     {
         case "sortNombreEmpresasAsc":
@@ -54,6 +75,8 @@ if(isset($_POST["ordenarEmpresas"]))
         case "sortCiudadEmpresasDesc":
             $empresas = $controller::ordenarEmpresas("ciudad", "desc");
             break;
+        default:
+             $empresas = $dao->getAll();
     }
 }
 elseif(isset($_POST["search-empresas"]) && !empty($_POST["search-empresas"]))
@@ -66,7 +89,31 @@ else
     $empresas = $dao->getAll();
 }
 
-// GESTIÓN DE EMPRESAS PENDIENTES
+
+$resultado_completo_aprobadas = [];
+foreach ($empresas as $empresa) {
+    if ($empresa->aprobada == 1) {
+        $resultado_completo_aprobadas[] = $empresa->toArrayDTO();
+    }
+}
+
+
+$totalAprobadas = count($resultado_completo_aprobadas);
+$totalPagesAprobadas = ceil($totalAprobadas / $limit);
+
+// Ajustar la página si está fuera de rango
+if ($page_aprobadas > $totalPagesAprobadas && $totalPagesAprobadas > 0) {
+    $page_aprobadas = $totalPagesAprobadas;
+    $offset_aprobadas = ($page_aprobadas - 1) * $limit;
+}
+
+$resultado = array_slice($resultado_completo_aprobadas, $offset_aprobadas, $limit); // Datos de la página actual
+
+
+
+
+
+
 if(isset($_POST["ordenarPendientes"]))
 {
     switch($_POST["ordenarPendientes"])
@@ -101,6 +148,8 @@ if(isset($_POST["ordenarPendientes"]))
         case "sortCiudadPendientesDesc":
             $empresasPendientes = $controller::ordenarPendientes("ciudad", "desc");
             break;
+        default:
+            $empresasPendientes = $dao->getPendientes();
     }
 }
 elseif(isset($_POST["search-empresasPendientes"]) && !empty($_POST["search-empresasPendientes"]))
@@ -113,18 +162,26 @@ else
     $empresasPendientes = $dao->getPendientes();
 }
 
-$resultadoPendientes = [];
-$empresa;
 
-foreach($empresas as $empresa)
-{
-    $resultado[] = $empresa->toArrayDTO();
-}
-
+$resultado_completo_pendientes = [];
 foreach($empresasPendientes as $empresaPendiente)
 {
-    $resultadoPendientes[] = $empresaPendiente->toArrayDTO();
+    $resultado_completo_pendientes[] = $empresaPendiente->toArrayDTO();
 }
+
+
+$totalPendientes = count($resultado_completo_pendientes);
+$totalPagesPendientes = ceil($totalPendientes / $limit);
+
+
+if ($page_pendientes > $totalPagesPendientes && $totalPagesPendientes > 0) {
+    $page_pendientes = $totalPagesPendientes;
+    $offset_pendientes = ($page_pendientes - 1) * $limit;
+}
+
+$resultadoPendientes = array_slice($resultado_completo_pendientes, $offset_pendientes, $limit);
+
+
 ?>
 
 <div class="dashboard-container">
@@ -170,7 +227,6 @@ foreach($empresasPendientes as $empresaPendiente)
                             <option value="sortCiudadEmpresasDesc">Ciudad ▼</option>
                         </select>
                         <input type="submit" name="submitOrdenarEmpresas" value="Ordenar Tabla" class="botonesEmpresa">
-                        <!-- RECORDAR!!! Para evitar conflictos cuando se usan varios forms, hay que darle names a TODOS los submit -->
                     </form>
 
                     <div>
@@ -200,7 +256,7 @@ foreach($empresasPendientes as $empresaPendiente)
                             echo "<tr>";
                                 foreach($data as $campo)
                                 {
-                                    echo "<td> $campo </td>";
+                                    echo "<td> " . htmlspecialchars($campo) . " </td>";
                                 }
                             ?>
                             <td>
@@ -221,6 +277,20 @@ foreach($empresasPendientes as $empresaPendiente)
                     ?>
                 </tbody>
             </table>
+            
+            <?php if ($totalPagesAprobadas > 1): ?>
+            <div class="pagination-area">
+                <?php if ($page_aprobadas > 1): ?>
+                    <a href="<?= buildUrl($page_aprobadas - 1, $sort_aprobadas, 'page_aprobadas', 'ordenarEmpresas', 'page_pendientes', $page_pendientes) ?>" class="botonesAccionEmpresas">Anterior</a>
+                <?php endif; ?>
+
+                <span>Página <?= $page_aprobadas ?> de <?= $totalPagesAprobadas ?></span>
+
+                <?php if ($page_aprobadas < $totalPagesAprobadas): ?>
+                    <a href="<?= buildUrl($page_aprobadas + 1, $sort_aprobadas, 'page_aprobadas', 'ordenarEmpresas', 'page_pendientes', $page_pendientes) ?>" class="botonesAccionEmpresas">Siguiente</a>
+                <?php endif; ?>
+            </div>
+            <?php endif; ?>
         </div>
 
         <div class="tablePendientes-container">
@@ -272,7 +342,7 @@ foreach($empresasPendientes as $empresaPendiente)
                             echo "<tr>";
                                 foreach($dataPendientes as $campoPendientes)
                                 {
-                                    echo "<td> $campoPendientes </td>";
+                                    echo "<td> " . htmlspecialchars($campoPendientes) . " </td>";
                                 }
                                 ?>
                                 <td>
@@ -293,6 +363,20 @@ foreach($empresasPendientes as $empresaPendiente)
                     ?>
                 </tbody>
             </table>
+            
+            <?php if ($totalPagesPendientes > 1): ?>
+            <div class="pagination-area">
+                <?php if ($page_pendientes > 1): ?>
+                    <a href="<?= buildUrl($page_pendientes - 1, $sort_pendientes, 'page_pendientes', 'ordenarPendientes', 'page_aprobadas', $page_aprobadas) ?>" class="botonesAccionEmpresas">Anterior</a>
+                <?php endif; ?>
+
+                <span>Página <?= $page_pendientes ?> de <?= $totalPagesPendientes ?></span>
+
+                <?php if ($page_pendientes < $totalPagesPendientes): ?>
+                    <a href="<?= buildUrl($page_pendientes + 1, $sort_pendientes, 'page_pendientes', 'ordenarPendientes', 'page_aprobadas', $page_aprobadas) ?>" class="botonesAccionEmpresas">Siguiente</a>
+                <?php endif; ?>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>

@@ -1860,12 +1860,18 @@ button:hover, .addEmpresa:hover,
     font-weight: 600;
     cursor: pointer;
     margin-bottom: 0.5em;
+    text-decoration: none;
 }
 
 .botonesAccionEmpresas:hover, .botonesDatosAlumno:hover {
     background: #075588;
     box-shadow: 0em 0.35em 0em 0 #075588;
     color: #ffffff;
+}
+
+.pagination-area
+{
+    margin-top: 0.5em;
 }
 
 #menu-izq a {
