@@ -72,6 +72,28 @@ nav a:hover {
     color: #ffffff;
 }
 
+.btn-ver-ficha {
+    display: block; 
+    margin-top: 5px;
+    text-align: center;
+    
+    background-color: #075588;
+    color: white !important; 
+    
+    padding: 8px 15px; 
+    border: none;
+    border-radius: 4px;
+    
+    text-decoration: none; 
+    cursor: pointer;
+    font-size: 14px; 
+    transition: background-color 0.3s ease; 
+}
+
+.btn-ver-ficha:hover {
+    background-color: #04436e; /* Tono de azul ligeramente más oscuro para el hover */
+}
+
 /* === HOME.PHP === */
 /* HERO */
 .hero {

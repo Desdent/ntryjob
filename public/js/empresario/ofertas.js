@@ -118,8 +118,15 @@ document.addEventListener("DOMContentLoaded", function(){
                         enviarMail("rechazar", postulante.alumno_nombre, postulante.fecha_postulacion);
                     })
 
-                    let btnVerFicha = document.createElement("button");
-                    btnVerFicha.innerHTML="Ver Ficha";
+                    let btnVerFicha = document.createElement("a"); // Usamos <a> para enlace directo
+                    btnVerFicha.innerHTML = "Ver Ficha";
+                    btnVerFicha.classList.add("btn-ver-ficha");
+                        // Asegúrate de que los estilos sean consistentes con tu CSS
+
+                        // APUNTAR AL SCRIPT DE GENERACIÓN DE PDF
+                    btnVerFicha.href = `/api/empresa/generar_ficha_pdf.php?postulacion_id=${postulante.id}`;
+                    btnVerFicha.target = "_blank"; // Abrir en una nueva pestaña
+
                     divContainerBotones.append(btnVerFicha);
 
 
