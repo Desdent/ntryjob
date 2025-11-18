@@ -96,6 +96,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
                         btnRechazar.style.display ="none";
                         btnVerFicha.style.display ="none";
+
+                        enviarMail("aceptar", postulante.alumno_nombre, postulante.fecha_postulacion);
                     })
 
 
@@ -112,7 +114,10 @@ document.addEventListener("DOMContentLoaded", function(){
 
                         btnAceptar.style.display ="none";
                         btnVerFicha.style.display ="none";
+
+                        enviarMail("rechazar", postulante.alumno_nombre, postulante.fecha_postulacion);
                     })
+
                     let btnVerFicha = document.createElement("button");
                     btnVerFicha.innerHTML="Ver Ficha";
                     divContainerBotones.append(btnVerFicha);
@@ -156,6 +161,62 @@ document.addEventListener("DOMContentLoaded", function(){
         })
 
         
+    }
+
+
+    function enviarMail(accion, nombre, fechaSolicitud)
+    {
+
+        let data;
+
+        if(accion == "aceptar")
+        {
+            data = {
+                "accion":accion,
+                "nombre":nombre,
+                "fechaSolicitud":fechaSolicitud,
+                "mensaje": "Tu solicitud ha sido aceptada"
+            };
+
+            fetch("/public/phpmailer/enviar.php?aceptarSolicitud", {
+                method: "POST",
+                headers: {
+                    "Content-Type":"application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.error)
+                {
+                    alert(error || "Error enviando el mail");
+                }
+            })
+        }
+        else
+        {
+            data = {
+                "accion":accion,
+                "nombre":nombre,
+                "fechaSolicitud":fechaSolicitud,
+                "mensaje": "Tu solicitud ha sido rechazada"
+            };
+
+            fetch("/public/phpmailer/enviar.php?rechazarSolicitud", {
+                method: "POST",
+                headers: {
+                    "Content-Type":"application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.error)
+                {
+                    alert(error || "Error enviando el mail");
+                }
+            })
+        }
     }
 
 

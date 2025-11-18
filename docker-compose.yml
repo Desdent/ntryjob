@@ -11,10 +11,25 @@ services:
     environment:
       XDEBUG_MODE: develop,debug
       XDEBUG_CONFIG: "client_host=host.docker.internal client_port=9003"
+      MAIL_HOST: mailhog
+      MAIL_PORT: "1025"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
       - db
+      - mailhog
+    networks:
+      - red_personalizada
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+      - "8025:8025" # Interfaz web
+      - "1025:1025" # SMTP
+    networks:
+      - red_personalizada
+  
   db:
     image: mysql:8.0
     container_name: ntryjob_db
@@ -28,6 +43,12 @@ services:
     volumes:
       - ./database:/docker-entrypoint-initdb.d
       - db_data:/var/lib/mysql
+    networks:
+      - red_personalizada
 
 volumes:
   db_data:
+
+networks:
+  red_personalizada:
+    driver: bridge
