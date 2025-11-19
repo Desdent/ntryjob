@@ -302,9 +302,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // [El resto del código de la cámara y cargarCiclos se mantiene igual que el original]
-    // ... (incluir aquí el código de la cámara del archivo original si es necesario, 
-    // pero como pediste "tal cual copiar y pegar", asumo que quieres que lo incluya)
     
     let stream = null;
     let arrastrar = false;

@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    // 1. Configuración del Menú Lateral (Igual que en alumnos.js)
     let opts = document.querySelectorAll(".optLateral");
     
     // Aseguramos textos (aunque ya están en el HTML)
@@ -25,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 2. Cargar y Renderizar Gráficos
+    // Cargar y Renderizar Gráficos
     fetch('/api/admin/estadisticas.php')
         .then(response => response.json())
         .then(data => {
@@ -53,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
             options: { responsive: true }
         });
 
-        // --- GRÁFICO 2: TOP CICLOS (BAR HORIZONTAL) ---
+        // --- GRÁFICO 2: TOP CICLOS  ---
         const nombresCiclos = datos.ciclos.map(c => c.nombre);
         const totalCiclos = datos.ciclos.map(c => c.total);
 
@@ -77,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // --- GRÁFICO 3: OFERTAS (BARRA VERTICAL) ---
+        // --- GRÁFICO 3: OFERTAS ---
         const estados = datos.ofertas.map(o => o.estado || 'Sin estado');
         const totalOfertas = datos.ofertas.map(o => o.total);
 

@@ -36,8 +36,9 @@ class EstadisticasController {
     }
     
     private function getEstadoOfertas() {
-        // CORRECCIÓN: Calculamos el estado dinámicamente según la fecha
-        // Si fecha_cierre es mayor o igual a hoy -> 'Activa', sino -> 'Finalizada'
+        
+
+        // Si fecha_cierre es mayor o igual a hoy -> Activa, sino -> Finalizada
         $sql = "SELECT 
                     CASE 
                         WHEN fecha_cierre >= CURDATE() THEN 'Activa' 
