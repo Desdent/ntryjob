@@ -92,6 +92,7 @@
                     <input type="file" id="subirCV" name="subirCV" accept=".pdf,.docx,.doc" required>
                     <span class="error-message"></span>
                 </div>
+
                 <div class="form-group">
                     <label for="apellidos">Apellidos *</label>
                     <input type="text" id="apellidos" name="apellidos" required minlength="2" maxlength="100" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+">
@@ -141,10 +142,23 @@
                 </div>
                 </div>
 
+                <div class="form-group campo-foto-container">
+                    <label>Foto de perfil</label>
+                    
+                    <img id="fotoPreview" class="img-preview-simple" src="" alt="Previsualización">
+                    
+                    <input type="hidden" id="fotoAlumnoBase64" name="fotoAlumnoBase64">
+
+                    <button type="button" id="btnAbrirCamaraAlumno" class="botonesAccion btn-camara-simple">
+                        📷 Abrir Cámara
+                    </button>
+                </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn-cancelar" id="btnCancelarModal">Cancelar</button>
                     <button type="submit" class="btn-registrar">Registrarse</button>
                 </div>
+                
             </form>
         </div>
     </div>
