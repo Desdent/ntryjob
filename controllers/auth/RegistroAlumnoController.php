@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../dao/AlumnoDAO.php';
 require_once __DIR__ . '/../../dao/UserDAO.php';
 require_once __DIR__ . '/../../models/entities/AlumnoEntity.php';
+require_once __DIR__ . '/../../helpers/Validator.php';
 
 class RegistroAlumnoController {
     private $alumnoDAO;
@@ -15,11 +16,28 @@ class RegistroAlumnoController {
     public function register() {
         try {
             $data = $_POST;
+            $errores = [];
+
+            // --- VALIDACIONES SERVIDOR ---
+            if (!Validator::esTextoValido($data['nombre'] ?? '')) $errores[] = "Nombre inválido";
+            if (!Validator::esTextoValido($data['apellidos'] ?? '')) $errores[] = "Apellidos inválidos";
+            if (!Validator::esEmail($data['email'] ?? '')) $errores[] = "Email inválido";
+            if (!Validator::esTelefono($data['telefono'] ?? '')) $errores[] = "Teléfono inválido";
+            if (!Validator::esCodigoPostal($data['codigo_postal'] ?? '')) $errores[] = "Código postal inválido";
+            if (!Validator::esPasswordSegura($data['password'] ?? '')) $errores[] = "Contraseña insegura (mín 6 caracteres)";
+            if (!Validator::esDireccion($data['direccion'] ?? '')) $errores[] = "Dirección inválida";
+            if (!Validator::esAlfanumerico($data['ciudad'] ?? '')) $errores[] = "Ciudad/Localidad inválida";
+            if (!Validator::esFechaValida($data['fecha_inicio'] ?? '')) $errores[] = "Fecha inicio inválida";
             
-            if (empty($data['nombre']) || empty($data['apellidos']) || empty($data['email']) || 
-                empty($data['password']) || empty($data['ciclo_id'])) {
+            if (!empty($data['fecha_fin'])) {
+                if (!Validator::validarRangoFechas($data['fecha_inicio'], $data['fecha_fin'])) {
+                    $errores[] = "La fecha fin debe ser posterior a la de inicio";
+                }
+            }
+
+            if (!empty($errores)) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Campos requeridos faltantes']);
+                echo json_encode(['success' => false, 'error' => implode(", ", $errores)]);
                 return;
             }
             
@@ -55,6 +73,7 @@ class RegistroAlumnoController {
     }
     
     private function procesarCV($archivo) {
+        // Usar Helper si se desea, o validación directa aquí para blob
         $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
         $permitidas = ['pdf', 'docx'];
         
@@ -96,3 +115,4 @@ class RegistroAlumnoController {
         }
     }
 }
+?>

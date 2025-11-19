@@ -80,3 +80,5 @@
     <input type="date" id="fechaFinalizacion" name="fechaFinalizacion">
     <span class="error-message"></span>
 </div>
+
+<script src="/public/js/validators.js"></script>

@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../dao/EmpresaDAO.php';
 require_once __DIR__ . '/../../dao/UserDAO.php';
 require_once __DIR__ . '/../../models/entities/EmpresaEntity.php';
+require_once __DIR__ . '/../../helpers/Validator.php';
 
 class RegistroEmpresaController {
     private $empresaDAO;
@@ -15,10 +16,21 @@ class RegistroEmpresaController {
     public function register() {
         try {
             $data = $_POST;
+            $errores = [];
             
-            if (empty($data['nombre']) || empty($data['email']) || empty($data['password'])) {
+            // Validaciones PHP
+            if (empty($data['nombre'])) $errores[] = "Nombre requerido";
+            if (!Validator::esEmail($data['email'] ?? '')) $errores[] = "Email corporativo inválido";
+            if (!Validator::esPasswordSegura($data['password'] ?? '')) $errores[] = "Contraseña insegura (mín 6 caracteres)";
+            if (!Validator::esTelefono($data['telefono'] ?? '')) $errores[] = "Teléfono inválido";
+            
+            if (!Validator::esCIF($data['cif'] ?? '')) {
+                $errores[] = "El CIF introducido no es válido";
+            }
+            
+            if (!empty($errores)) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Campos requeridos faltantes']);
+                echo json_encode(['success' => false, 'error' => implode(". ", $errores)]);
                 return;
             }
             
@@ -73,3 +85,4 @@ class RegistroEmpresaController {
         return $blob;
     }
 }
+?>

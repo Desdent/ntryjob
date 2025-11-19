@@ -1,25 +1,17 @@
 <?php
-session_start();
-header('Content-Type: application/json');
+// Headers CORS y JSON
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: GET");
 
-require_once __DIR__ . '/../../dao/EmpresaDAO.php';
-require_once __DIR__ . '/../../dao/OfertaDAO.php';
-require_once __DIR__ . '/../../middleware/AuthMiddleware.php';
+require_once __DIR__ . '/../../controllers/admin/EstadisticasController.php';
 
-AuthMiddleware::requiereAuth(['admin']);
+$controller = new EstadisticasController();
 
-try {
-    $empresaDAO = new EmpresaDAO();
-    $ofertaDAO = new OfertaDAO();
-    
-    $empresas = $empresaDAO->getAll();
-    $ofertas = $ofertaDAO->getAll();
-    
-    echo json_encode([
-        'success' => true,
-        'empresas' => count($empresas),
-        'ofertas' => count($ofertas)
-    ]);
-} catch (Exception $e) {
-    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $controller->getStats();
+} else {
+    http_response_code(405);
+    echo json_encode(['error' => 'Método no permitido']);
 }
+?>

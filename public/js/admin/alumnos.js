@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    const PAGE_SIZE = 10; // Número de filas por página
+    const PAGE_SIZE = 10; 
     let currentPage = 1;
-    let alumnosData = []; // Almacena todos los datos de alumnos para paginar
-
+    let alumnosData = []; 
 
     listarAlumnos();
     cargarCiclos();
@@ -19,10 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let botonEquis = document.querySelector(".modal-close");
     let botonActualizar = document.querySelector(".btn-actualizar");
 
-
     const contenedor = document.getElementById('tablaAlumnos');
         
-
     let head = document.createElement("thead");
     contenedor.append(head);
 
@@ -70,11 +67,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let cuerpo = document.createElement("tbody");
 
-
-
     function vaciarContenidoCeldas() {
         const tbody = document.querySelector('#tablaAlumnos tbody');
-        
         if (!tbody) {
             cuerpo = document.createElement("tbody");
             contenedor.append(cuerpo);
@@ -84,9 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-
-    function restaurarOpciones(botonPulsado)
-    {
+    function restaurarOpciones(botonPulsado) {
         const headers = [
             { el: headerName, arrow: huecoSortName, field: "nombre" },
             { el: headerApellidos, arrow: huecoSortApellidos, field: "apellidos" },
@@ -103,26 +95,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // =======================================================
-    // FUNCIÓN PRINCIPAL DE RENDERIZADO
-
     function mostrarTablaAlumnos(alumnos) {
-        
-        // 1. Almacenar los datos si se reciben
         if (alumnos) {
             alumnosData = alumnos;
-            currentPage = 1; // Resetear a la página 1 al recibir nuevos datos
+            currentPage = 1; 
         }
         
         vaciarContenidoCeldas();
         
-        // Calcular el rango de datos a mostrar
         const startIndex = (currentPage - 1) * PAGE_SIZE;
         const endIndex = startIndex + PAGE_SIZE;
         const alumnosPagina = alumnosData.slice(startIndex, endIndex);
 
-
-        // --- Lógica de ORDENACIÓN (Nombre) ---
         headerName.onclick = function(){
             currentPage = 1;
             if(headerName.classList.contains("ascendente")){
@@ -140,7 +124,6 @@ document.addEventListener('DOMContentLoaded', function() {
             mostrarTablaAlumnos();
         }
 
-        // --- Lógica de ORDENACIÓN (Apellidos) ---
         headerApellidos.onclick = function(){
             currentPage = 1;
             if(headerApellidos.classList.contains("ascendente")){
@@ -158,7 +141,6 @@ document.addEventListener('DOMContentLoaded', function() {
             mostrarTablaAlumnos();
         }
         
-        // --- Lógica de ORDENACIÓN (Email) ---
         headerEmail.onclick = function(){
             currentPage = 1;
             if(headerEmail.classList.contains("ascendente")){
@@ -176,13 +158,11 @@ document.addEventListener('DOMContentLoaded', function() {
             mostrarTablaAlumnos();
         }
 
-        // --- Lógica de ORDENACIÓN (Teléfono) ---
         headerTelefono.onclick = function(){
             currentPage = 1;
             if(headerTelefono.classList.contains("ascendente")){
                 headerTelefono.classList.remove("ascendente");
                 headerTelefono.classList.add("descendente");
-                // Usamos localeCompare porque los números vienen como strings
                 alumnosData.sort((a,b) => b.telefono.localeCompare(a.telefono)); 
                 huecoSortTelefono.textContent = " ▲";
             } else {
@@ -195,7 +175,6 @@ document.addEventListener('DOMContentLoaded', function() {
             mostrarTablaAlumnos();
         }
 
-        // --- Lógica de ORDENACIÓN (Ciudad) ---
         headerCiudad.onclick = function(){
             currentPage = 1;
             if(headerCiudad.classList.contains("ascendente")){
@@ -213,8 +192,6 @@ document.addEventListener('DOMContentLoaded', function() {
             mostrarTablaAlumnos();
         }
         
-        
-        // --- Renderizar FILAS de la página actual ---
         alumnosPagina.forEach(alumno => {
             let id = alumno.id;
 
@@ -259,46 +236,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 let nombreEdit = document.getElementById("nombre");
                 nombreEdit.value = alumno.nombre;
-
                 let apellidosEdit = document.getElementById("apellidos");
                 apellidosEdit.value = alumno.apellidos;
-
                 let emailEdit = document.getElementById("email");
                 emailEdit.value = alumno.email;
-
                 let fechaNacimientoEdit = document.getElementById("fechaNacimiento");
                 fechaNacimientoEdit.value = alumno.fecha_nacimiento;
-
                 let paisEdit = document.getElementById("pais");
                 paisEdit.value = alumno.pais;
-
                 let provinciaEdit = document.getElementById("provincia");
                 provinciaEdit.value = alumno.provincia;
-
                 let telefonoEdit = document.getElementById("telefono");
                 telefonoEdit.value = alumno.telefono;
-
                 let localidadEdit = document.getElementById("localidad");
                 localidadEdit.value = alumno.ciudad;
-
                 let codigoPostalEdit = document.getElementById("codigoPostal");
                 codigoPostalEdit.value = alumno.codigo_postal;
-
                 let direccionEdit = document.getElementById("direccion");
                 direccionEdit.value = alumno.direccion;
-
                 let cicloIdEdit = document.getElementById("ultimoCiclo");
                 cicloIdEdit.value = alumno.ciclo_id;
-
                 let fechaInicioEdit = document.getElementById("fechaInicio");
                 fechaInicioEdit.value = alumno.fecha_inicio;
-
                 let fetchaFinalizacionEdit = document.getElementById("fechaFinalizacion");
                 fetchaFinalizacionEdit.value = alumno.fecha_fin;
 
                 let alumnoId = alumno.id;
-
-                console.log(alumno.nombre);
 
                 botonActualizar.onclick = function(e) {
                     e.preventDefault();
@@ -326,11 +289,8 @@ document.addEventListener('DOMContentLoaded', function() {
         })
 
         contenedor.append(cuerpo);
-        renderizarPaginacionAlumnos(); // Renderiza los controles de paginación
+        renderizarPaginacionAlumnos();
     }
-
-    // =======================================================
-    // FUNCIÓN PARA RENDERIZAR CONTROLES DE PAGINACIÓN
 
     function renderizarPaginacionAlumnos() {
         const contenedorPaginacion = document.querySelector('#tablaAlumnos + p');
@@ -343,7 +303,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const divPaginacion = document.createElement('div');
             divPaginacion.classList.add('pagination-controls');
 
-            // Botón Anterior
             const btnPrev = document.createElement('button');
             btnPrev.textContent = 'Anterior';
             btnPrev.classList.add('botonesAccion'); 
@@ -356,12 +315,10 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             divPaginacion.appendChild(btnPrev);
 
-            // Indicador de Página
             const spanPage = document.createElement('span');
             spanPage.textContent = ` Página ${currentPage} de ${totalPages} `;
             divPaginacion.appendChild(spanPage);
 
-            // Botón Siguiente
             const btnNext = document.createElement('button');
             btnNext.textContent = 'Siguiente';
             btnNext.classList.add('botonesAccion'); 
@@ -373,11 +330,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             };
             divPaginacion.appendChild(btnNext);
-            
             contenedorPaginacion.appendChild(divPaginacion);
         }
     }
-
 
     trasfondoModal.addEventListener("click", function(e){
         if(e.target === trasfondoModal){
@@ -407,25 +362,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     const select = document.getElementById('ultimoCiclo'); 
                     const selectMassive = document.querySelector(".selectMassive"); 
                     
-                    // Limpiar antes de rellenar
                     select.innerHTML = '<option value="">Selecciona un ciclo</option>';
-
-                    // Solo limpiar de nuevo ssi el selectMassive existe
                     if (selectMassive) {
                         selectMassive.innerHTML = '<option value="">Selecciona un ciclo</option>';
                     }
                     
                     data.data.forEach(ciclo => {
-
-                        // Crea el option base
                         const option = document.createElement('option');
                         option.value = ciclo.id;
                         option.textContent = `${ciclo.nombre} (${ciclo.codigo})`;
-
-                        // agrega al select
                         select.appendChild(option); 
 
-                        // Crear una copia para el otro select
                         if (selectMassive) {
                             const optionMassive = option.cloneNode(true);
                             selectMassive.appendChild(optionMassive);
@@ -439,7 +386,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error:', error);
             });
     }
-
 
     let btnAddAlumno = document.getElementById("createUser");
     let modalAdd = document.querySelector(".modalContainerAdd");
@@ -459,7 +405,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     btnAddAlumno.onclick = function(e){
         e.preventDefault()
-
         if (modalContainerMassive) {
             modalContainerMassive.style.display = "none"; 
         }
@@ -475,20 +420,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         botonAdd.onclick = function(ev){
             ev.preventDefault()
-
             let camposAdd = {
                 nombre: campoNombreAdd.value,
                 apellidos: campoApellidosAdd.value,
                 email: campoEmailAdd.value,
                 telefono: campoTelefonoAdd.value
             }
-
             crearAlumno(camposAdd);
         }
     }
 
     function crearAlumno(datosAlumno) {
-        // Validar campos
         if (!datosAlumno.nombre || !datosAlumno.apellidos || !datosAlumno.email || !datosAlumno.telefono) {
             alert('Por favor completa todos los campos requeridos');
             return;
@@ -496,9 +438,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         fetch('/api/admin/AlumnosController.php', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(datosAlumno)
         })
         .then(response => response.json())
@@ -509,7 +449,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 trasfondoModal.style.display = "none";
                 listarAlumnos();
                 
-                // Limpiar formulario
                 document.getElementById("nombreAdd").value = '';
                 document.getElementById("apellidosAdd").value = '';
                 document.getElementById("emailAdd").value = '';
@@ -524,31 +463,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-
     function editarAlumno(datos) {
-        const datosActualizados = {
-            id: datos.id,
-            nombre: datos.nombre,
-            apellidos: datos.apellidos,
-            email: datos.email,
-            telefono: datos.telefono,
-            fecha_nacimiento: datos.fecha_nacimiento,
-            pais: datos.pais,
-            provincia: datos.provincia,
-            ciudad: datos.ciudad,
-            direccion: datos.direccion,
-            codigo_postal: datos.codigo_postal,
-            ciclo_id: datos.ciclo_id,
-            fecha_inicio: datos.fecha_inicio,
-            fecha_fin: datos.fecha_fin
-        };
-
         fetch('/api/admin/AlumnosController.php', {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(datosActualizados)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datos)
         })
         .then(response => response.json())
         .then(data => {
@@ -571,7 +490,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!confirm('¿Seguro que quieres eliminar este alumno?')) {
             return;
         }
-        
         fetch('/api/admin/AlumnosController.php?id=' + id, {
             method: 'DELETE'
         })
@@ -593,9 +511,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function cerrarSesion() {
         fetch('/api/auth/logout.php', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: { 'Content-Type': 'application/json' }
         })
         .then(response => response.json())
         .then(data => {
@@ -609,25 +525,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // =======================================================
-    // LISTAR ALUMNOS
-
     function listarAlumnos() {
-        currentPage = 1; // Resetear la página al cargar todos
-
+        currentPage = 1; 
         fetch('/api/admin/AlumnosController.php?email', {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: { 'Content-Type': 'application/json' }
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Datos parseados:', data);
-            
             if (data.success) {
-                console.log('Alumnos cargados:', data.data);
-                mostrarTablaAlumnos(data.data); // Pasa todos los datos para almacenar y paginar
+                mostrarTablaAlumnos(data.data); 
             } else {
                 alert(data.error || 'Error al cargar alumnos');
             }
@@ -638,28 +545,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-
-    // =======================================================
-    // LISTAR BÚSQUEDA ALUMNOS
-
-    function listarBusquedaAlumnos(searchValue)
-    {
-        currentPage = 1; // Resetear la página al buscar
-
+    function listarBusquedaAlumnos(searchValue) {
+        currentPage = 1; 
         fetch('/api/admin/AlumnosController.php?searchValue=' +encodeURIComponent(searchValue), {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: { 'Content-Type': 'application/json' }
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Datos parseados:', data);
-            
             if (data.success) {
-                console.log('Alumnos cargados:', data.data);
                 vaciarContenidoCeldas();
-                mostrarTablaAlumnos(data.data); // Pasa solo los resultados de la búsqueda
+                mostrarTablaAlumnos(data.data);
                 restaurarOpciones("default");
             } else {
                 alert(data.error || 'Error al cargar alumnos');
@@ -672,12 +568,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     let modalContainerMassive = document.querySelector(".modalContainerMassive");
-
     let modalHeaderMassive = document.createElement("div");
     modalHeaderMassive.classList.add("modal-headerMassive");
-    if (modalContainerMassive) {
-        modalContainerMassive.append(modalHeaderMassive);
-    }
+    if (modalContainerMassive) modalContainerMassive.append(modalHeaderMassive);
 
     let h2HeaderMassive = document.createElement("h2");
     h2HeaderMassive.innerText = "Carga Masiva de Alumnos";
@@ -690,9 +583,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let modalBodyMassive = document.createElement("div");
     modalBodyMassive.classList.add("modalBodyMassive");
-    if (modalContainerMassive) {
-        modalContainerMassive.append(modalBodyMassive);
-    }
+    if (modalContainerMassive) modalContainerMassive.append(modalBodyMassive);
 
     let containerCargarCSV = document.createElement("div");
     modalBodyMassive.append(containerCargarCSV); 
@@ -734,14 +625,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     btnMassiveAdd.onclick = function(e){
         e.preventDefault();
-
         trasfondoModal.style.display = "block";
         modalContainerMassive.style.display = "block";
     }
 
     let containerEjemplo = document.createElement("div");
     modalBodyMassive.append(containerEjemplo);
-
     let h3Ejemplo = document.createElement("h3");
     h3Ejemplo.innerHTML = "Ejemplo de formato CSV";
     containerEjemplo.append(h3Ejemplo);
@@ -762,13 +651,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     divBotonEjemplo.append(botonEjemplo);
     botonEjemplo.onclick = function(){
-        if(divTextoEjemplo.classList.contains("hide"))
-        {
+        if(divTextoEjemplo.classList.contains("hide")) {
             divTextoEjemplo.classList.remove("hide");
             divTextoEjemplo.classList.add("show");
             botonEjemplo.innerHTML = "Ocultar";
-        }
-        else{
+        } else {
             divTextoEjemplo.classList.remove("show");
             divTextoEjemplo.classList.add("hide");
             botonEjemplo.innerHTML = "Mostrar";
@@ -797,7 +684,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     inputCSV.addEventListener("change", function(e){
         const file = e.target.files[0]
-
         if(file) {
             leerArchivoCSV(file);
         }
@@ -805,34 +691,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function leerArchivoCSV(file) {
         tableContainerAdd.innerHTML = '';
-
         const reader = new FileReader();
-
         reader.onload = async function(e){
             const fileContenido = e.target.result;
             await parsearCSV(fileContenido, tableContainerAdd);
-
             btnEnviar.classList.remove("hide");
             btnEnviar.classList.add("show");
-
         };
-
         reader.readAsText(file, "UTF-8");
     }
 
-    
-
     async function parsearCSV(fileContent, tableContainerAdd) {
-
         const DELIMITADOR = ','; 
-        
         let rows = fileContent.trim().split("\n");
-        console.log('Filas leídas:', rows); 
         
         let headers = ['nombre', 'apellidos', 'email', 'telefono', 'ciudad'];
         let startRow = 1;
         
-        // Crear cabecera de tabla
         let tableMassiveHeaderContainer = document.createElement("thead");
         tableContainerAdd.append(tableMassiveHeaderContainer);
         let cabecera = document.createElement("tr");
@@ -855,18 +730,15 @@ document.addEventListener('DOMContentLoaded', function() {
         let tableMassiveBodyContainer = document.createElement("tbody");
         tableContainerAdd.append(tableMassiveBodyContainer);
 
-        // Procesar cada fila
         for(let i = startRow; i < rows.length; i++) {
-            
-            
             let values = rows[i].split(DELIMITADOR);
-            
+            if(values.length < 2) continue; // Saltar líneas vacías
+
             let fila = document.createElement("tr");
             tableMassiveBodyContainer.append(fila);
 
             let inputs = [];
             
-            // Celda del checkbox
             let celdaCheckbox = document.createElement("td");
             let checkbox = document.createElement("input");
             checkbox.type = "checkbox";
@@ -874,7 +746,6 @@ document.addEventListener('DOMContentLoaded', function() {
             celdaCheckbox.append(checkbox);
             fila.append(celdaCheckbox);
             
-            // Crear inputs para cada campo
             for(let j = 0; j < headers.length; j++) {
                 let celda = document.createElement("td");
                 let clave = headers[j].trim();
@@ -889,31 +760,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 celda.append(input);
                 inputs.push(input);
 
-                // Evento para validar en tiempo real
                 input.addEventListener("blur", async function() {
                     await validarFilaCompleta(fila, inputs, headers);
-                });
-
-                input.addEventListener("keypress", async function(e) {
-                    if(e.key === "Enter") {
-                        await validarFilaCompleta(fila, inputs, headers);
-                    }
                 });
                 
                 fila.append(celda);
             }
             
-            // Celda de validación 
             let celdaValidacion = document.createElement("td");
-            fetch("/public/assets/imagenes/cross-mark.svg")
-                .then(response => response.text())
-                .then(data => {
-                    celdaValidacion.innerHTML = data;
-                });
             celdaValidacion.classList.add('validation-cell');
             fila.append(celdaValidacion);
             
-            // Validar fila al inicio
             setTimeout(async () => {
                 await validarFilaCompleta(fila, inputs, headers);
             }, 100);
@@ -921,41 +778,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
         btnEnviar.onclick = function() {
             const selectCiclo = document.querySelector(".selectMassive") || document.getElementById("inputFamilia");
-            
-            if(!selectCiclo) {
-                alert("Error: No se encontró el selector de ciclo");
-                return;
-            }
-            
+            if(!selectCiclo) { alert("Error selector ciclo"); return; }
             const cicloId = selectCiclo.value;
+            if(!cicloId) { alert("Selecciona un ciclo"); return; }
             
-            if(!cicloId || cicloId === "") {
-                alert("Selecciona un ciclo");
-                return;
-            }
-            
-            // AQUÍ ES DONDE SE RECOGEN LOS DATOS
             let alumnosSeleccionados = [];
             const checkboxes = tableContainerAdd.querySelectorAll('input[type="checkbox"]:checked:not(:disabled)');
-            
-            console.log("Checkboxes seleccionados:", checkboxes.length); // Debug
             
             checkboxes.forEach(checkbox => {
                 const fila = checkbox.closest('tr'); 
                 const inputs = fila.querySelectorAll('.inputsMassiveAdd');
                 let alumno = {};
-                
                 inputs.forEach(input => { 
                     const campo = input.dataset.field.trim();
                     alumno[campo] = input.value.trim();
                 });
-                
                 alumno["ciclo_id"] = parseInt(cicloId);
                 alumnosSeleccionados.push(alumno);
             });
-            
-            console.log("Total alumnos seleccionados:", alumnosSeleccionados.length); // Debug
-            console.log("Datos a enviar:", alumnosSeleccionados); // Debug
             
             if(alumnosSeleccionados.length === 0) {
                 alert("Selecciona al menos un alumno válido");
@@ -964,16 +804,13 @@ document.addEventListener('DOMContentLoaded', function() {
             
             fetch("/api/admin/AlumnosController.php?accion=massive", {
                 method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(alumnosSeleccionados),
             })
-            .then(response => response.json())
+            .then(r => r.json())
             .then(data => {
-                console.log("Respuesta del servidor:", data); // debug
                 if(data.success) {
-                    alert(`Alumnos añadidos correctamente: ${data.creados || alumnosSeleccionados.length} creados`);
+                    alert(`Alumnos añadidos correctamente: ${data.creados}`);
                     modalContainerMassive.style.display = "none";
                     trasfondoModal.style.display = "none";
                     listarAlumnos();
@@ -982,82 +819,46 @@ document.addEventListener('DOMContentLoaded', function() {
                     btnEnviar.classList.remove("show");
                     btnEnviar.classList.add("hide");
                 } else {
-                    alert(data.error || "Error al cargar los alumnos");
-                    if(data.detalles) {
-                        console.error("Detalles:", data.detalles);
-                    }
+                    alert(data.error || "Error masivo");
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error de conexión: ' + error.message);
             });
         };
-        
     }
-
-    // validar y actualizar
-    async function validarYActualizarFila(fila, inputs, headers, alumnoObj) {
-        const esValida = await validarFilaCompleta(fila, inputs, headers);
-        
-        // Actualizar los valores en el objeto alumno
-        inputs.forEach(input => {
-            alumnoObj[input.dataset.field] = input.value.trim();
-        });
-        
-        return esValida;
-    }
-
 
     async function validarFilaCompleta(fila, inputs, headers) {
         let esValida = true;
-        let datosFila = {};
         
-        // Validar campos 
-        inputs.forEach(input => {
+        for (const input of inputs) {
             const valor = input.value.trim();
-            const campo = input.dataset.field;
+            const campo = input.dataset.field.toLowerCase();
             
-            datosFila[campo] = valor;
-            
-            // Validar si el campo está vacío
-            if (!valor) {
-                input.style.backgroundColor = "#fc8989ff";
-                esValida = false;
-            } else {
-                input.style.backgroundColor = "#ffffff";
+            let inputValido = true;
+
+            if (valor === '') {
+                inputValido = false;
             }
-        });
-        
-        // Validar email
-        const emailInput = inputs.find(input => 
-            input.dataset.field.toLowerCase().includes('email') || 
-            input.dataset.field.toLowerCase().includes('correo')
-        );
-        
-        if (emailInput) {
-            const email = emailInput.value.trim();
-            if (email) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email)) {
-                    emailInput.style.backgroundColor = "#fc8989ff";
-                    esValida = false;
+            else if (campo === 'telefono') {
+                if (!Validators.esTelefono(valor)) inputValido = false;
+            }
+            else if (campo === 'email' || campo === 'correo') {
+                if (!Validators.esEmail(valor)) {
+                    inputValido = false;
                 } else {
-                    const emailExiste = await verificarEmailExistente(email);
-                    if (emailExiste) {
-                        emailInput.style.backgroundColor = "#fc8989ff";
-                        esValida = false;
-                    }
+                    const existe = await verificarEmailExistente(valor);
+                    if (existe) inputValido = false;
                 }
             }
+            else if (campo === 'nombre' || campo === 'apellidos') {
+                if (!Validators.esTexto(valor)) inputValido = false;
+            }
+
+            input.style.backgroundColor = inputValido ? "#ffffff" : "#fc8989ff";
+            if (!inputValido) esValida = false;
         }
         
-        // Actualizar estado de la fila
         actualizarEstadoFila(fila, esValida);
-        
         return esValida;
     }
-
 
     function actualizarEstadoFila(fila, esValida) {
         const celdaValidez = fila.querySelector('td:last-child');
@@ -1065,78 +866,41 @@ document.addEventListener('DOMContentLoaded', function() {
         const checkbox = celdaCheck.querySelector('input[type="checkbox"]');
         
         if (esValida) {
-            // Fila válida
             fetch("/public/assets/imagenes/check-circle.svg")
                 .then(response => response.text())
-                .then(data => {
-                    celdaValidez.innerHTML = data;
-                });
+                .then(data => { celdaValidez.innerHTML = data; });
             checkbox.disabled = false;
         } else {
-            // Fila inválida
             fetch("/public/assets/imagenes/cross-mark.svg")
                 .then(response => response.text())
-                .then(data => {
-                    celdaValidez.innerHTML = data;
-                });
+                .then(data => { celdaValidez.innerHTML = data; });
             checkbox.disabled = true;
+            checkbox.checked = false;
         }
     }
 
     function verificarEmailExistente(email) {
-        if (!email || email.trim() === '') {
-            return Promise.resolve(false);
-        }
-        
+        if (!email || email.trim() === '') return Promise.resolve(false);
         return fetch('/api/auth/email_exists.php?email=' + encodeURIComponent(email))
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la respuesta del servidor');
-                }
-                return response.json();
-            })
-            .then(data => {
-                return data.existe || false;
-            })
-            .catch(error => {
-                console.error('Error al verificar email:', error);
-                return false;
-            });
+            .then(r => r.json())
+            .then(data => data.existe || false)
+            .catch(() => false);
     }
 
-
-    //Busqueda en la lista
     let inputSearch = document.getElementById("search-admin");
-
     inputSearch.addEventListener("keypress", function(e){
-        if(e.key ==="Enter")
-        {
-            if(this.value == "")
-            {
-                listarAlumnos();
-            }
-            else
-            {
-                listarBusquedaAlumnos(this.value);
-            }
+        if(e.key ==="Enter") {
+            if(this.value == "") listarAlumnos();
+            else listarBusquedaAlumnos(this.value);
         }
     })
 
-
-
-
-
     let opts = document.querySelectorAll(".optLateral");
-
     opts[0].innerHTML = "Panel de Alumnos";
     opts[1].innerHTML = "Panel de Empresas";
-
-    opts[0].addEventListener("click", function(){
-        window.location.href ='index.php?page=dashboard-admin-alumnos'
-    })
-    opts[1].addEventListener("click", function(){
-        window.location.href ='index.php?page=dashboard-admin-empresas'
-    })
+    opts[2].innerHTML = "Estadísticas";
+    opts[0].addEventListener("click", function(){ window.location.href ='index.php?page=dashboard-admin-alumnos' })
+    opts[1].addEventListener("click", function(){ window.location.href ='index.php?page=dashboard-admin-empresas' })
+    opts[2].addEventListener("click", function(){ window.location.href ='index.php?page=dashboard-admin-estadisticas'});
     
-
 });

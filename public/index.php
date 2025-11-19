@@ -84,6 +84,12 @@ switch($page) {
         echo $templates->render('dashboard-admin-addEmpresa');
         break;
 
+    case 'dashboard-admin-estadisticas':
+        
+        AuthMiddleware::requiereAuth(["admin"]);
+        echo $templates->render('dashboard-admin-estadisticas');
+        break;
+
     case 'admin-editarEmpresa':
         if(isset($_POST["btnActualizarEmpresa"]))
         {

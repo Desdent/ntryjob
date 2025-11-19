@@ -38,7 +38,7 @@ if(isset($_SESSION["exito"]))
                     <a href="index.php?page=dashboard-admin-empresas">Panel de Empresas</a>
                 </div>
                 <div class="optLateral">
-                    <a href="index.php?page=dashboard-admin-ofertas">Panel de Ofertas</a>
+                    <a href="index.php?page=dashboard-admin-ofertas">Panel de Estadisticas</a>
                 </div>
             </div>
         

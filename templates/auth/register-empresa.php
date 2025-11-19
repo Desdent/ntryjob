@@ -9,38 +9,35 @@
         </div>
 
         <form action="/api/auth/registro-empresa.php" method="POST" enctype="multipart/form-data" class="auth-form">
-            <!-- Datos de Acceso -->
             <div class="form-section">
                 <h3>Datos de Acceso</h3>
                 <div class="form-group">
                     <label for="email">Email corporativo *</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" required maxlength="100">
                 </div>
                 <div class="form-group">
                     <label for="password">Contraseña *</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="password" required minlength="6">
                 </div>
                 <div class="form-group">
                     <label for="password_confirm">Confirmar Contraseña *</label>
-                    <input type="password" id="password_confirm" name="password_confirm" required>
+                    <input type="password" id="password_confirm" name="password_confirm" required minlength="6">
                 </div>
             </div>
 
-            <!-- Es el register-empresa -->
-            <!-- Datos de la Empresa -->
             <div class="form-section">
                 <h3>Datos de la Empresa</h3>
                 <div class="form-group">
                     <label for="nombre">Nombre de la Empresa *</label>
-                    <input type="text" id="nombre" name="nombre" required>
+                    <input type="text" id="nombre" name="nombre" required minlength="2" maxlength="100">
                 </div>
                 <div class="form-group">
                     <label for="cif">CIF *</label>
-                    <input type="text" id="cif" name="cif" required>
+                    <input type="text" id="cif" name="cif" required pattern="[a-zA-Z0-9]{9}" title="Formato válido de CIF (9 caracteres)">
                 </div>
                 <div class="form-group">
                     <label for="telefono">Teléfono</label>
-                    <input type="tel" id="telefono" name="telefono" required>
+                    <input type="tel" id="telefono" name="telefono" required pattern="[0-9]{9}" title="9 dígitos numéricos">
                 </div>
                 <div class="form-group">
                     <label for="logo">Logo (Imagen)</label>
@@ -49,7 +46,6 @@
 
             </div>
 
-            <!-- Dirección -->
             <div class="form-section">
                 <h3>Dirección</h3>
                 <div class="form-row">

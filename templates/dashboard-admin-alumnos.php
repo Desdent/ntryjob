@@ -2,6 +2,7 @@
 $this->layout('layout', ['title' => 'Dashboard Admin']);
 ?>
 
+<script src="/public/js/validators.js"></script>
 <script src="/public/js/admin/alumnos.js"></script>
 
 
@@ -15,7 +16,6 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
         <div class="modalBody">
             <form id="formRegistroAlumno" enctype="multipart/form-data">
                 <div class="modal-body">
-                    <!-- Columna Izquierda -->
                     <div class="form-column">
                         <div class="form-group">
                             <label for="nombre">Nombre *</label>
@@ -58,7 +58,6 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
 
                     </div>
 
-                    <!-- Columna Derecha -->
                     <div class="form-column">
                         <div class="form-group">
                             <label for="apellidos">Apellidos *</label>
@@ -126,7 +125,6 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
         <div class="modalBodyAdd">
             <form id="formAddAlumno" enctype="multipart/form-data">
                 <div class="modal-bodyAdd">
-                    <!-- Columna Izquierda -->
                     <div class="form-columnAdd">
                         <div class="form-groupAdd">
                             <label for="nombreAdd">Nombre *</label>
@@ -143,7 +141,6 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
 
                     </div>
 
-                    <!-- Columna Derecha -->
                     <div class="form-columnAdd">
                         <div class="form-groupAdd">
                             <label for="apellidosAdd">Apellidos *</label>
@@ -191,6 +188,7 @@ $this->layout('layout', ['title' => 'Dashboard Admin']);
         
         <div id="menu-izq"> 
             <h3>Panel de Navegación</h2>
+            <div class="optLateral"></div>
             <div class="optLateral"></div>
             <div class="optLateral"></div>
             </div>
