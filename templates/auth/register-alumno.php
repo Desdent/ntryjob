@@ -29,10 +29,19 @@
 </div>
 
 <div class="form-group">
+    <label for="ultimoCiclo">Último ciclo cursado *</label>
+    <select id="ultimoCiclo" name="ultimoCiclo" required>
+        <option value="">Cargando ciclos...</option>
+    </select>
+    <span class="error-message"></span>
+</div>
+
+<div class="form-group">
     <label for="subirCV">Subir CV (PDF/DOCX, Máx 5MB) *</label>
     <input type="file" id="subirCV" name="subirCV" accept=".pdf,.docx,.doc" required>
     <span class="error-message"></span>
 </div>
+
 <div class="form-group">
     <label for="apellidos">Apellidos *</label>
     <input type="text" id="apellidos" name="apellidos" required minlength="2" maxlength="100" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+">

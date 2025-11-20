@@ -1,18 +1,18 @@
 <?php
-// Cargar el autoload de Composer
+
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-// 1. Obtener y validar el ID de la postulación
+// Obtener y validar el ID de la postulación
 $postulacionId = $_GET['postulacion_id'] ?? null;
 if (!$postulacionId || !is_numeric($postulacionId)) {
     http_response_code(400);
     die("ID de postulación no válido o faltante.");
 }
 
-// 2. Configurar Dompdf (opcional pero recomendado)
+// Configurar Dompdf (opcional pero recomendado)
 $options = new Options();
 // Configuración para permitir imágenes y CSS remoto si fuera necesario más adelante
 $options->set('isRemoteEnabled', true);
@@ -21,7 +21,7 @@ $options->set('defaultFont', 'sans-serif');
 
 $dompdf = new Dompdf($options);
 
-// 3. Generar el contenido HTML simple (como se solicitó)
+// Generar el contenido 
 $html = '
 <html>
 <head>
@@ -40,13 +40,13 @@ $html = '
 
 $dompdf->loadHtml($html);
 
-// (Opcional) Configurar el tamaño y orientación del papel
+// el tamaño y orientación del papel
 $dompdf->setPaper('A4', 'portrait');
 
-// 4. Renderizar el HTML a PDF
+// Renderizar el HTML a PDF
 $dompdf->render();
 
-// 5. Enviar el PDF al navegador (Stream)
+// Enviar el PDF al navegador (Stream)
 $nombreArchivo = "Ficha_Postulacion_{$postulacionId}.pdf";
 
 // El primer parámetro es el nombre del archivo, el segundo es si se fuerza la descarga (Attachment => true) 

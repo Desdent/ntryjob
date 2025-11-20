@@ -24,8 +24,7 @@ try {
 
 
                     $postulantes = $postulacionDAO->getPostulantesByOfertaId($oferta_id);
-                    // TO-DO: ACABAR, SACAR LAS POSTULACIONES CON EL ID DE LA FOERTA Y EL ID DEL ALUMNO (LO TRAE EN EL OBJETO EN POSTULANTES)
-                            //Y CON ESO SACAR LAS POSTULACIONES PARA CAMBIAR SUS ESTADOS 
+
 
                     $postulaciones = [];
                     foreach($postulantes as $postulante)

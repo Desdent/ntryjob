@@ -38,7 +38,6 @@ class LoginController {
                 exit;
             }
             
-            // Detectar rol usando la misma lógica que el login.php corregido
             $pdo = Database::getInstance()->getConnection();
             $rol = null;
             $aprobada = 1;

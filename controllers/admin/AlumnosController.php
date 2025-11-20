@@ -9,7 +9,7 @@ class AlumnosController {
     public function __construct() {
         $this->dao = new AlumnoDAO();
         
-        // Router simple para detectar carga masiva
+        //para detectar carga masiva
         if (isset($_GET['accion']) && $_GET['accion'] === 'massive') {
             $this->createMassive();
             exit; 
@@ -18,8 +18,6 @@ class AlumnosController {
     
     public function index() {
         try {
-            // Si se llama con email en query string
-            // ... (lógica existente) ...
             $alumnos = $this->dao->getAll();
             echo json_encode(['success' => true, 'data' => array_map(fn($a) => $a->toArray(), $alumnos)]);
         } catch (Exception $e) {
@@ -71,7 +69,7 @@ class AlumnosController {
     
     public function delete() {
         try {
-            $data = json_decode(file_get_contents('php://input'), true); // O desde $_GET['id']
+            $data = json_decode(file_get_contents('php://input'), true); 
             $id = $_GET['id'] ?? $data['id'] ?? null;
             
             if (empty($id)) {
@@ -110,7 +108,7 @@ class AlumnosController {
 
                 // Asignar contraseña por defecto si no existe
                 if (empty($datosAlumno['password'])) {
-                    $datosAlumno['password'] = '123456'; // Se hasheará en el DAO o Entity si está configurado
+                    $datosAlumno['password'] = '123456';
                 }
                 
                 $alumno = new AlumnoEntity($datosAlumno);

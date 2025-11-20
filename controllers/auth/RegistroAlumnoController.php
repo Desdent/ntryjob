@@ -73,7 +73,6 @@ class RegistroAlumnoController {
     }
     
     private function procesarCV($archivo) {
-        // Usar Helper si se desea, o validación directa aquí para blob
         $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
         $permitidas = ['pdf', 'docx'];
         

@@ -22,8 +22,6 @@ class CicloAlumnosDAO {
             ]);
             
             if (!$result) {
-                // Mostrar error específico
-                var_dump($stmt->errorInfo());
                 throw new Exception("Error en la ejecución: " . implode(", ", $stmt->errorInfo()));
             }
             

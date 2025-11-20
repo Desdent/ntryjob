@@ -2,10 +2,7 @@
 
 class AuthMiddleware {
     
-    /**
-     * Requerir autenticación y roles específicos
-     * @param array $rolesPermitidos Roles permitidos ['admin', 'empresario', 'alumno']
-     */
+
     public static function requiereAuth($rolesPermitidos = []) {
         // Verificar si hay sesión iniciada
         if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {

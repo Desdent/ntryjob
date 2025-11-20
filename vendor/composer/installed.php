@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'proyecto/ntryjob',
-        'pretty_version' => 'dev-develop',
-        'version' => 'dev-develop',
-        'reference' => 'be743c263d8ddd9580622e0c97d8b83da2477dc5',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'a916153bfb9cde036e18236dc9c78618fb133c58',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -65,9 +65,9 @@
             'dev_requirement' => false,
         ),
         'proyecto/ntryjob' => array(
-            'pretty_version' => 'dev-develop',
-            'version' => 'dev-develop',
-            'reference' => 'be743c263d8ddd9580622e0c97d8b83da2477dc5',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'a916153bfb9cde036e18236dc9c78618fb133c58',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

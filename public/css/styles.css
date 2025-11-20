@@ -795,7 +795,7 @@ footer p {
     border-bottom: 2px solid var(--primary-pale);
     padding-bottom: 10px;
 }
-/* Corrección para h3 dentro de tarjeta azul */
+/* una peque orrección para h3 dentro de tarjeta azul */
 .auth-card .form-section h3 { color: var(--text-white); }
 
 .form-group { margin-bottom: 20px; }
@@ -961,7 +961,7 @@ footer p {
     align-items: center;
     flex-wrap: wrap; /* Si la pantalla es pequeña, baja los botones */
     gap: 20px;
-    margin-bottom: 20px; /* ESPACIO VITAL PARA QUE NO TOQUE LA TABLA */
+    margin-bottom: 20px; /* ESPACIO PARA QUE NO TOQUE LA TABLA */
     width: 100%;
 }
 .headerTableContainer #divh2, .headerTableContainer #divh2Pendientes {
@@ -1102,14 +1102,14 @@ button:hover, .addEmpresa:hover, .botonesEmpresa:hover {
     background-color: rgba(0,0,0,0.6); /* Fondo oscuro */
 }
 
-/* 2. LOS CONTENEDORES ESPECÍFICOS (que pueden estar ocultos) */
+/* 2. LOS CONTENEDORES ESPECÍFICOS */
 .modalContainer, .modalContainerAdd, .modalContainerMassive {
     background-color: #fefefe;
     margin: 3% auto;
     padding: 0;
     border-radius: 12px;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
-    display: none; /* Estos se quedan ocultos hasta que se llamen específicamente */
+    display: none; /* Estos se quedan ocultos hasta que se llamen */
     position: fixed;
     top: 50%;
     left: 50%;
@@ -1120,8 +1120,7 @@ button:hover, .addEmpresa:hover, .botonesEmpresa:hover {
     max-width: 600px;
 }
 
-/* 3. EL CONTENIDO ESTÁNDAR (¡ESTO ES LO QUE FALTABA!) */
-/* Lo sacamos del grupo 'display:none' para que sea visible dentro del .modal */
+/* 3. EL CONTENIDO ESTÁNDAR */
 .modal-content {
     background-color: #fefefe;
     margin: 5% auto; /* Centrado con margen superior */
@@ -1329,7 +1328,7 @@ button:hover, .addEmpresa:hover, .botonesEmpresa:hover {
 
 
 /* ==========================================================================
-   9. ESTILOS SENCILLOS CÁMARA (NUEVO)
+   9. ESTILOS SENCILLOS CÁMARA 
    ========================================================================== */
 .campo-foto-container {
     grid-column: 1 / -1; /* Para que ocupe todo el ancho del modal grid */
@@ -1363,5 +1362,678 @@ button:hover, .addEmpresa:hover, .botonesEmpresa:hover {
 
 
 
-/* 2. El bloque que agrupa el Buscador, el Filtro y el botón Añadir */
+/* ==========================================================================
+   MEDIA QUERIES
+   ========================================================================== */
+
+/* ==========================================================================
+   TABLET (768px - 1024px)
+   ========================================================================== */
+@media screen and (max-width: 1024px) {
+    /* Header y Nav */
+    header {
+        padding: 1rem;
+    }
+    
+    nav {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    nav ul {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    /* Hero */
+    .hero {
+        height: 25em;
+        padding: 3rem 1.5rem;
+    }
+    
+    .search-box {
+        flex-direction: column;
+        max-width: 500px;
+        gap: 0.8rem;
+    }
+    
+    .search-box input {
+        flex: 1 1 auto;
+        width: 100%;
+    }
+    
+    /* Ofertas */
+    .ofertas-container {
+        height: 450px;
+        overflow: hidden;
+    }
+    
+    .grupo-tarjetas {
+        position: absolute;
+        flex-wrap: nowrap;
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    /* Mantener animaciones */
+    .grupo-tarjetas:nth-child(1) { animation: slideInOut1 15s ease-in-out infinite; }
+    .grupo-tarjetas:nth-child(2) { animation: slideInOut2 15s ease-in-out infinite; }
+    
+    .oferta-card {
+        flex: 0 0 280px;
+        max-width: 300px;
+    }
+    
+    /* Colaboradores */
+    .colaboradores-container {
+        gap: 20px;
+    }
+    
+    .colaborador-card {
+        flex: 1 1 200px;
+    }
+    
+    /* Auth */
+    .divMarco {
+        width: 70%;
+    }
+    
+    .divMarcoRegistro {
+        width: 85%;
+    }
+    
+    .columnas-registro {
+        gap: 2em;
+    }
+    
+    /* Dashboard */
+    .divCentral {
+        grid-template-columns: 25% 1fr;
+        gap: 1.5em;
+    }
+    
+    #menu-izq {
+        font-size: 0.85em;
+        padding-left: 1.5em;
+    }
+    
+    /* Tablas con ajuste correcto */
+    .table-container {
+        overflow-x: auto;
+        width: 100%;
+    }
+    
+    table {
+        width: 100%;
+        table-layout: auto;
+        font-size: 0.8rem;
+    }
+    
+    th, td {
+        padding: 12px 8px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    .botonesAccion {
+        padding: 0.3em 0.6em;
+        font-size: 0.85rem;
+    }
+    
+    /* Modales */
+    .modal-content,
+    .modalContainer,
+    .modalContainerAdd {
+        width: 90%;
+        margin: 3% auto;
+    }
+    
+    .modal-body,
+    .modal-bodyAdd {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 25px;
+    }
+}
+
+/* ==========================================================================
+   MÓVIL (menor a 768px)
+   ========================================================================== */
+@media screen and (max-width: 767px) {
+    /* Header y Nav */
+    header {
+        padding: 0.8rem 1rem;
+    }
+    
+    nav {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    nav h1 {
+        font-size: 1.3rem;
+        text-align: center;
+    }
+    
+    .navbar-logo img {
+        height: 40px;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+    
+    .navbar-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+    }
+    
+    .navbar-actions .btn-primary,
+    .user-email,
+    .btn-logout-header {
+        width: 100%;
+        text-align: center;
+        padding: 0.6em 1em;
+    }
+    
+    /* Hero */
+    .hero {
+        height: auto;
+        min-height: 20em;
+        padding: 2rem 1rem;
+        background-attachment: scroll;
+    }
+    
+    .hero h1 {
+        font-size: 1.5rem;
+    }
+    
+    .hero p {
+        font-size: 0.95rem;
+    }
+    
+    /* Búsqueda */
+    .search-box {
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        padding: 0 1rem;
+        margin: 5% auto;
+    }
+    
+    .search-box select,
+    .search-box input,
+    .btn-search {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    /* Ofertas - Mantener carrusel */
+    .ofertas-destacadas {
+        padding: 40px 15px;
+    }
+    
+    .ofertas-destacadas h2 {
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+    }
+    
+    .ofertas-container {
+        height: 500px;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .containerOfertas {
+        display: flex;
+        justify-content: space-around;
+        padding-top: 1em;
+        margin-top: 2em;
+        border-radius: 0.7em;
+        background-color: var(--primary-light);
+        box-shadow: 0em 0.625em 0em 0 var(--primary);
+    }
+    
+    .grupo-tarjetas {
+        display: flex;
+        position: absolute;
+        justify-content: center;
+        gap: 15px;
+        width: 100%;
+        left: 0;
+    }
+    
+    /* Mantener animaciones */
+    .grupo-tarjetas:nth-child(1) { animation: slideInOut1 15s ease-in-out infinite; }
+    .grupo-tarjetas:nth-child(2) { animation: slideInOut2 15s ease-in-out infinite; }
+    
+    .oferta-card {
+        flex: 0 0 90%;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+    
+    /* Colaboradores */
+    .colaboradores {
+        padding: 40px 15px;
+    }
+    
+    .colaboradores h2 {
+        font-size: 1.5rem;
+    }
+    
+    .colaboradores-container {
+        gap: 15px;
+    }
+    
+    .colaborador-card {
+        flex: 1 1 100%;
+        max-width: 100%;
+        padding: 30px;
+    }
+    
+    /* Footer CTA */
+    .footer-cta {
+        padding: 40px 15px;
+    }
+    
+    .footer-cta-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .footer-cta-card {
+        padding: 30px 20px;
+    }
+    
+    /* Auth - Login */
+    .divMarco {
+        width: 95%;
+        margin: 2em auto;
+    }
+    
+    .divContent {
+        flex-direction: column;
+        margin: 1em;
+        padding: 1.5em;
+        gap: 1.5em;
+    }
+    
+    #divIniciar-sesion {
+        max-width: 100%;
+    }
+    
+    #password, #email {
+        max-width: 100%;
+    }
+    
+    /* Auth - Registro */
+    .divMarcoRegistro {
+        width: 95%;
+        margin: 2em auto;
+    }
+    
+    .divContentRegistro {
+        margin: 1em;
+        padding: 1.5em;
+    }
+    
+    .columnas-registro {
+        flex-direction: column;
+        gap: 1.5em;
+    }
+    
+    /* Auth - Selección */
+    .divContentSeleccion {
+        padding: 2em 1em;
+        margin: 2em 1em;
+    }
+    
+    .titulo-seleccion {
+        font-size: 1.4rem;
+    }
+    
+    .opciones-registro {
+        flex-direction: column;
+        gap: 1.5em;
+    }
+    
+    .opcion-card {
+        min-width: 100%;
+    }
+    
+    /* Formularios Empresa */
+    .auth-container {
+        padding: 10px;
+    }
+    
+    .auth-card {
+        padding: 25px 20px;
+    }
+    
+    .auth-logo {
+        width: 80px;
+    }
+    
+    .auth-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .form-section {
+        margin-bottom: 20px;
+    }
+    
+    .form-section h3 {
+        font-size: 1rem;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    /* Dashboard */
+    .dashboard-container {
+        padding: 20px 10px;
+    }
+    
+    .dashboard-header {
+        padding: 25px 20px;
+        margin-bottom: 20px;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .dashboard-header p {
+        font-size: 0.95rem;
+    }
+    
+    /* Layout Central */
+    .divCentral {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 1em;
+    }
+    
+    #menu-izq {
+        grid-column: 1;
+        grid-row: auto;
+        padding: 1em;
+        margin-bottom: 1em;
+    }
+    
+    .table-container,
+    .tablePendientes-container,
+    .addEmpresa-container {
+        grid-column: 1;
+        grid-row: auto;
+        padding: 20px 15px;
+        min-width: 100%;
+    }
+    
+    /* Header Tabla */
+    .headerTableContainer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    #containerSearchEmpresas {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    #search-empresas,
+    #search-empresasPendientes,
+    #search-ofertas,
+    #search-admin,
+    #search-ofertas-empresa {
+        width: 100%;
+    }
+    
+    /* Botones */
+    .botonesAñadirCargar,
+    button,
+    .addEmpresa,
+    .botonesEmpresa,
+    .botonesDatosAlumno {
+        width: 100%;
+        margin-bottom: 0.5em;
+    }
+    
+    /* Tablas */
+    .table-container {
+        overflow-x: visible;
+    }
+    
+    table {
+        width: 100%;
+        table-layout: fixed;
+        font-size: 0.85rem;
+    }
+    
+    th, td {
+        padding: 10px 5px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    /* Ocultar columnas menos importantes en móvil si es necesario */
+    th:last-child, td:last-child {
+        min-width: 80px;
+    }
+    
+    /* Modales */
+    .trasfondoModal,
+    .modal,
+    #modalEditarOferta {
+        padding: 10px;
+    }
+    
+    .modal-content,
+    .modalContainer,
+    .modalContainerAdd,
+    .modalContainerMassive {
+        width: 95%;
+        max-width: 95%;
+        margin: 10% auto;
+        transform: none;
+        top: auto;
+        left: auto;
+        position: relative;
+    }
+    
+    .modal-header,
+    .modal-headerAdd,
+    .modal-headerMassive {
+        padding: 15px 20px;
+    }
+    
+    .modal-header h2,
+    .modal-headerAdd h2,
+    .modal-headerMassive h2 {
+        font-size: 1.3rem;
+    }
+    
+    .modal-body,
+    .modal-bodyAdd,
+    .modalBodyMassive {
+        grid-template-columns: 1fr;
+        padding: 20px 15px;
+        max-height: 50vh;
+    }
+    
+    .form-column,
+    .form-columnAdd,
+    .form-columnMassive {
+        gap: 15px;
+    }
+    
+    .modal-footer,
+    .modal-footerAdd,
+    .modal-footerMassive {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .modal-footer button,
+    .modal-footerAdd button,
+    .modal-footerMassive button {
+        width: 100%;
+    }
+    
+    /* Inputs Modales */
+    .inputsAddEmpresa,
+    .inputsEditarEmpresa,
+    .inputsDatosAlumno,
+    .inputsPublicarOfertas,
+    .inputsMassiveAdd {
+        width: 100%;
+        display: block;
+    }
+    
+    #textareaEditarEmpresa {
+        width: 100%;
+    }
+    
+    /* Carga Masiva */
+    .containerSuperior {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .containerCampos {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    #divContainerListadoAdd {
+        max-height: 20em;
+    }
+    
+    /* Cámara Modal */
+    #modalCamaraAlumno .modal-content {
+        max-width: 95%;
+    }
+    
+    /* Utilidades */
+    .btn-ver-ficha {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+    
+    /* Paginación */
+    .pagination-area {
+        overflow-x: auto;
+    }
+}
+
+/* ==========================================================================
+   MÓVIL PEQUEÑO (menor a 480px)
+   ========================================================================== */
+@media screen and (max-width: 480px) {
+    /* Hero más compacto */
+    .hero {
+        min-height: 18em;
+        padding: 1.5rem 0.8rem;
+    }
+    
+    .hero h1 {
+        font-size: 1.2rem;
+    }
+    
+    .hero p {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Ofertas más compactas */
+    .ofertas-destacadas h2,
+    .colaboradores h2 {
+        font-size: 1.3rem;
+    }
+    
+    .oferta-card {
+        padding: 20px;
+    }
+    
+    .oferta-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    /* Dashboard más compacto */
+    .dashboard-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    /* Tablas responsivas */
+    .table-container {
+        overflow-x: visible;
+    }
+    
+    table {
+        width: 100%;
+        table-layout: auto;
+        font-size: 0.75rem;
+    }
+    
+    th, td {
+        padding: 8px 4px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        font-size: 0.7rem;
+    }
+    
+    /* Hacer columnas más flexibles */
+    th:first-child, td:first-child {
+        min-width: 60px;
+    }
+    
+    th:last-child, td:last-child {
+        min-width: 70px;
+    }
+    
+    /* Reducir padding en botones de tabla */
+    .botonesAccion {
+        padding: 0.3em 0.5em;
+        font-size: 0.7rem;
+        display: block;
+        margin: 0.2em 0;
+    }
+    
+    /* Botones más compactos */
+    .btn-search,
+    .btn-primary,
+    .navbar-actions .btn-primary {
+        padding: 0.6em 1em;
+        font-size: 0.95rem;
+    }
+    
+    /* Modales más pequeños */
+    .modal-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .form-group label {
+        font-size: 0.85rem;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+}
+
+
 
