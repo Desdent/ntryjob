@@ -1,4 +1,49 @@
 /* ==========================================================================
+   ÍNDICE DE CONTENIDOS - NTRYJOB STYLES
+   ==========================================================================
+   
+   1. TOKENS (VARIABLES DE COLOR)
+      - Definición de paleta de colores (:root), primarios, acentos y estados.
+
+   2. ESTILOS GLOBALES Y RESET BÁSICO
+      - Reset universal, tipografía base (Poppins) y comportamiento de botones.
+
+   3. HEADER Y NAV
+      - Barra de navegación, logotipo, enlaces y botones de sesión.
+
+   4. PÁGINA HOME
+      - Hero section (imagen de fondo), Buscador principal.
+      - Carrusel de Ofertas Destacadas (animaciones).
+      - Sección de Colaboradores y Footer (CTA y enlaces).
+
+   5. AUTENTICACIÓN (LOGIN / REGISTRO)
+      - Estilos para contenedores de formularios (divMarco).
+      - Inputs específicos de login/registro y pantalla de selección de rol.
+
+   6. FORMULARIOS EMPRESA / NUEVOS
+      - Tarjetas de formularios generales (auth-card).
+      - Inputs de búsqueda y edición para la gestión empresarial.
+
+   7. DASHBOARDS & TABLAS
+      - Layout principal del panel de administración/usuario.
+      - Estilos de Tablas (thead, hover), Sidebar (menú izquierdo) y paginación.
+
+   8. MODALES
+      - Overlay (fondo oscuro) y animaciones de entrada.
+      - Contenedores específicos (Add, Massive) y validación de inputs.
+
+   9. ESTILOS SENCILLOS CÁMARA 
+      - Vista previa de imagen y contenedor para la captura de fotos.
+
+   10. MEDIA QUERIES (RESPONSIVE DESIGN)
+       - Tablet (max-width: 1024px).
+       - Móvil (max-width: 767px).
+       - Móvil Pequeño (max-width: 480px).
+   ==========================================================================
+*/
+
+
+/* ==========================================================================
    1. TOKENS (VARIABLES DE COLOR)
    ========================================================================== */
 :root {
