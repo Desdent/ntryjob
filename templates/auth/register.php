@@ -1,24 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - Selección</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/public/css/styles.css">
-    <script src="/public/js/auth/registro-alumno.js" defer></script>
-</head>
-<body>
-    <header>
-        <nav>
-            <h1>NTRYJOB</h1>
-            <ul>
-                <li><a href="index.php">Inicio</a></li>
-                <li><a href="index.php?page=login">Login</a></li>
-                <li><a href="index.php?page=register">Registro</a></li>
-            </ul>
-        </nav>
-    </header>
+<?php $this->layout('layout', ['title' => 'Registro Empresa']) ?>
+<script src="/public/js/auth/registro-alumno.js" defer></script>
+
 
     <main>
         <div class="divMarco">
@@ -198,7 +180,6 @@
     <footer>
         <p>&copy; 2025 NTRYJOB - Tu espacio de búsqueda tranquilo</p>
     </footer>
-</body>
+
 
 <script src="/public/js/validators.js"></script>
-</html>
