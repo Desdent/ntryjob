@@ -716,6 +716,7 @@ footer p {
     color: var(--primary);
     font-weight: 600;
     cursor: pointer;
+    text-decoration: none;
 }
 
 #botonRegistrarse { margin-top: 2em; }
