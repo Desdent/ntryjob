@@ -171,7 +171,7 @@ nav a:hover {
     margin-top: 5px;
     text-align: center;
     background-color: var(--primary-dark);
-    color: var(--text-white) !important; 
+    color: var(--text-white);
     padding: 8px 15px; 
     border: none;
     border-radius: 4px;
