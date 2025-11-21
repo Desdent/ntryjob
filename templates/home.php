@@ -32,7 +32,7 @@
             <div class="grupo-tarjetas">
                 <div class="oferta-card">
                     <div class="oferta-logo">
-                        <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
+                        <img src="/public/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
                     </div>
                     <h3>Desarrollador Front-End Junior</h3>
                     <span class="oferta-badge">OFERTA POPULAR</span>
@@ -43,7 +43,7 @@
                 <!-- Card 2 -->
                 <div class="oferta-card">
                     <div class="oferta-logo">
-                        <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
+                        <img src="/public/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
                     </div>
                     <h3>Especialista en Marketing Digital</h3>
                     <span class="oferta-badge">OFERTA CARA</span>
@@ -54,7 +54,7 @@
                 <!-- Card 3 -->
                 <div class="oferta-card">
                     <div class="oferta-logo">
-                        <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
+                        <img src="/public/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
                     </div>
                     <h3>Diseñador UX/UI Senior</h3>
                     <span class="oferta-badge">OFERTA POPULAR</span>
@@ -68,7 +68,7 @@
             <div class="grupo-tarjetas">
                 <div class="oferta-card">
                     <div class="oferta-logo">
-                        <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
+                        <img src="/public/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
                     </div>
                     <h3>Desarrollador Front-End Junior</h3>
                     <span class="oferta-badge">OFERTA POPULAR</span>
@@ -79,7 +79,7 @@
                 <!-- Card 2 -->
                 <div class="oferta-card">
                     <div class="oferta-logo">
-                        <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
+                        <img src="/public/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
                     </div>
                     <h3>Especialista en Marketing Digital</h3>
                     <span class="oferta-badge">OFERTA CARA</span>
@@ -90,7 +90,7 @@
                 <!-- Card 3 -->
                 <div class="oferta-card">
                     <div class="oferta-logo">
-                        <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
+                        <img src="/public/assets/imagenes/placeholder_logo_ofertas.png" alt="Logo">
                     </div>
                     <h3>Diseñador UX/UI Senior</h3>
                     <span class="oferta-badge">OFERTA POPULAR</span>
@@ -113,13 +113,13 @@
         
         <div class="colaboradores-container">
             <div class="colaborador-card">
-                <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Nter">
+                    <img src="/public/assets/imagenes/nter-bg-qj2hds19msrlc3vwosd10npjufxl010g43cykqljqk (1).png" alt="Nter">
             </div>
             <div class="colaborador-card">
-                <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="NTT Data">
+                <img src="/public/assets/imagenes/ies-las-fuentezuelas-estudia-deporte.jpg" alt="NTT Data">
             </div>
             <div class="colaborador-card">
-                <img src="/assets/imagenes/placeholder_logo_ofertas.png" alt="Colaborador 3">
+                <img src="/public/assets/imagenes/NTT_Data-Logo.wine_.png" alt="Colaborador 3">
             </div>
         </div>
     </div>
